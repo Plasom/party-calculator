@@ -13,12 +13,11 @@ export function NavigationMenu() {
     { label: "Home", href: "/", icon: "home" },
     { label: "About", href: "/about", icon: "info" },
     { label: "Contact", href: "/contact", icon: "contact_mail" },
-    { label: "Tokens Demo", href: "/tokens-demo", icon: "palette" },
   ]
 
   return (
     <div className="fixed flex justify-center w-full left-0 top-0">
-      <div className="flex flex-col backdrop-saturate-[180%] backdrop-blur-[20px] sm:w-[390px] w-full" style={{ backgroundColor: 'var(--nav-bg)' }}>
+      <div className="flex flex-col backdrop-saturate-[180%] backdrop-blur-[20px] bg-[var(--nav-bg)] sm:w-[390px] w-full">
         <div className="flex items-center justify-between px-[20px] h-[63px]">
           <Image
             src="/logo.svg"
@@ -35,7 +34,7 @@ export function NavigationMenu() {
           </span>
         </div>
         {open && (
-          <div className="flex flex-col px-4 py-2 bg-slate-50/90">
+          <div className="flex flex-col px-4 py-2 backdrop-saturate-[180%] backdrop-blur-[20px] bg-[var(--nav-bg)]">
             {navItems.map((item) => (
               <a
                 key={item.label}

@@ -8,9 +8,11 @@ export function Section({
     children?: React.ReactNode;
 }) {
     return (
-        <div className="">
-            <p>{header}</p>
-            {children}
+        <div className="px-4 py-2">
+            <p className="text-2xl font-bold">{header}</p>
+            <div className="py-4">
+                {children}
+            </div>
         </div>
     );
 }

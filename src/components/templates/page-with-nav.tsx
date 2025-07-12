@@ -8,7 +8,7 @@ export function PageWithNav({
     children: React.ReactNode;
 }) {
     return (
-        <div className="mobile-width border border-red-500 mt-[63px]">
+        <div className="mobile-width mt-[63px]">
             <NavigationMenu />
             <div>
                 {children}
