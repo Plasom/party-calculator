@@ -1,23 +1,54 @@
 'use client';
 
+import { useRef } from 'react';
+
 export function Button({
     label,
     rightIcon,
     leftIcon,
     onClick,
+    onLongPress,
+    longPressDuration = 300,
     disabled = false,
     type = 'primary',
     size = 'sm'
 }: {
     className?: string;
-    label: string;
+    label?: string;
     rightIcon?: React.ReactNode;
     leftIcon?: React.ReactNode;
     onClick: () => void;
+    onLongPress?: () => void;
+    longPressDuration?: number;
     disabled?: boolean;
     type?: 'primary' | 'secondary' | 'ghost';
     size?: 'xs' | 'sm' | 'md';
 }) {
+    const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+
+    const handleMouseDown = () => {
+        if (onLongPress && !disabled) {
+            console.log('Long press started');
+            longPressTimer.current = setTimeout(() => {
+                console.log('dfdf')
+                onLongPress();
+            }, longPressDuration);
+        }
+    };
+
+    const handleMouseUp = () => {
+        if (longPressTimer.current) {
+            console.log('Long press ended');
+            clearTimeout(longPressTimer.current);
+            longPressTimer.current = null;
+        }
+    };
+
+    const handleClick = () => {
+        if (!disabled) {
+            onClick();
+        }
+    };
     const classMap = {
         primary: {
             default: 'bg-[var(--button-primary-state-default)]',
@@ -58,7 +89,12 @@ export function Button({
                     ? `${disabledClasses.default} ${disabledClasses.textColor} ${disabledClasses.cursor}`
                     : `${classMap[type].default} ${classMap[type].hovered} ${classMap[type].pressed} ${classMap[type].textColor} cursor-pointer`
             }`}
-            onClick={onClick} 
+            onClick={handleClick}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onTouchStart={handleMouseDown}
+            onTouchEnd={handleMouseUp}
             disabled={disabled} 
             type="button"
         >

@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html>
       <body
-        className={`${promptFont.className} antialiased`}
+        className={`${promptFont.className} overflow-auto scrollbar-hide select-none antialiased`}
       >
         {children}
       </body>
