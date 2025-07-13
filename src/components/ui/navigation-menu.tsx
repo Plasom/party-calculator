@@ -39,7 +39,7 @@ export function NavigationMenu() {
               <a
                 key={item.label}
                 href={item.href}
-                className="flex items-center gap-3 text-gray-700 py-3 px-2 hover:bg-gray-200 rounded-md transition-colors"
+                className="flex items-center gap-3 text-gray-700 py-3 px-2 hover:bg-gray-200 rounded-md transition-colors bg-transparent"
                 onClick={() => setOpen(false)}
               >
                 {item.label}
