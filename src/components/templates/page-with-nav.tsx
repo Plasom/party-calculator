@@ -23,16 +23,18 @@ export function PageWithNav({
     return (
         <div className="mobile-width mt-[63px]">
             <NavigationMenu />
-            {!isHomePage && (
-                <Button
-                    type="ghost"
-                    size="sm"
-                    leftIcon="arrow_back"
-                    label="back"
-                    onClick={handleBackClick}
-                    className="font-semibold"
-                />
-            )}
+            <div className="px-1">
+                {!isHomePage && (
+                    <Button
+                        type="ghost"
+                        size="sm"
+                        leftIcon="arrow_back"
+                        label="back"
+                        onClick={handleBackClick}
+                        className="font-semibold"
+                    />
+                )}
+            </div>
             <div className="space-y-2">
                 {sections.map((section, index) => (
                     <div key={index}>
