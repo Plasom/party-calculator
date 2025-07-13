@@ -15,6 +15,38 @@ interface OrderItem {
 export default function Home() {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
 
+  // Dishes data as JSON array
+  const dishesData = [
+    {
+      id: "1",
+      url: "/images/sushiro_asset/dishes/red/default.svg",
+      label: "40.-",
+      textColor: "white",
+      isButton: true,
+      initialQuantity: 0,
+      onAdd: () => handleDishAdd
+    },
+    {
+      id: "2", 
+      url: "/images/sushiro_asset/dishes/white/default.svg",
+      label: "60.-",
+      textColor: "black",
+      isButton: true,
+      initialQuantity: 0,
+      onAdd: () => handleDishAdd
+    },
+    {
+      id: "9999",
+      url: "/images/sushiro_asset/dishes/custom/default.svg", 
+      label: "custom",
+      textColor: "black",
+      leftIcon: "add",
+      isButton: false,
+      onClick: () => console.log('Custom Dish Clicked'),
+      initialQuantity: 0
+    }
+  ];
+
   const handleDishAdd = (data: { id: string; count: number }) => {  
     setOrderItems(prev => {
       const existingIndex = prev.findIndex(item => item.id === data.id);
@@ -43,28 +75,20 @@ export default function Home() {
     
     <Section key="dishes" header="Add a plate">
       <CardList>
-        <CardDish 
-          id="1" 
-          url="/images/sushiro_asset/dishes/red/default.svg" 
-          onAdd={handleDishAdd}
-          label="40.-"
-        />
-        <CardDish 
-          id="2" 
-          url="/images/sushiro_asset/dishes/white/default.svg" 
-          onAdd={handleDishAdd}
-          label="60.-"
-          textColor="black"
-        />
-        <CardDish 
-          id="9999" 
-          url="/images/sushiro_asset/dishes/custom/default.svg" 
-          onClick={() => console.log('Custom Dish Clicked')}
-          leftIcon="add"
-          label="custom"
-          textColor="black"
-          isButton={false}
-        />
+        {dishesData.map((dish) => (
+          <CardDish
+            key={dish.id}
+            id={dish.id}
+            url={dish.url}
+            label={dish.label}
+            textColor={dish.textColor as "white" | "black"}
+            leftIcon={dish.leftIcon}
+            isButton={dish.isButton}
+            initialQuantity={dish.initialQuantity}
+            onAdd={dish.isButton ? handleDishAdd : undefined}
+            onClick={dish.onClick}
+          />
+        ))}
       </CardList>
     </Section>
   ];
