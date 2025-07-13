@@ -17,12 +17,15 @@ export default function SushiroPage() {
     const [selectedMember, setSelectedMember] = useState<string | null>(null);
 
     const handleAddMember = (name: string) => {
-        const newMember: IMember = {
-            id: Date.now().toString(),
-            name: name
-        };
-
-        setMembers(prev => [...prev, newMember]);
+        const names = name.split(',').map(n => n.trim()).filter(n => n.length > 0);
+        
+        setMembers(prev => {
+            const newMembers = names.map((memberName, index) => ({
+                id: (prev.length + index).toString(),
+                name: memberName
+            }));
+            return [...prev, ...newMembers];
+        });
     }
 
     const handleMemberClick = (memberId: string) => {

@@ -69,7 +69,7 @@ export function AddMemberBottomSheet({
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        placeholder="e.g. John Doe"
+                        placeholder="e.g. John, Bob, Alice"
                         className="mt-4 w-full px-3 py-2 h-[48px] text-[16px] border border-[#E5E7EB] rounded-lg bg-white font-medium text-[var(--color-black-tertiary)] focus:outline-none focus:border-[#D1D5DC] placeholder:text-[#E5E7EB]"
                         autoFocus
                         maxLength={50}

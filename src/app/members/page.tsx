@@ -13,18 +13,23 @@ interface Member {
 
 export default function MembersPage() {
   const [members, setMembers] = useState<Member[]>([
-    { id: '1', name: 'John Doe' },
-    { id: '2', name: 'Jane Smith' }
+    { id: '0', name: 'John Doe' },
+    { id: '1', name: 'Jane Smith' }
   ]);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<string | null>(null);
 
   const handleAddMember = (name: string) => {
-    const newMember: Member = {
-      id: Date.now().toString(),
-      name: name
-    };
-    setMembers(prev => [...prev, newMember]);
+    const names = name.split(',').map(n => n.trim()).filter(n => n.length > 0);
+    console.log(names)
+    
+    setMembers(prev => {
+      const newMembers = names.map((memberName, index) => ({
+        id: (prev.length + index).toString(),
+        name: memberName
+      }));
+      return [...prev, ...newMembers];
+    });
   };
 
   const handleMemberClick = (memberId: string) => {
