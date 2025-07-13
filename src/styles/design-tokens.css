@@ -9,7 +9,7 @@
   --color-neutral-900: #111827;
   --color-neutral-950: #030712;
   --color-rose-700: #be123c;
-  --button-ghost-state-hovered: #d1d5dc1a;
+  --button-ghost-state-hovered: rgba(209, 213, 220, 0.10);
   --button-ghost-state-pressed: #d1d5dc33;
   --button-ghost-text: #2d2d2d;
   --button-ghost-icon: #2d2d2d;
@@ -32,7 +32,7 @@
   --button-disabled-state-pressed: #d1d5db;
   --button-disabled-text: #e5e7eb;
   --button-disabled-icon: #e5e7eb;
-  --nav-bg: rgba(255, 255, 255, 0.4);
+  --nav-bg: rgba(255, 255, 255, 0.8);
   --tag-primary-bg: #2d2d2d;
   --tag-primary-icon: #ffffff;
   --tag-primary-first-text: #ffffff;
