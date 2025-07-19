@@ -13,7 +13,11 @@ export function PageWithNav({
     const pathname = usePathname();
     const router = useRouter();
     const sections = Array.isArray(children) ? children : [children];
-    const hasMultipleSections = sections.length > 1;
+    
+    const sectionCount = sections.filter(section => 
+        section?.props?.header !== undefined
+    ).length;
+    const hasMultipleSections = sectionCount > 1;
     const isHomePage = pathname === '/' || pathname === '/example';
 
     const handleBackClick = () => {
@@ -36,14 +40,20 @@ export function PageWithNav({
                 )}
             </div>
             <div className="space-y-2">
-                {sections.map((section, index) => (
-                    <div key={index}>
-                        {section}
-                        {hasMultipleSections && index < sections.length - 1 && (
-                            <div className="h-px bg-gray-200 mx-4 my-2" />
-                        )}
-                    </div>
-                ))}
+                {sections.map((section, index) => {
+                    const isSection = section?.props?.header !== undefined;
+                    const nextSection = sections[index + 1];
+                    const nextIsSection = nextSection?.props?.header !== undefined;
+                    
+                    return (
+                        <div key={index}>
+                            {section}
+                            {hasMultipleSections && isSection && nextIsSection && (
+                                <div className="h-px bg-gray-200 mx-4 my-2" />
+                            )}
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

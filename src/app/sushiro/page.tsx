@@ -2,7 +2,7 @@
 
 import { PageWithNav } from "@/components/templates/page-with-nav";
 import { Section } from "@/components/templates/section";
-import { AddMemberBottomSheet } from "@/components/ui/add-member-bottom-sheet";
+import { AddMemberBottomSheet } from "@/components/ui/bottom-sheet/add-member-bottom-sheet";
 import { MemberBadge } from "@/components/ui/member-badge";
 import { CardList } from "@/components/ui/card/card-list";
 import { CardDish } from "@/components/ui/card/dish";
@@ -81,7 +81,6 @@ export default function SushiroPage() {
                     })}
                 </CardList>
             </Section>
-
 
             <AddMemberBottomSheet
                 isOpen={isBottomSheetOpen}
