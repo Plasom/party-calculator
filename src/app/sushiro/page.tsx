@@ -30,7 +30,7 @@ export default function SushiroPage() {
                         variant="outline"
                         leftIcon="add"
                         className="text-sm"
-                        label="Add Member"
+                        label="Member"
                         onClick={() => setIsBottomSheetOpen(true)}
                     />
                     {members && members.map((member: IMember) => {

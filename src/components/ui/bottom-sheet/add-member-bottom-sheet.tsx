@@ -35,7 +35,7 @@ export function AddMemberBottomSheet({
         <BottomSheet
             isOpen={isOpen}
             onClose={onClose}
-            title="Add Member"
+            title="Add members"
             description="Use a comma for multiple names"
         >
             <form onSubmit={handleSubmit} className="space-y-4">
