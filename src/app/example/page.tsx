@@ -2,6 +2,7 @@
 
 import { PageWithNav } from "@/components/templates/page-with-nav";
 import { Section } from "@/components/templates/section";
+import { MenuBottomSheet } from "@/components/ui/bottom-sheet/menu-bottom-sheet";
 import { CardList } from "@/components/ui/card/card-list";
 import { CardDish } from "@/components/ui/card/dish";
 import { CardStore } from "@/components/ui/card/store";
@@ -14,6 +15,7 @@ interface OrderItem {
 
 export default function Home() {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
+  const [isMenuBottomSheetOpen, setIsMenuBottomSheetOpen] = useState(true);
 
   const dishesData = [
     {
@@ -92,7 +94,6 @@ export default function Home() {
     </Section>
   ];
 
-  // Add order summary section if there are items
   if (orderItems.length > 0) {
     sections.push(
       <Section key="order-summary" header="Order Summary">
@@ -116,9 +117,25 @@ export default function Home() {
     );
   }
 
+  const menuItems = [
+    {
+      label: "Order Summary",
+      onClick: () => setIsMenuBottomSheetOpen(true)
+    },
+    {
+      label: "Clear Order",
+      onClick: () => setOrderItems([])
+    }
+  ]
+
   return (
     <PageWithNav>
-      {sections}
+      {/* {sections} */}
+      <MenuBottomSheet
+          isOpen={isMenuBottomSheetOpen}
+          onClose={() => setIsMenuBottomSheetOpen(false)}
+          menuItems={menuItems}
+        />
     </PageWithNav>
   );
 }

@@ -68,7 +68,7 @@ export function CardDish({
                     alt={alt}
                     loading="lazy"
                     fill
-                    className="object-cover rounded-lg"
+                    className="object-cover rounded-lg pointer-events-none"
                     draggable={false}
                 />
                 <p className={`flex items-center justify-center absolute text-lg font-semibold text-${textColor}`}>
