@@ -5,39 +5,12 @@ import { Section } from "@/components/templates/section";
 import { AddMemberBottomSheet } from "@/components/ui/add-member-bottom-sheet";
 import { MemberBadge } from "@/components/ui/member-badge"
 import { useState } from "react";
-
-interface IMember {
-    id: string;
-    name: string;
-}
+import { useMember, IMember } from "@/contexts/member-context";
+import Link from "next/link";
 
 export default function SushiroPage() {
-    const [members, setMembers] = useState<IMember[]>([]);
+    const { members, selectedMember, addMember, selectMember } = useMember();
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-    const [selectedMember, setSelectedMember] = useState<string | null>(null);
-
-    const handleAddMember = (name: string) => {
-        const names = name.split(',').map(n => n.trim()).filter(n => n.length > 0);
-
-        setMembers(prev => {
-            const newMembers = names.map((memberName, index) => ({
-                id: (prev.length + index).toString(),
-                name: memberName
-            }));
-            const updatedMembers = [...prev, ...newMembers];
-            
-            if (!selectedMember && updatedMembers.length > 0) {
-                setSelectedMember(updatedMembers[0].id);
-            }
-            
-            return updatedMembers;
-        });
-    }
-
-    const handleMemberClick = (memberId: string) => {
-        if (selectedMember === memberId) return;
-        setSelectedMember(memberId);
-    }
 
     return (
         <PageWithNav>
@@ -54,7 +27,7 @@ export default function SushiroPage() {
                                 key={member.id}
                                 variant="outline"
                                 isSelected={selectedMember === member.id}
-                                onClick={() => handleMemberClick(member.id)}
+                                onClick={() => selectMember(member.id)}
                                 className="text-sm"
                             >
                                 {member.name}
@@ -64,13 +37,32 @@ export default function SushiroPage() {
                 </div>
             </Section>
 
+            {/* Show current path for debugging */}
+            <Section header="Debug Info" className="pt-4">
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="flex justify-between items-center mb-2">
+                        <div>
+                            <p className="text-sm text-red-800">Current path: /sushiro</p>
+                            <p className="text-sm text-red-800">Members count: {members.length}</p>
+                            <p className="text-sm text-red-800">Selected: {selectedMember || 'None'}</p>
+                        </div>
+                        <Link 
+                            href="/sushiro/summary"
+                            className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors"
+                        >
+                            View Summary
+                        </Link>
+                    </div>
+                </div>
+            </Section>
+
             <AddMemberBottomSheet
                 isOpen={isBottomSheetOpen}
                 onClose={() => {
                     setIsBottomSheetOpen(false)
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                onAddMember={handleAddMember}
+                onAddMember={addMember}
             />
         </PageWithNav>
     )
