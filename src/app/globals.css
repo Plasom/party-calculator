@@ -123,7 +123,7 @@
   }
 
   .mobile-width {
-    @apply mx-auto min-h-screen sm:w-[390px] w-full;
+    @apply mx-auto min-h-[100vh-63px] sm:w-[390px] w-full;
   }
 
   .material-symbols-outlined{

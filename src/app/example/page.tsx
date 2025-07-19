@@ -15,7 +15,6 @@ interface OrderItem {
 export default function Home() {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
 
-  // Dishes data as JSON array
   const dishesData = [
     {
       id: "1",

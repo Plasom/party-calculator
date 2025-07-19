@@ -18,18 +18,25 @@ export default function SushiroPage() {
 
     const handleAddMember = (name: string) => {
         const names = name.split(',').map(n => n.trim()).filter(n => n.length > 0);
-        
+
         setMembers(prev => {
             const newMembers = names.map((memberName, index) => ({
                 id: (prev.length + index).toString(),
                 name: memberName
             }));
-            return [...prev, ...newMembers];
+            const updatedMembers = [...prev, ...newMembers];
+            
+            if (!selectedMember && updatedMembers.length > 0) {
+                setSelectedMember(updatedMembers[0].id);
+            }
+            
+            return updatedMembers;
         });
     }
 
     const handleMemberClick = (memberId: string) => {
-        setSelectedMember(selectedMember === memberId ? null : memberId);
+        if (selectedMember === memberId) return;
+        setSelectedMember(memberId);
     }
 
     return (
@@ -59,7 +66,10 @@ export default function SushiroPage() {
 
             <AddMemberBottomSheet
                 isOpen={isBottomSheetOpen}
-                onClose={() => setIsBottomSheetOpen(false)}
+                onClose={() => {
+                    setIsBottomSheetOpen(false)
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
                 onAddMember={handleAddMember}
             />
         </PageWithNav>
