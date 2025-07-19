@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useLongPress } from '@/hooks/useLongPress';
 
 export function Button({
     className = '',
@@ -9,7 +9,7 @@ export function Button({
     leftIcon,
     onClick,
     onLongPress,
-    longPressDuration = 300,
+    longPressDuration,
     disabled = false,
     type = 'primary',
     size = 'sm',
@@ -27,22 +27,11 @@ export function Button({
     size?: 'xs' | 'sm' | 'md';
     fontSize?: 'font-semibold' | 'font-normal' | 'font-bold';
 }) {
-    const longPressTimer = useRef<NodeJS.Timeout | null>(null);
-
-    const handleMouseDown = () => {
-        if (onLongPress && !disabled) {
-            longPressTimer.current = setTimeout(() => {
-                onLongPress();
-            }, longPressDuration);
-        }
-    };
-
-    const handleMouseUp = () => {
-        if (longPressTimer.current) {
-            clearTimeout(longPressTimer.current);
-            longPressTimer.current = null;
-        }
-    };
+    const longPressHandlers = useLongPress({
+        onLongPress,
+        duration: longPressDuration,
+        disabled
+    });
 
     const handleClick = () => {
         if (!disabled) {
@@ -95,11 +84,7 @@ export function Button({
                     : `${classMap[type].default} ${classMap[type].hovered} ${classMap[type].pressed} ${classMap[type].textColor} cursor-pointer`
                 }`}
             onClick={handleClick}
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
-            onTouchStart={handleMouseDown}
-            onTouchEnd={handleMouseUp}
+            {...longPressHandlers}
             disabled={disabled}
             type="button"
         >

@@ -10,17 +10,40 @@ import { useState } from "react";
 import { useMember, IMember } from "@/contexts/member-context";
 import { useOrder } from "@/contexts/order-context";
 import { sushiroDishes } from "@/data/dishes";
+import { MenuBottomSheet, MenuItem } from "@/components/ui/bottom-sheet/menu-bottom-sheet";
 
 export default function SushiroPage() {
     const { members, selectedMember, addMember, selectMember } = useMember();
     const { memberOrders, updateMemberOrder, getMemberOrderPrice } = useOrder();
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+    const [isMenuBottomSheetOpen, setIsMenuBottomSheetOpen] = useState(false);
+    const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
 
     const handleDishAdd = (data: { id: string; count: number }) => {
         if (!selectedMember) return; // ถ้าไม่มีสมาชิกที่เลือกให้หยุด
 
         updateMemberOrder(selectedMember, { id: data.id, count: data.count });
     };
+
+    const handleDeleteDish = () => {
+        if (!selectedMember || !selectedDishId) return;
+        
+        updateMemberOrder(selectedMember, { id: selectedDishId, count: 0 });
+        setSelectedDishId(null);
+    };
+
+    const handleDishLongPress = (dishId: string) => {
+        setSelectedDishId(dishId);
+        setIsMenuBottomSheetOpen(true);
+    };
+
+    const menuItems: MenuItem[] = [
+        {
+            label: "Delete plate",
+            onClick: () => handleDeleteDish(),
+            textColor: 'red'
+        }
+    ]
 
     return (
         <PageWithNav>
@@ -76,6 +99,7 @@ export default function SushiroPage() {
                                 initialQuantity={currentQuantity}
                                 onAdd={dish.isButton ? handleDishAdd : undefined}
                                 onClick={dish.isButton ? undefined : () => console.log(`Custom dish clicked`)}
+                                onLongPress={dish.isButton ? () => handleDishLongPress(dish.id) : undefined}
                             />
                         );
                     })}
@@ -89,6 +113,12 @@ export default function SushiroPage() {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 onAddMember={addMember}
+            />
+
+            <MenuBottomSheet
+                isOpen={isMenuBottomSheetOpen}
+                onClose={() => setIsMenuBottomSheetOpen(false)}
+                menuItems={menuItems}
             />
         </PageWithNav>
     )

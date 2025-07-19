@@ -4,9 +4,10 @@ import { Button } from "../button";
 import { BottomSheet } from "./bottom-sheet";
 
 
-interface MenuItem {
+export interface MenuItem {
     label: string;
     onClick: () => void;
+    textColor?: 'black' | 'red';
 }
 
 interface MenuBottomSheetProps {
@@ -15,13 +16,18 @@ interface MenuBottomSheetProps {
     menuItems?: MenuItem[];
 }
 
-function MenuItemButton({ label, onClick }: MenuItem) {
+function MenuItemButton({ label, onClick, textColor='black'}: MenuItem) {
+    const textColorClass = {
+        black: 'text-black',
+        red: 'text-[var(--components-button-ghost-desctructive-text)]'
+    };
+
     return (
         <button
             onClick={onClick}
-            className="w-full rounded-xl py-[14px] text-[var(--color-black-tertiary)]"
+            className={`w-full rounded-xl py-[14px] ${textColorClass[textColor]}`}
         >
-            {label}
+            <span className={textColorClass[textColor]}>{label}</span>
         </button>
     );
 }
@@ -29,7 +35,7 @@ function MenuItemButton({ label, onClick }: MenuItem) {
 export function MenuBottomSheet({
     isOpen,
     onClose,
-    menuItems
+    menuItems,
 }: MenuBottomSheetProps) {
 
     return (
@@ -50,6 +56,7 @@ export function MenuBottomSheet({
                                 item.onClick();
                                 onClose();
                             }}
+                            textColor={item.textColor}
                         />
                         {index < menuItems.length - 1 && (
                             <div className="h-px bg-gray-200" />
@@ -58,7 +65,7 @@ export function MenuBottomSheet({
                 ))}
             </div>
 
-            <div className="flex gap-3 pt-2 mt-3">
+            <div className="flex mt-3">
                 <Button
                     type="quartiary"
                     size="md"

@@ -66,8 +66,9 @@ export function BottomSheet({
             onClick={handleBackdropClick}
         >
             <div
-                className={`${isTransparent ? 'bg-transparent' : 'bg-white'} rounded-t-3xl w-full ${maxWidth} px-6 pb-6 pt-3 transform transition-transform duration-300 ease-out ${isOpen ? 'animate-slide-up' : 'animate-slide-down'
+                className={`${isTransparent ? 'bg-transparent' : 'bg-white'} rounded-t-3xl w-full ${maxWidth} px-4 pb-6 pt-3 transform transition-transform ease-out ${isOpen ? 'animate-slide-up' : 'animate-slide-down'
                     }`}
+                style={{ transitionDuration: 'var(--transition-duration)' }}
             >
                 {/* Handle bar */}
                 {showHandle && (

@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../button";
 import { QuantityValidator } from "@/lib/helper";
+import { useLongPress } from "@/hooks/useLongPress";
 
 export function CardDish({
     id,
@@ -9,6 +10,7 @@ export function CardDish({
     alt = 'Placeholder Image',
     onAdd,
     onClick,
+    onLongPress,
     label,
     leftIcon,
     initialQuantity = 0,
@@ -20,6 +22,7 @@ export function CardDish({
     alt?: string;
     onAdd?: (data: { id: string; count: number }) => void;
     onClick?: () => void;
+    onLongPress?: () => void;
     label?: string;
     leftIcon?: string;
     initialQuantity?: number;
@@ -30,6 +33,16 @@ export function CardDish({
     const [inputValue, setInputValue] = useState(initialQuantity.toString());
 
     const validator = new QuantityValidator(0, 999);
+
+    const longPressHandlers = useLongPress({
+        onLongPress,
+        disabled: !onLongPress
+    });
+
+    useEffect(() => {
+        setQuantity(initialQuantity);
+        setInputValue(initialQuantity.toString());
+    }, [initialQuantity]);
 
     const handleCardClick = () => {
         const newQuantity = validator.validateAndClean(quantity + 1);
@@ -61,8 +74,14 @@ export function CardDish({
     };
 
     return (
-        <div className="flex flex-col items-center px-5 py-4 w-fit h-fit gap-2 hover:bg-[var(--button-ghost-state-hovered)] rounded-2 cursor-pointer select-none" onClick={handleCardClick}>
-            <div className="flex w-[120px] h-[120px] relative items-center justify-center">
+        <div 
+            className="flex flex-col items-center px-5 py-4 w-fit h-fit gap-2 hover:bg-[var(--button-ghost-state-hovered)] rounded-2 cursor-pointer select-none" 
+            onClick={handleCardClick}
+        >
+            <div 
+                className="flex w-[120px] h-[120px] relative items-center justify-center"
+                {...longPressHandlers}
+            >
                 <Image
                     src={url}
                     alt={alt}

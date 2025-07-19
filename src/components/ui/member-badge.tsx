@@ -47,7 +47,6 @@ function MemberBadge({
     onClick?: () => void
   }) {
   const Comp = asChild ? Slot : "span"
-  console.log(memberPrice)
   return (
     <Comp
       data-slot="badge"
