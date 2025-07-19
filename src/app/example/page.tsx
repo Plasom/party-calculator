@@ -117,12 +117,24 @@ export default function Home() {
     );
   }
 
+  const menuItems = [
+    {
+      label: "Order Summary",
+      onClick: () => setIsMenuBottomSheetOpen(true)
+    },
+    {
+      label: "Clear Order",
+      onClick: () => setOrderItems([])
+    }
+  ]
+
   return (
     <PageWithNav>
       {/* {sections} */}
       <MenuBottomSheet
           isOpen={isMenuBottomSheetOpen}
           onClose={() => setIsMenuBottomSheetOpen(false)}
+          menuItems={menuItems}
         />
     </PageWithNav>
   );
