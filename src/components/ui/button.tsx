@@ -23,7 +23,7 @@ export function Button({
     onLongPress?: () => void;
     longPressDuration?: number;
     disabled?: boolean;
-    type?: 'primary' | 'secondary' | 'ghost';
+    type?: 'primary' | 'secondary' | 'ghost' | 'quartiary';
     size?: 'xs' | 'sm' | 'md';
     fontSize?: 'font-semibold' | 'font-normal' | 'font-bold';
 }) {
@@ -51,28 +51,34 @@ export function Button({
     };
     const classMap = {
         primary: {
-            default: 'bg-[var(--button-primary-state-default)]',
-            hovered: 'hover:bg-[var(--button-primary-state-hovered)]',
-            pressed: 'active:bg-[var(--button-primary-state-pressed)]',
-            textColor: 'text-[var(--button-primary-text)]'
+            default: 'bg-[var(--components-button-primary-state-default)]',
+            hovered: 'hover:bg-[var(--components-button-primary-state-hovered)]',
+            pressed: 'active:bg-[var(--components-button-primary-state-pressed)]',
+            textColor: 'text-[var(--components-button-primary-text)]'
         },
         secondary: {
-            default: 'bg-[var(--button-secondary-state-default)]',
-            hovered: 'hover:bg-[var(--button-secondary-state-hovered)]',
-            pressed: 'active:bg-[var(--button-secondary-state-pressed)]',
-            textColor: 'text-[var(--button-secondary-text)]'
+            default: 'bg-[var(--components-button-secondary-state-default)]',
+            hovered: 'hover:bg-[var(--components-button-secondary-state-hovered)]',
+            pressed: 'active:bg-[var(--components-button-secondary-state-pressed)]',
+            textColor: 'text-[var(--components-button-secondary-text)]'
         },
         ghost: {
             default: 'bg-transparent',
-            hovered: 'hover:bg-[var(--button-ghost-state-hovered)]',
-            pressed: 'active:bg-[var(--button-ghost-state-pressed)]',
-            textColor: 'text-[var(--button-ghost-text)]'
+            hovered: 'hover:bg-[var(--components-button-ghost-state-hovered)]',
+            pressed: 'active:bg-[var(--components-button-ghost-state-pressed)]',
+            textColor: 'text-[var(--components-button-ghost-text)]'
+        },
+        quartiary: {
+            default: 'bg-[var(--components-button-quartiary-state-default)]',
+            hovered: 'hover:bg-[var(--components-button-quartiary-state-hovered)]',
+            pressed: 'active:bg-[var(--components-button-quartiary-state-pressed)]',
+            textColor: 'text-[var(--components-button-quartiary-text)]'
         }
     }
 
     const disabledClasses = {
-        default: 'bg-[var(--button-disabled-state-default)]',
-        textColor: 'text-[var(--button-disabled-text)]',
+        default: 'bg-[var(--components-button-disabled-state-default)]',
+        textColor: 'text-[var(--components-button-disabled-text)]',
         cursor: 'cursor-not-allowed'
     };
 

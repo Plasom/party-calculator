@@ -11,6 +11,8 @@ interface BottomSheetProps {
     children: React.ReactNode;
     showHandle?: boolean;
     maxWidth?: string;
+    isTransparent?: boolean;
+    button?: 'cancel' | 'hidden';
 }
 
 export function BottomSheet({
@@ -20,10 +22,24 @@ export function BottomSheet({
     description,
     children,
     showHandle = true,
-    maxWidth = "max-w-md"
+    maxWidth = "max-w-md",
+    isTransparent = false,
+    button = 'cancel'
 }: BottomSheetProps) {
 
-    // ป้องกัน scroll เมื่อ bottom sheet เปิด
+    const buttonGroup = {
+        cancel: (
+            <Button
+                type="secondary"
+                size="sm"
+                label="Cancel"
+                onClick={onClose}
+                className="text-gray-500 hover:text-gray-700"
+                fontSize="font-semibold"
+            />
+        ),
+        hidden: null
+    }
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -50,7 +66,7 @@ export function BottomSheet({
             onClick={handleBackdropClick}
         >
             <div
-                className={`bg-white rounded-t-3xl w-full ${maxWidth} px-6 pb-6 pt-3 transform transition-transform duration-300 ease-out ${isOpen ? 'animate-slide-up' : 'animate-slide-down'
+                className={`${isTransparent ? 'bg-transparent' : 'bg-white'} rounded-t-3xl w-full ${maxWidth} px-6 pb-6 pt-3 transform transition-transform duration-300 ease-out ${isOpen ? 'animate-slide-up' : 'animate-slide-down'
                     }`}
             >
                 {/* Handle bar */}
@@ -74,14 +90,7 @@ export function BottomSheet({
                             )}
                         </div>
                     )}
-                    <Button
-                        type="secondary"
-                        size="sm"
-                        label="cancel"
-                        onClick={onClose}
-                        className="text-gray-500 hover:text-gray-700"
-                        fontSize="font-semibold"
-                    />
+                    {buttonGroup[button]}
                 </div>
 
                 {/* Content */}
@@ -90,3 +99,5 @@ export function BottomSheet({
         </div>
     );
 }
+
+
