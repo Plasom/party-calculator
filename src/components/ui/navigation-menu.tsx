@@ -16,7 +16,7 @@ export function NavigationMenu() {
   ]
 
   return (
-    <div className="fixed flex justify-center w-full left-0 top-0">
+    <div className="fixed flex justify-center w-full left-0 top-0 z-99">
       <div className="flex flex-col backdrop-saturate-[180%] backdrop-blur-[20px] bg-[var(--nav-bg)] sm:w-[390px] w-full">
         <div className="flex items-center justify-between px-[20px] h-[63px]">
           <Image
@@ -28,7 +28,6 @@ export function NavigationMenu() {
             onClick={() => router.push('/')}
           />
 
-          {/* Hamburger Menu Button */}
           <span className="material-symbols-outlined cursor-pointer" onClick={() => setOpen(!open)}>
             lunch_dining
           </span>

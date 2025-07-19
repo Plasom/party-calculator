@@ -31,39 +31,59 @@ function MemberBadge({
   asChild = false,
   leftIcon,
   isSelected = false,
-  children,
   onClick,
+  memberName,
+  memberPrice,
+  label,
   ...props
 }: React.ComponentProps<"span"> &
-  VariantProps<typeof badgeVariants> & { 
-    asChild?: boolean, 
-    leftIcon?: string, 
-    children?: React.ReactNode, 
+  VariantProps<typeof badgeVariants> & {
+    asChild?: boolean,
+    leftIcon?: string,
     isSelected?: boolean,
+    memberName?: string,
+    memberPrice?: string,
+    label?: string,
     onClick?: () => void
   }) {
   const Comp = asChild ? Slot : "span"
-
+  console.log(memberPrice)
   return (
     <Comp
       data-slot="badge"
       className={cn(
-      badgeVariants({ variant }),
-      className,
-      isSelected ? "bg-primary text-white" : "",
-      'cursor-pointer'
+        badgeVariants({ variant }),
+        className,
+        isSelected ? "bg-primary text-white" : "",
+        'cursor-pointer'
       )}
       onClick={onClick}
       {...props}
     >
       {leftIcon && (
-      <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
-        {leftIcon}
-      </span>
+        <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
+          {leftIcon}
+        </span>
       )}
-      {children}
       {isSelected && (
-        <span>9999 ฿</span>
+        <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
+          check
+        </span>
+      )}
+      {label && (
+        <span className="flex items-center gap-1">
+          {label}
+        </span>
+      )}
+      {memberName && (
+        <span className="flex items-center gap-1">
+          {memberName}
+        </span>
+      )}
+      {(memberPrice || isSelected) && (
+        <span className={`${isSelected ? "text-[#D1D5DC]" : "text-[#99A1AF]"}`}>
+          {memberPrice || 0} ฿
+        </span>
       )}
     </Comp>
   )

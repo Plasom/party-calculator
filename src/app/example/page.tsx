@@ -92,7 +92,6 @@ export default function Home() {
     </Section>
   ];
 
-  // Add order summary section if there are items
   if (orderItems.length > 0) {
     sections.push(
       <Section key="order-summary" header="Order Summary">

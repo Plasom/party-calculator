@@ -81,27 +81,26 @@ export function Button({
         sm: 'h-[32px]',
         md: 'h-[48px]'
     }
-    
+
     return (
-        <button 
-            className={`flex ${sizeButton[size]} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${
-                disabled 
+        <button
+            className={`flex ${sizeButton[size]} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
                     ? `${disabledClasses.default} ${disabledClasses.textColor} ${disabledClasses.cursor}`
                     : `${classMap[type].default} ${classMap[type].hovered} ${classMap[type].pressed} ${classMap[type].textColor} cursor-pointer`
-            }`}
+                }`}
             onClick={handleClick}
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
             onTouchStart={handleMouseDown}
             onTouchEnd={handleMouseUp}
-            disabled={disabled} 
+            disabled={disabled}
             type="button"
         >
             {leftIcon && <span className="material-symbols-outlined">
                 {leftIcon}
             </span>}
-            <span className={fontSize}>{label}</span>
+            {label && <span className={fontSize}>{label}</span>}
             {rightIcon && <span className="material-symbols-outlined">
                 {rightIcon}
             </span>}
