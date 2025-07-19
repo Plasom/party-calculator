@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Prompt } from "next/font/google";
 import "./globals.css";
+import { MemberProvider } from "@/contexts/member-context";
 
 const promptFont = Prompt({
   subsets: ["thai", "latin"],
@@ -23,7 +24,9 @@ export default function RootLayout({
       <body
         className={`${promptFont.className} overflow-auto scrollbar-hide select-none antialiased`}
       >
-        {children}
+        <MemberProvider>
+          {children}
+        </MemberProvider>
       </body>
     </html>
   );

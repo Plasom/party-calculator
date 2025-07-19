@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 
 export function Button({
+    className = '',
     label,
     rightIcon,
     leftIcon,
@@ -11,7 +12,8 @@ export function Button({
     longPressDuration = 300,
     disabled = false,
     type = 'primary',
-    size = 'sm'
+    size = 'sm',
+    fontSize = 'font-normal'
 }: {
     className?: string;
     label?: string;
@@ -23,14 +25,13 @@ export function Button({
     disabled?: boolean;
     type?: 'primary' | 'secondary' | 'ghost';
     size?: 'xs' | 'sm' | 'md';
+    fontSize?: 'font-semibold' | 'font-normal' | 'font-bold';
 }) {
     const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 
     const handleMouseDown = () => {
         if (onLongPress && !disabled) {
-            console.log('Long press started');
             longPressTimer.current = setTimeout(() => {
-                console.log('dfdf')
                 onLongPress();
             }, longPressDuration);
         }
@@ -38,7 +39,6 @@ export function Button({
 
     const handleMouseUp = () => {
         if (longPressTimer.current) {
-            console.log('Long press ended');
             clearTimeout(longPressTimer.current);
             longPressTimer.current = null;
         }
@@ -84,7 +84,7 @@ export function Button({
     
     return (
         <button 
-            className={`flex ${sizeButton[size]} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${
+            className={`flex ${sizeButton[size]} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${
                 disabled 
                     ? `${disabledClasses.default} ${disabledClasses.textColor} ${disabledClasses.cursor}`
                     : `${classMap[type].default} ${classMap[type].hovered} ${classMap[type].pressed} ${classMap[type].textColor} cursor-pointer`
@@ -101,7 +101,7 @@ export function Button({
             {leftIcon && <span className="material-symbols-outlined">
                 {leftIcon}
             </span>}
-            {label}
+            <span className={fontSize}>{label}</span>
             {rightIcon && <span className="material-symbols-outlined">
                 {rightIcon}
             </span>}
