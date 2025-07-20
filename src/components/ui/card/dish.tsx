@@ -91,7 +91,7 @@ export function CardDish({
                     draggable={false}
                 />
                 <p className={`flex items-center justify-center absolute text-lg font-semibold text-${textColor}`}>
-                    {leftIcon && <span className="material-symbols-outlined">
+                    {leftIcon && <span className="material-symbols-rounded">
                         {leftIcon}
                     </span>}
                     {label}
@@ -112,7 +112,7 @@ export function CardDish({
                     inputMode="numeric"
                     value={inputValue}
                     onChange={handleInputChange}
-                    className="w-16 px-3 py-2 h-[32px] text-center border border-[#E5E7EB] rounded-lg bg-white text-lg font-medium text-[var(--color-black-tertiary)] focus:outline-none focus:border-[#D1D5DC]"
+                    className="w-[54px] px-3 py-2 h-[32px] text-center border border-[#E5E7EB] rounded-lg bg-white text-lg font-medium text-[var(--color-black-tertiary)] focus:outline-none focus:border-[#D1D5DC]"
                     placeholder="0"
                 />
             </div>}

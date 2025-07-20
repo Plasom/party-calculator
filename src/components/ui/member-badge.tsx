@@ -60,12 +60,12 @@ function MemberBadge({
       {...props}
     >
       {leftIcon && (
-        <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
+        <span className="material-symbols-rounded" style={{ fontSize: 20 }}>
           {leftIcon}
         </span>
       )}
       {isSelected && (
-        <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
+        <span className="material-symbols-rounded" style={{ fontSize: 20 }}>
           check
         </span>
       )}

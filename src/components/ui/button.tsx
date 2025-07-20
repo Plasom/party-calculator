@@ -88,11 +88,11 @@ export function Button({
             disabled={disabled}
             type="button"
         >
-            {leftIcon && <span className="material-symbols-outlined">
+            {leftIcon && <span className="material-symbols-rounded">
                 {leftIcon}
             </span>}
             {label && <span className={fontSize}>{label}</span>}
-            {rightIcon && <span className="material-symbols-outlined">
+            {rightIcon && <span className="material-symbols-rounded">
                 {rightIcon}
             </span>}
 
