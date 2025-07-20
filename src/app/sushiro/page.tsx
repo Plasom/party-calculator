@@ -3,19 +3,22 @@
 import { PageWithNav } from "@/components/templates/page-with-nav";
 import { Section } from "@/components/templates/section";
 import { AddMemberBottomSheet } from "@/components/ui/bottom-sheet/add-member-bottom-sheet";
+import { AddDishBottomSheet } from "@/components/ui/bottom-sheet/add-dish-bottom-sheet";
 import { MemberBadge } from "@/components/ui/member-badge";
 import { CardList } from "@/components/ui/card/card-list";
 import { CardDish } from "@/components/ui/card/dish";
 import { useState } from "react";
 import { useMember, IMember } from "@/contexts/member-context";
 import { useOrder } from "@/contexts/order-context";
-import { sushiroDishes } from "@/data/dishes";
+import { useDishes } from "@/contexts/dishes-context";
 import { MenuBottomSheet, MenuItem } from "@/components/ui/bottom-sheet/menu-bottom-sheet";
 
 export default function SushiroPage() {
     const { members, selectedMember, addMember, selectMember } = useMember();
     const { memberOrders, updateMemberOrder, getMemberOrderPrice } = useOrder();
+    const { dishes, addDish } = useDishes();
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+    const [isAddDishBottomSheetOpen, setIsAddDishBottomSheetOpen] = useState(false);
     const [isMenuBottomSheetOpen, setIsMenuBottomSheetOpen] = useState(false);
     const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
 
@@ -35,6 +38,26 @@ export default function SushiroPage() {
     const handleDishLongPress = (dishId: string) => {
         setSelectedDishId(dishId);
         setIsMenuBottomSheetOpen(true);
+    };
+
+    const handleCustomDishClick = () => {
+        setIsAddDishBottomSheetOpen(true);
+    };
+
+    const handleAddCustomDish = (name: string, price: number) => {
+        // สร้างจานใหม่
+        const newDish = {
+            id: `custom-${Date.now()}`,
+            url: "/images/sushiro_asset/dishes/custom/default.svg",
+            label: `${price}.-`,
+            textColor: "black" as const,
+            isButton: true,
+            initialQuantity: 0,
+            price: price,
+            name: name,
+            isDefault: false
+        };
+        addDish(newDish);
     };
 
     const menuItems: MenuItem[] = [
@@ -57,7 +80,7 @@ export default function SushiroPage() {
                         onClick={() => setIsBottomSheetOpen(true)}
                     />
                     {members && members.map((member: IMember) => {
-                        const memberPrice = getMemberOrderPrice(member.id, sushiroDishes);
+                        const memberPrice = getMemberOrderPrice(member.id, dishes);
                         const isSelected = selectedMember === member.id;
 
                         return (
@@ -81,7 +104,7 @@ export default function SushiroPage() {
                 disable={!selectedMember}
             >
                 <CardList>
-                    {sushiroDishes.map((dish) => {
+                    {dishes.map((dish) => {
                         const currentMemberOrder = selectedMember && memberOrders[selectedMember]
                             ? memberOrders[selectedMember].find(item => item.id === dish.id)
                             : null;
@@ -98,7 +121,7 @@ export default function SushiroPage() {
                                 isButton={dish.isButton}
                                 initialQuantity={currentQuantity}
                                 onAdd={dish.isButton ? handleDishAdd : undefined}
-                                onClick={dish.isButton ? undefined : () => console.log(`Custom dish clicked`)}
+                                onClick={dish.isButton ? undefined : handleCustomDishClick}
                                 onLongPress={dish.isButton ? () => handleDishLongPress(dish.id) : undefined}
                             />
                         );
@@ -113,6 +136,15 @@ export default function SushiroPage() {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 onAddMember={addMember}
+            />
+
+            <AddDishBottomSheet
+                isOpen={isAddDishBottomSheetOpen}
+                onClose={() => {
+                    setIsAddDishBottomSheetOpen(false);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onAddDish={handleAddCustomDish}
             />
 
             <MenuBottomSheet
