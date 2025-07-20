@@ -3,6 +3,7 @@ import { Prompt } from "next/font/google";
 import "./globals.css";
 import { MemberProvider } from "@/contexts/member-context";
 import { OrderProvider } from "@/contexts/order-context";
+import { DishesProvider } from "@/contexts/dishes-context";
 
 const promptFont = Prompt({
   subsets: ["thai", "latin"],
@@ -27,7 +28,9 @@ export default function RootLayout({
       >
         <MemberProvider>
           <OrderProvider>
-            {children}
+            <DishesProvider>
+              {children}
+            </DishesProvider>
           </OrderProvider>
         </MemberProvider>
       </body>

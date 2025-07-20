@@ -1,7 +1,7 @@
 // UI Constants
 export const UI_CONSTANTS = {
   // Long press configuration
-  LONG_PRESS_DURATION: 500, // milliseconds
+  LONG_PRESS_DURATION: 650, // milliseconds
   
   // Animation durations
   ANIMATION_DURATION: 300, // milliseconds

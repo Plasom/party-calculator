@@ -8,6 +8,7 @@ export interface DishData {
     leftIcon?: string;
     price?: number;
     name?: string;
+    isDefault?: boolean;
 }
 
 export const sushiroDishes: DishData[] = [
@@ -19,7 +20,8 @@ export const sushiroDishes: DishData[] = [
         isButton: true,
         initialQuantity: 0,
         price: 40,
-        name: "Red Plate"
+        name: "Red Plate",
+        isDefault: true
     },
     {
         id: "2",
@@ -29,7 +31,8 @@ export const sushiroDishes: DishData[] = [
         isButton: true,
         initialQuantity: 0,
         price: 60,
-        name: "White Plate"
+        name: "White Plate",
+        isDefault: true
     },
     {
         id: "3",
@@ -39,7 +42,8 @@ export const sushiroDishes: DishData[] = [
         isButton: true,
         initialQuantity: 0,
         price: 80,
-        name: "Yellow Plate"
+        name: "Yellow Plate",
+        isDefault: true
     },
     {
         id: "4",
@@ -49,7 +53,8 @@ export const sushiroDishes: DishData[] = [
         isButton: true,
         initialQuantity: 0,
         price: 100,
-        name: "Black Plate"
+        name: "Black Plate",
+        isDefault: true
     },
     {
         id: "9999",
@@ -60,22 +65,11 @@ export const sushiroDishes: DishData[] = [
         isButton: false,
         initialQuantity: 0,
         price: 0,
-        name: "Custom Dish"
+        name: "Custom Dish",
+        isDefault: true
     }
 ];
 
 export const tenoiDishes: DishData[] = [
     // สามารถเพิ่มข้อมูลสำหรับ teenoi ได้ในอนาคต
 ];
-
-// Helper function to get dishes by restaurant
-export const getDishesData = (restaurant: 'sushiro' | 'teenoi'): DishData[] => {
-    switch (restaurant) {
-        case 'sushiro':
-            return sushiroDishes;
-        case 'teenoi':
-            return tenoiDishes;
-        default:
-            return [];
-    }
-};
