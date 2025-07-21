@@ -98,13 +98,14 @@ export function CardDish({
                 </p>
             </div>
 
-            {isButton && <div className="w-full flex flex-row gap-2" onClick={(e) => e.stopPropagation()}>
+            {isButton && <div className="w-full flex flex-row gap-2 mt-5" onClick={(e) => e.stopPropagation()}>
                 <Button
                     type="primary"
                     size="sm"
                     leftIcon="check_indeterminate_small"
                     onClick={handleDecrease}
                     onLongPress={handleRemoveAll}
+                    className="w-[54px]"
                 />
 
                 <input
@@ -112,7 +113,7 @@ export function CardDish({
                     inputMode="numeric"
                     value={inputValue}
                     onChange={handleInputChange}
-                    className="w-[54px] px-3 py-2 h-[32px] text-center border border-[#E5E7EB] rounded-lg bg-white text-lg font-medium text-[var(--color-black-tertiary)] focus:outline-none focus:border-[#D1D5DC]"
+                    className="w-[58px] px-2 py-2 h-[32px] text-center border border-[#E5E7EB] rounded-lg bg-white text-lg font-medium text-[var(--color-black-tertiary)] focus:outline-none focus:border-[#D1D5DC]"
                     placeholder="0"
                 />
             </div>}
