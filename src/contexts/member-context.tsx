@@ -12,13 +12,16 @@ interface IPathMembers {
     [path: string]: {
         members: IMember[];
         selectedMember: string | null;
+        selectedMemberName: string | null;
     };
 }
 
 interface IMemberContext {
     members: IMember[];
     selectedMember: string | null;
+    selectedMemberName: string | null;
     addMember: (name: string) => void;
+    changeMemberName: (name: string) => void;
     selectMember: (memberId: string) => void;
     clearMembers: () => void;
     removeMember: (memberId: string) => void;
@@ -48,7 +51,7 @@ export function MemberProvider({ children }: MemberProviderProps) {
         const names = name.split(',').map(n => n.trim()).filter(n => n.length > 0);
 
         setPathMembers(prev => {
-            const current = prev[currentPath] || { members: [], selectedMember: null };
+            const current = prev[currentPath] || { members: [], selectedMember: null, selectedMemberName: null };
             
             const newMembers = names.map((memberName, index) => ({
                 id: Date.now().toString() + index.toString(),
@@ -59,12 +62,39 @@ export function MemberProvider({ children }: MemberProviderProps) {
             
             const selectedMember = current.selectedMember || 
                 (updatedMembers.length > 0 ? updatedMembers[0].id : null);
-            
+
+            const selectedMemberName = current.selectedMemberName || (updatedMembers.length > 0 ? updatedMembers[0].name : null);
+
             return {
                 ...prev,
                 [currentPath]: {
                     members: updatedMembers,
-                    selectedMember
+                    selectedMember,
+                    selectedMemberName
+                    
+                }
+            };
+        });
+    };
+
+    const changeMemberName = (name: string) => {
+        if (!currentData.selectedMember) return;
+
+        setPathMembers(prev => {
+            const current = prev[currentPath] || { members: [], selectedMember: null, selectedMemberName: null };
+            const updatedMembers = current.members.map(member => {
+                if (member.id === currentData.selectedMember) {
+                    return { ...member, name };
+                }
+                return member;
+            });
+
+            return {
+                ...prev,
+                [currentPath]: {
+                    members: updatedMembers,
+                    selectedMember: currentData.selectedMember,
+                    selectedMemberName: name
                 }
             };
         });
@@ -72,12 +102,15 @@ export function MemberProvider({ children }: MemberProviderProps) {
 
     const selectMember = (memberId: string) => {
         if (currentData.selectedMember === memberId) return;
+
+        const member = currentData.members.find(m => m.id === memberId);
         
         setPathMembers(prev => ({
             ...prev,
             [currentPath]: {
                 ...currentData,
-                selectedMember: memberId
+                selectedMember: memberId,
+                selectedMemberName: member?.name || null
             }
         }));
     };
@@ -87,7 +120,8 @@ export function MemberProvider({ children }: MemberProviderProps) {
             ...prev,
             [currentPath]: {
                 members: [],
-                selectedMember: null
+                selectedMember: null,
+                selectedMemberName: null
             }
         }));
     };
@@ -98,18 +132,23 @@ export function MemberProvider({ children }: MemberProviderProps) {
 
     const removeMember = (memberId: string) => {
         setPathMembers(prev => {
-            const current = prev[currentPath] || { members: [], selectedMember: null };
+            const current = prev[currentPath] || { members: [], selectedMember: null, selectedMemberName: null };
             const updatedMembers = current.members.filter(member => member.id !== memberId);
             
             const selectedMember = current.selectedMember === memberId
                 ? (updatedMembers.length > 0 ? updatedMembers[0].id : null)
                 : current.selectedMember;
-            
+
+            const selectedMemberName = current.selectedMemberName === memberId
+                ? (updatedMembers.length > 0 ? updatedMembers[0].name : null)
+                : current.selectedMemberName;
+
             return {
                 ...prev,
                 [currentPath]: {
                     members: updatedMembers,
-                    selectedMember
+                    selectedMember,
+                    selectedMemberName
                 }
             };
         });
@@ -119,11 +158,13 @@ export function MemberProvider({ children }: MemberProviderProps) {
         <MemberContext.Provider value={{
             members: currentData.members,
             selectedMember: currentData.selectedMember,
+            selectedMemberName: currentData.selectedMemberName,
             addMember,
+            changeMemberName,
             selectMember,
             clearMembers,
             removeMember,
-            clearAllMembers
+            clearAllMembers,
         }}>
             {children}
         </MemberContext.Provider>

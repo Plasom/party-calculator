@@ -7,22 +7,24 @@ import { AddDishBottomSheet } from "@/components/ui/bottom-sheet/add-dish-bottom
 import { MemberBadge } from "@/components/ui/member-badge";
 import { CardList } from "@/components/ui/card/card-list";
 import { CardDish } from "@/components/ui/card/dish";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMember, IMember } from "@/contexts/member-context";
 import { useOrder } from "@/contexts/order-context";
 import { useDishes } from "@/contexts/dishes-context";
 import { MenuBottomSheet, MenuItem } from "@/components/ui/bottom-sheet/menu-bottom-sheet";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function SushiroPage() {
-    const { members, selectedMember, addMember, selectMember } = useMember();
+    const { members, selectedMember, selectedMemberName, addMember, changeMemberName, selectMember } = useMember();
     const { memberOrders, updateMemberOrder, getMemberOrderPrice } = useOrder();
     const { dishes, addDish } = useDishes();
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
     const [isAddDishBottomSheetOpen, setIsAddDishBottomSheetOpen] = useState(false);
     const [isMenuBottomSheetOpen, setIsMenuBottomSheetOpen] = useState(false);
     const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
-    const [selectedMemberName, setSelectedMemberName] = useState<string | null>(null);
+    const [selectedMemberNameTemp, setSelectedMemberNameTemp] = useState<string | null>(null);
+    const [isEditMode, setIsEditMode] = useState(false);
 
     const handleDishAdd = (data: { id: string; count: number }) => {
         if (!selectedMember) return;
@@ -69,8 +71,23 @@ export default function SushiroPage() {
         }
     ]
 
+    const handleChangeMemberName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (selectedMemberName !== e.target.value) {
+            setIsEditMode(true)
+        } else {
+            setIsEditMode(false);
+        }
+
+        setSelectedMemberNameTemp(e.target.value);
+    }
+
+    const handleSubmitChangeMemberName = () => {
+        changeMemberName(selectedMemberNameTemp!);
+        setIsEditMode(false);
+    }
+
     useEffect(() => {
-        setSelectedMemberName(selectedMember ? members.find(member => member.id === selectedMember)?.name || null : null);
+        setSelectedMemberNameTemp(selectedMember ? members.find(member => member.id === selectedMember)?.name || null : null);
     }, [selectedMember, members]);
 
     return (
@@ -88,16 +105,31 @@ export default function SushiroPage() {
                         <Input
                             id="memberName"
                             type="text"
-                            value={selectedMemberName || ""}
+                            value={selectedMemberNameTemp || ""}
                             placeholder="e.g. John, Bob, Alice"
                             customSize="xl"
-                            onChange={(e) => setSelectedMemberName(e.target.value)}
+                            onChange={(e) => handleChangeMemberName(e)}
                             autoFocus
                             maxLength={50}
                         />
-                        <span className="material-symbols-rounded cursor-pointer" style={{ fontSize: 32, color: 'var(--color-rose-700)' }}>
-                            delete
-                        </span>
+                        {isEditMode ?
+                            <div className="flex flex-row gap-2">
+                                <div className="flex p-1 justify-center items-center bg-black rounded-xl cursor-pointer" onClick={handleSubmitChangeMemberName}>
+                                    <span className="material-symbols-rounded" style={{ fontSize: 24, color: 'white' }}>
+                                        check
+                                    </span>
+                                </div>
+                                <Button
+                                    type="ghost"
+                                    size="xs"
+                                    label="cancel"
+                                    onClick={() => console.log('hello')}
+                                />
+                            </div>
+                            :
+                            <span className="material-symbols-rounded cursor-pointer" style={{ fontSize: 32, color: 'var(--color-rose-700)' }}>
+                                delete
+                            </span>}
                     </div>}
                 <div className="flex items-center flex-wrap w-full gap-1.5">
                     <MemberBadge
