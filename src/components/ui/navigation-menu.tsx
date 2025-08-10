@@ -28,7 +28,7 @@ export function NavigationMenu() {
             onClick={() => router.push('/')}
           />
 
-          <span className="material-symbols-rounded cursor-pointer" onClick={() => setOpen(!open)}>
+          <span className="material-symbols-rounded material-setting-fill cursor-pointer" onClick={() => setOpen(!open)}>
             lunch_dining
           </span>
         </div>

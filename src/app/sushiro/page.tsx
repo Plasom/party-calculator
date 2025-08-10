@@ -7,11 +7,12 @@ import { AddDishBottomSheet } from "@/components/ui/bottom-sheet/add-dish-bottom
 import { MemberBadge } from "@/components/ui/member-badge";
 import { CardList } from "@/components/ui/card/card-list";
 import { CardDish } from "@/components/ui/card/dish";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMember, IMember } from "@/contexts/member-context";
 import { useOrder } from "@/contexts/order-context";
 import { useDishes } from "@/contexts/dishes-context";
 import { MenuBottomSheet, MenuItem } from "@/components/ui/bottom-sheet/menu-bottom-sheet";
+import { Input } from "@/components/ui/input";
 
 export default function SushiroPage() {
     const { members, selectedMember, addMember, selectMember } = useMember();
@@ -21,16 +22,17 @@ export default function SushiroPage() {
     const [isAddDishBottomSheetOpen, setIsAddDishBottomSheetOpen] = useState(false);
     const [isMenuBottomSheetOpen, setIsMenuBottomSheetOpen] = useState(false);
     const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
+    const [selectedMemberName, setSelectedMemberName] = useState<string | null>(null);
 
     const handleDishAdd = (data: { id: string; count: number }) => {
-        if (!selectedMember) return; // ถ้าไม่มีสมาชิกที่เลือกให้หยุด
+        if (!selectedMember) return;
 
         updateMemberOrder(selectedMember, { id: data.id, count: data.count });
     };
 
     const handleDeleteDish = () => {
         if (!selectedMember || !selectedDishId) return;
-        
+
         updateMemberOrder(selectedMember, { id: selectedDishId, count: 0 });
         setSelectedDishId(null);
     };
@@ -45,7 +47,6 @@ export default function SushiroPage() {
     };
 
     const handleAddCustomDish = (name: string, price: number) => {
-        // สร้างจานใหม่
         const newDish = {
             id: `custom-${Date.now()}`,
             url: "/images/sushiro_asset/dishes/custom/default.svg",
@@ -68,9 +69,36 @@ export default function SushiroPage() {
         }
     ]
 
+    useEffect(() => {
+        setSelectedMemberName(selectedMember ? members.find(member => member.id === selectedMember)?.name || null : null);
+    }, [selectedMember, members]);
+
     return (
         <PageWithNav>
-            <Section header="Who's eating?" description="Add members to track their dishes." className="pt-4">
+            <Section
+                header="Who's eating?"
+                description="Add members to track their dishes."
+                className="pt-4"
+                showHeader={members.length === 0}
+                showDescription={members.length === 0}
+                ignoreClassName={members.length > 0}
+            >
+                {members.length > 0 &&
+                    <div className="flex flex-row mb-4 gap-2 items-center">
+                        <Input
+                            id="memberName"
+                            type="text"
+                            value={selectedMemberName || ""}
+                            placeholder="e.g. John, Bob, Alice"
+                            customSize="xl"
+                            onChange={(e) => setSelectedMemberName(e.target.value)}
+                            autoFocus
+                            maxLength={50}
+                        />
+                        <span className="material-symbols-rounded cursor-pointer" style={{ fontSize: 32, color: 'var(--color-rose-700)' }}>
+                            delete
+                        </span>
+                    </div>}
                 <div className="flex items-center flex-wrap w-full gap-1.5">
                     <MemberBadge
                         variant="outline"
