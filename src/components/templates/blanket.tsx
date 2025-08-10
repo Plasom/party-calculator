@@ -1,14 +1,16 @@
 export function Blanket({
     children,
     itemAlignment = 'center',
-    onClose
+    onClose,
+    disableClose = false
 }: {
     children: React.ReactElement | React.ReactElement[];
     itemAlignment?: 'start' | 'center' | 'end';
     onClose?: () => void;
+    disableClose?: boolean;
 }) {
     const handleBackdropClick = (e: React.MouseEvent) => {
-        if (e.target === e.currentTarget) {
+        if (e.target === e.currentTarget && !disableClose) {
             onClose?.();
         }
     };

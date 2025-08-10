@@ -14,6 +14,8 @@ import { useDishes } from "@/contexts/dishes-context";
 import { MenuBottomSheet, MenuItem } from "@/components/ui/bottom-sheet/menu-bottom-sheet";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { IconButton } from "@/components/ui/icon-button";
+import { AlertModal } from "@/components/ui/modal/alert-modal";
 
 export default function SushiroPage() {
     const { members, selectedMember, selectedMemberName, addMember, changeMemberName, selectMember } = useMember();
@@ -25,6 +27,8 @@ export default function SushiroPage() {
     const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
     const [selectedMemberNameTemp, setSelectedMemberNameTemp] = useState<string | null>(null);
     const [isEditMode, setIsEditMode] = useState(false);
+    const [isUnsavedModalOpen, setIsUnsavedModalOpen] = useState(false);
+    const inputChangeNameRef = React.useRef<HTMLInputElement | null>(null);
 
     const handleDishAdd = (data: { id: string; count: number }) => {
         if (!selectedMember) return;
@@ -86,6 +90,28 @@ export default function SushiroPage() {
         setIsEditMode(false);
     }
 
+    const handleCancelChangeMemberName = () => {
+        setSelectedMemberNameTemp(selectedMemberName);
+        setIsEditMode(false);
+    }
+
+    const handleLeaveInput = () => {
+        if (isEditMode) {
+            setIsUnsavedModalOpen(true);
+        }
+    }
+
+    const unsavedChangeActionModal = () => {
+        setSelectedMemberNameTemp(selectedMemberName);
+        setIsUnsavedModalOpen(false);
+        setIsEditMode(false);
+    }
+
+    const unsavedChangeCancelModal = () => {
+        setIsUnsavedModalOpen(false);
+        inputChangeNameRef.current?.focus();
+    }
+
     useEffect(() => {
         setSelectedMemberNameTemp(selectedMember ? members.find(member => member.id === selectedMember)?.name || null : null);
     }, [selectedMember, members]);
@@ -99,6 +125,7 @@ export default function SushiroPage() {
                 showHeader={members.length === 0}
                 showDescription={members.length === 0}
                 ignoreClassName={members.length > 0}
+
             >
                 {members.length > 0 &&
                     <div className="flex flex-row mb-4 gap-2 items-center">
@@ -106,30 +133,36 @@ export default function SushiroPage() {
                             id="memberName"
                             type="text"
                             value={selectedMemberNameTemp || ""}
-                            placeholder="e.g. John, Bob, Alice"
                             customSize="xl"
                             onChange={(e) => handleChangeMemberName(e)}
                             autoFocus
                             maxLength={50}
+                            className="truncate"
+                            onBlur={handleLeaveInput}
+                            ref={inputChangeNameRef}
                         />
-                        {isEditMode ?
-                            <div className="flex flex-row gap-2">
-                                <div className="flex p-1 justify-center items-center bg-black rounded-xl cursor-pointer" onClick={handleSubmitChangeMemberName}>
-                                    <span className="material-symbols-rounded" style={{ fontSize: 24, color: 'white' }}>
-                                        check
-                                    </span>
-                                </div>
-                                <Button
-                                    type="ghost"
-                                    size="xs"
-                                    label="cancel"
-                                    onClick={() => console.log('hello')}
-                                />
-                            </div>
-                            :
-                            <span className="material-symbols-rounded cursor-pointer" style={{ fontSize: 32, color: 'var(--color-rose-700)' }}>
-                                delete
-                            </span>}
+                        <div className="flex flex-row gap-2" onMouseDown={(e) => e.preventDefault()}>
+                            {isEditMode ?
+                                <>
+                                    <IconButton
+                                        icon="check"
+                                        onClick={handleSubmitChangeMemberName}
+                                        color="white"
+                                        bgColor="black"
+                                        disable={selectedMemberNameTemp === ""}
+                                    />
+                                    <Button
+                                        type="ghost"
+                                        size="xs"
+                                        label="cancel"
+                                        onClick={handleCancelChangeMemberName}
+                                    />
+                                </>
+                                :
+                                <span className="material-symbols-rounded cursor-pointer" style={{ fontSize: 32, color: 'var(--color-rose-700)' }}>
+                                    delete
+                                </span>}
+                        </div>
                     </div>}
                 <div className="flex items-center flex-wrap w-full gap-1.5">
                     <MemberBadge
@@ -211,6 +244,16 @@ export default function SushiroPage() {
                 isOpen={isMenuBottomSheetOpen}
                 onClose={() => setIsMenuBottomSheetOpen(false)}
                 menuItems={menuItems}
+            />
+
+            <AlertModal
+                id="unsaved-changes"
+                isOpen={isUnsavedModalOpen}
+                onAction={unsavedChangeActionModal}
+                onCancel={unsavedChangeCancelModal}
+                title="Unsaved changes"
+                message="Changes you made may not be saved. Are you sure you want to leave?"
+                actionText="Leave"
             />
         </PageWithNav>
     )
