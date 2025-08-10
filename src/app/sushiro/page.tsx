@@ -15,31 +15,39 @@ import { MenuBottomSheet, MenuItem } from "@/components/ui/bottom-sheet/menu-bot
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
-import { AlertModal } from "@/components/ui/modal/alert-modal";
+import { AlertModal, DeleteModal } from "@/components/ui/modal/alert-modal";
 
 export default function SushiroPage() {
-    const { members, selectedMember, selectedMemberName, addMember, changeMemberName, selectMember } = useMember();
-    const { memberOrders, updateMemberOrder, getMemberOrderPrice } = useOrder();
+    // Hooks
+    const { members, selectedMember, addMember, changeMemberName, selectMember, removeMember } = useMember();
+    const { memberOrders, updateMemberOrder, getMemberOrderPrice, clearMemberOrders } = useOrder();
     const { dishes, addDish } = useDishes();
+
+    // State
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
     const [isAddDishBottomSheetOpen, setIsAddDishBottomSheetOpen] = useState(false);
     const [isMenuBottomSheetOpen, setIsMenuBottomSheetOpen] = useState(false);
     const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
     const [selectedMemberNameTemp, setSelectedMemberNameTemp] = useState<string | null>(null);
     const [isEditMode, setIsEditMode] = useState(false);
+
+    // Modal State
     const [isUnsavedModalOpen, setIsUnsavedModalOpen] = useState(false);
+    const [isDeleteMemberModalOpen, setIsDeleteMemberModalOpen] = useState(false);
+
+    // Refs
     const inputChangeNameRef = React.useRef<HTMLInputElement | null>(null);
 
     const handleDishAdd = (data: { id: string; count: number }) => {
         if (!selectedMember) return;
 
-        updateMemberOrder(selectedMember, { id: data.id, count: data.count });
+        updateMemberOrder(selectedMember.id, { id: data.id, count: data.count });
     };
 
     const handleDeleteDish = () => {
         if (!selectedMember || !selectedDishId) return;
 
-        updateMemberOrder(selectedMember, { id: selectedDishId, count: 0 });
+        updateMemberOrder(selectedMember.id, { id: selectedDishId, count: 0 });
         setSelectedDishId(null);
     };
 
@@ -76,7 +84,7 @@ export default function SushiroPage() {
     ]
 
     const handleChangeMemberName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (selectedMemberName !== e.target.value) {
+        if (selectedMember?.name !== e.target.value) {
             setIsEditMode(true)
         } else {
             setIsEditMode(false);
@@ -91,7 +99,7 @@ export default function SushiroPage() {
     }
 
     const handleCancelChangeMemberName = () => {
-        setSelectedMemberNameTemp(selectedMemberName);
+        setSelectedMemberNameTemp(selectedMember!.name);
         setIsEditMode(false);
     }
 
@@ -102,7 +110,7 @@ export default function SushiroPage() {
     }
 
     const unsavedChangeActionModal = () => {
-        setSelectedMemberNameTemp(selectedMemberName);
+        setSelectedMemberNameTemp(selectedMember!.name);
         setIsUnsavedModalOpen(false);
         setIsEditMode(false);
     }
@@ -112,8 +120,16 @@ export default function SushiroPage() {
         inputChangeNameRef.current?.focus();
     }
 
+    const handleRemoveMember = () => {
+        if (!selectedMember) return;
+
+        removeMember(selectedMember.id);
+        clearMemberOrders(selectedMember.id);
+        setIsDeleteMemberModalOpen(false);
+    }
+
     useEffect(() => {
-        setSelectedMemberNameTemp(selectedMember ? members.find(member => member.id === selectedMember)?.name || null : null);
+        setSelectedMemberNameTemp(selectedMember?.name || null);
     }, [selectedMember, members]);
 
     return (
@@ -147,7 +163,7 @@ export default function SushiroPage() {
                                     <IconButton
                                         icon="check"
                                         onClick={handleSubmitChangeMemberName}
-                                        color="white"
+                                        customColor="white"
                                         bgColor="black"
                                         disable={selectedMemberNameTemp === ""}
                                     />
@@ -159,9 +175,13 @@ export default function SushiroPage() {
                                     />
                                 </>
                                 :
-                                <span className="material-symbols-rounded cursor-pointer" style={{ fontSize: 32, color: 'var(--color-rose-700)' }}>
-                                    delete
-                                </span>}
+                                <IconButton
+                                    icon="delete"
+                                    onClick={() => setIsDeleteMemberModalOpen(true)}
+                                    customSize={32}
+                                    customColor="var(--color-rose-700)"
+                                    fill
+                                />}
                         </div>
                     </div>}
                 <div className="flex items-center flex-wrap w-full gap-1.5">
@@ -174,7 +194,7 @@ export default function SushiroPage() {
                     />
                     {members && members.map((member: IMember) => {
                         const memberPrice = getMemberOrderPrice(member.id, dishes);
-                        const isSelected = selectedMember === member.id;
+                        const isSelected = selectedMember?.id === member.id;
 
                         return (
                             <MemberBadge
@@ -198,8 +218,8 @@ export default function SushiroPage() {
             >
                 <CardList>
                     {dishes.map((dish) => {
-                        const currentMemberOrder = selectedMember && memberOrders[selectedMember]
-                            ? memberOrders[selectedMember].find(item => item.id === dish.id)
+                        const currentMemberOrder = selectedMember && memberOrders[selectedMember.id]
+                            ? memberOrders[selectedMember.id].find(item => item.id === dish.id)
                             : null;
                         const currentQuantity = currentMemberOrder ? currentMemberOrder.count : 0;
 
@@ -254,6 +274,15 @@ export default function SushiroPage() {
                 title="Unsaved changes"
                 message="Changes you made may not be saved. Are you sure you want to leave?"
                 actionText="Leave"
+            />
+
+            <DeleteModal
+                id="delete-member"
+                isOpen={isDeleteMemberModalOpen}
+                onDelete={handleRemoveMember}
+                onCancel={() => setIsDeleteMemberModalOpen(false)}
+                title="Delete member?"
+                message="This will permanently remove the member and their plates. Delete?"
             />
         </PageWithNav>
     )

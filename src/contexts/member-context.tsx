@@ -11,15 +11,13 @@ export interface IMember {
 interface IPathMembers {
     [path: string]: {
         members: IMember[];
-        selectedMember: string | null;
-        selectedMemberName: string | null;
+        selectedMember: IMember | null;
     };
 }
 
 interface IMemberContext {
     members: IMember[];
-    selectedMember: string | null;
-    selectedMemberName: string | null;
+    selectedMember: IMember | null;
     addMember: (name: string) => void;
     changeMemberName: (name: string) => void;
     selectMember: (memberId: string) => void;
@@ -61,17 +59,13 @@ export function MemberProvider({ children }: MemberProviderProps) {
             const updatedMembers = [...current.members, ...newMembers];
             
             const selectedMember = current.selectedMember || 
-                (updatedMembers.length > 0 ? updatedMembers[0].id : null);
-
-            const selectedMemberName = current.selectedMemberName || (updatedMembers.length > 0 ? updatedMembers[0].name : null);
+                (updatedMembers.length > 0 ? updatedMembers[0] : null);
 
             return {
                 ...prev,
                 [currentPath]: {
                     members: updatedMembers,
                     selectedMember,
-                    selectedMemberName
-                    
                 }
             };
         });
@@ -81,9 +75,9 @@ export function MemberProvider({ children }: MemberProviderProps) {
         if (!currentData.selectedMember) return;
 
         setPathMembers(prev => {
-            const current = prev[currentPath] || { members: [], selectedMember: null, selectedMemberName: null };
+            const current = prev[currentPath] || { members: [], selectedMember: null };
             const updatedMembers = current.members.map(member => {
-                if (member.id === currentData.selectedMember) {
+                if (member.id === currentData.selectedMember?.id) {
                     return { ...member, name };
                 }
                 return member;
@@ -101,7 +95,7 @@ export function MemberProvider({ children }: MemberProviderProps) {
     };
 
     const selectMember = (memberId: string) => {
-        if (currentData.selectedMember === memberId) return;
+        if (currentData.selectedMember?.id === memberId) return;
 
         const member = currentData.members.find(m => m.id === memberId);
         
@@ -109,8 +103,7 @@ export function MemberProvider({ children }: MemberProviderProps) {
             ...prev,
             [currentPath]: {
                 ...currentData,
-                selectedMember: memberId,
-                selectedMemberName: member?.name || null
+                selectedMember: member || null,
             }
         }));
     };
@@ -135,20 +128,15 @@ export function MemberProvider({ children }: MemberProviderProps) {
             const current = prev[currentPath] || { members: [], selectedMember: null, selectedMemberName: null };
             const updatedMembers = current.members.filter(member => member.id !== memberId);
             
-            const selectedMember = current.selectedMember === memberId
-                ? (updatedMembers.length > 0 ? updatedMembers[0].id : null)
+            const selectedMember = current.selectedMember?.id === memberId
+                ? (updatedMembers.length > 0 ? updatedMembers[0] : null)
                 : current.selectedMember;
-
-            const selectedMemberName = current.selectedMemberName === memberId
-                ? (updatedMembers.length > 0 ? updatedMembers[0].name : null)
-                : current.selectedMemberName;
 
             return {
                 ...prev,
                 [currentPath]: {
                     members: updatedMembers,
                     selectedMember,
-                    selectedMemberName
                 }
             };
         });
@@ -158,7 +146,6 @@ export function MemberProvider({ children }: MemberProviderProps) {
         <MemberContext.Provider value={{
             members: currentData.members,
             selectedMember: currentData.selectedMember,
-            selectedMemberName: currentData.selectedMemberName,
             addMember,
             changeMemberName,
             selectMember,
