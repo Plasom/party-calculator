@@ -7,6 +7,7 @@ export default function ConfirmModalPage() {
     return (
         <PageWithNav>
             <DeleteModal
+                id="confirm-delete"
                 isOpen={true}
                 onDelete={() => console.log("Confirmed")}
                 onCancel={() => console.log("Cancelled")}

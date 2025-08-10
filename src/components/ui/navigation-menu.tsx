@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react"
 import 'material-symbols';
+import { IconButton } from "./icon-button";
 
 export function NavigationMenu() {
   const router = useRouter();
@@ -27,10 +28,12 @@ export function NavigationMenu() {
             className="cursor-pointer"
             onClick={() => router.push('/')}
           />
-
-          <span className="material-symbols-rounded cursor-pointer" onClick={() => setOpen(!open)}>
-            lunch_dining
-          </span>
+          <IconButton
+            icon="lunch_dining"
+            onClick={() => setOpen(!open)}
+            customColor="var(--color-neutral-800)"
+            fill
+          />
         </div>
         {open && (
           <div className="flex flex-col px-4 py-2 backdrop-saturate-[180%] backdrop-blur-[20px] bg-[var(--components-nav-bg)]">
