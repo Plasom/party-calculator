@@ -7,7 +7,8 @@ import { BottomSheet } from "./bottom-sheet";
 export interface MenuItem {
     label: string;
     onClick: () => void;
-    textColor?: 'black' | 'red';
+    textColor?: string;
+    isShow?: boolean;
 }
 
 interface MenuBottomSheetProps {
@@ -16,19 +17,22 @@ interface MenuBottomSheetProps {
     menuItems?: MenuItem[];
 }
 
-function MenuItemButton({ label, onClick, textColor='black'}: MenuItem) {
-    const textColorClass = {
-        black: 'text-black',
-        red: 'text-[var(--components-button-ghost-desctructive-text)]'
-    };
-
+function MenuItemButton({ label, onClick, textColor }: MenuItem) {
     return (
-        <button
-            onClick={onClick}
-            className={`w-full rounded-xl py-[14px] ${textColorClass[textColor]}`}
-        >
-            <span className={`${textColorClass[textColor]} text-sm font-medium`}>{label}</span>
-        </button>
+        <>
+            <Button
+                type="ghost"
+                buttonSize="md"
+                label={label}
+                onClick={() => {
+                    onClick();
+                }}
+                fontSize='font-medium'
+                textColor={textColor}
+                textSize='text-sm'
+                className="w-full"
+            />
+        </>
     );
 }
 
@@ -49,16 +53,17 @@ export function MenuBottomSheet({
             <div className="bg-[var(--components-button-quartiary-state-default)] rounded-xl w-full ">
                 {menuItems?.map((item, index) => (
                     <div key={index}>
-                        <MenuItemButton
+                        {item.isShow && <MenuItemButton
                             key={index}
                             label={item.label}
                             onClick={() => {
                                 item.onClick();
                                 onClose();
                             }}
+                            isShow={item.isShow}
                             textColor={item.textColor}
-                        />
-                        {index < menuItems.length - 1 && (
+                        />}
+                        {index < menuItems.filter(item => item.isShow).length - 1 && (
                             <div className="h-px bg-gray-200" />
                         )}
                     </div>

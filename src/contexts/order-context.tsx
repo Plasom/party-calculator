@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { DishData } from '@/data/dishes';
 
 export interface OrderItem {
     id: string;
@@ -26,7 +27,7 @@ interface IOrderContext {
     getAllMembersWithOrders: () => Array<{ memberId: string; orders: OrderItem[]; total: number }>;
     removeAllMemberOrderByOrderId: (dishId: string) => void;
     getOrderDishesTotal: () => number;
-    getOrderPriceTotal: () => number;
+    getOrderPriceTotal: (dishes: DishData[]) => number;
 }
 
 const OrderContext = createContext<IOrderContext | undefined>(undefined);
@@ -152,9 +153,13 @@ export function OrderProvider({ children }: OrderProviderProps) {
         }, 0);
     };
 
-    const getOrderPriceTotal = (): number => {
-        console.log(memberOrders)
-        return 1
+    const getOrderPriceTotal = (dishes: DishData[]): number => {
+        const dishesData = Object.values(memberOrders).flatMap(orders => orders);
+        return dishesData.reduce((sum, item) => {
+            const dish = dishes.find(d => d.id === item.id);
+            const price = dish?.price || 0;
+            return sum + (price * item.count);
+        }, 0);
     };
 
 

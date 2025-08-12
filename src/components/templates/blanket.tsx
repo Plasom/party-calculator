@@ -32,13 +32,15 @@ export function Blanket({
             onClose?.();
         }
     };
+    const alignmentClasses = {
+        start: 'items-start',
+        center: 'items-center', 
+        end: 'items-end'
+    };
+
     return (
-        // <div className={`fixed inset-0 z-99 ${disableBackground ? 'bg-transparent' : 'bg-black/50'} flex items-${itemAlignment} justify-center`}
-        // onClick={handleBackdropClick}>
-        //     {children}
-        // </div>
         <div
-            className={`fixed inset-0 z-99 flex items-${itemAlignment} justify-center ${disableBackground
+            className={`fixed inset-0 z-99 flex ${alignmentClasses[itemAlignment]} justify-center ${disableBackground
                 ? 'bg-transparent pointer-events-none'
                 : 'bg-black/50 pointer-events-auto'
                 }`}

@@ -90,9 +90,15 @@ export default function SushiroPage() {
 
     const menuItems: MenuItem[] = [
         {
+            label: "Split plate",
+            onClick: () => console.log('Split plate clicked'),
+            isShow: true
+        },
+        {
             label: "Delete plate",
             onClick: () => handleDeleteDish(),
-            textColor: 'red'
+            textColor: 'text-[var(--components-button-ghost-desctructive-text)]',
+            isShow: !!selectedDishId && dishes.some(dish => dish.id === selectedDishId && !dish.isDefault)
         }
     ]
 

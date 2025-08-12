@@ -6,6 +6,7 @@ import { Divider } from '../divider';
 import { BottomSheet } from './bottom-sheet';
 import { useWindowScroll } from '@/hooks/useWindowScroll';
 import { useEffect, useState } from 'react';
+import { useDishes } from '@/contexts/dishes-context';
 
 interface CheckoutBottomSheetProps extends React.RefAttributes<HTMLDivElement> {
     isOpen?: boolean;
@@ -16,7 +17,9 @@ export function CheckoutBottomSheet({
     isOpen = true,
     ...props
 }: CheckoutBottomSheetProps) {
-    const { getOrderDishesTotal } = useOrder();
+    const { getOrderDishesTotal, getOrderPriceTotal } = useOrder();
+    const { dishes } = useDishes();
+
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const scrollDirection = useWindowScroll();
 
@@ -44,7 +47,7 @@ export function CheckoutBottomSheet({
                         </div>
                         <div className="flex flex-row justify-between">
                             <span>SubTotal</span>
-                            <span>80 ฿</span>
+                            <span>{getOrderPriceTotal(dishes)} ฿</span>
                         </div>
                     </div>}
 
