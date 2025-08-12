@@ -12,9 +12,9 @@ interface ButtonProps {
     longPressDuration?: number;
     disabled?: boolean;
     type?: 'primary' | 'secondary' | 'ghost' | 'quartiary';
-    size?: 'xs' | 'sm' | 'md';
+    buttonSize?: 'xs' | 'sm' | 'md';
     fontSize?: 'font-semibold' | 'font-normal' | 'font-medium' | 'font-bold';
-    textSize?: 'text-sm' | 'text-md' | 'text-lg' | 'text-xl';
+    textSize?: 'text-xs' | 'text-sm' | 'text-md' | 'text-lg' | 'text-xl';
 }
 
 export function Button({
@@ -27,9 +27,9 @@ export function Button({
     longPressDuration,
     disabled = false,
     type = 'primary',
-    size = 'sm',
+    buttonSize = 'sm',
     fontSize = 'font-normal',
-    textSize = 'text-xl'
+    textSize = 'text-xs'
 }: ButtonProps) {
     const longPressHandlers = useLongPress({
         onLongPress,
@@ -83,7 +83,7 @@ export function Button({
 
     return (
         <button
-            className={`flex ${sizeButton[size]} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
+            className={`flex ${sizeButton[buttonSize]} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
                     ? `${disabledClasses.default} ${disabledClasses.textColor} ${disabledClasses.cursor}`
                     : `${classMap[type].default} ${classMap[type].hovered} ${classMap[type].pressed} ${classMap[type].textColor} cursor-pointer`
                 }`}

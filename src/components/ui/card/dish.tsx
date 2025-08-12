@@ -101,7 +101,7 @@ export function CardDish({
             {isButton && <div className="w-full flex flex-row gap-2 mt-5" onClick={(e) => e.stopPropagation()}>
                 <Button
                     type="primary"
-                    size="sm"
+                    buttonSize="sm"
                     leftIcon="check_indeterminate_small"
                     onClick={handleDecrease}
                     onLongPress={handleRemoveAll}

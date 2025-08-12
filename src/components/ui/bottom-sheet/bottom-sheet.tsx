@@ -34,11 +34,10 @@ export function BottomSheet({
         cancel: (
             <Button
                 type="secondary"
-                size="sm"
                 label="Cancel"
                 onClick={onClose!}
-                className="text-gray-500 hover:text-gray-700"
-                fontSize="font-semibold"
+                fontSize="font-medium"
+                textSize="text-sm"
             />
         ),
         hidden: null

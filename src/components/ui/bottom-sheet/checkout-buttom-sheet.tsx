@@ -52,7 +52,7 @@ export function CheckoutBottomSheet({
 
                 <Button
                     type="primary"
-                    size="md"
+                    buttonSize="md"
                     label="Checkout"
                     fontSize='font-medium'
                     textSize='text-xl'

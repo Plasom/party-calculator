@@ -68,7 +68,7 @@ export function MenuBottomSheet({
             <div className="flex mt-3">
                 <Button
                     type="quartiary"
-                    size="md"
+                    buttonSize="md"
                     label="Cancel"
                     onClick={() => {
                         onClose();
