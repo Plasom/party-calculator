@@ -58,6 +58,8 @@ export function AddMemberBottomSheet({
                         type="primary"
                         size="md"
                         label="Add"
+                        fontSize='font-medium'
+                        textSize='text-xl'
                         onClick={handleSubmit}
                         disabled={!name.trim()}
                         className="flex-1"

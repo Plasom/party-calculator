@@ -27,7 +27,7 @@ function MenuItemButton({ label, onClick, textColor='black'}: MenuItem) {
             onClick={onClick}
             className={`w-full rounded-xl py-[14px] ${textColorClass[textColor]}`}
         >
-            <span className={textColorClass[textColor]}>{label}</span>
+            <span className={`${textColorClass[textColor]} text-sm font-medium`}>{label}</span>
         </button>
     );
 }
@@ -73,6 +73,8 @@ export function MenuBottomSheet({
                     onClick={() => {
                         onClose();
                     }}
+                    fontSize='font-medium'
+                    textSize='text-sm'
                     className="flex-1"
                 />
             </div>

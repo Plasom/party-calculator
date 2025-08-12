@@ -49,7 +49,7 @@ export function BottomSheet({
     return (
         <Blanket  onClose={onClose} itemAlignment="end" disableBackground={disableBackground}>
             <div
-                className={`${isTransparent ? 'bg-transparent' : 'bg-zinc-100'} rounded-t-3xl w-full ${maxWidth} px-4 pb-6 pt-3 transform transition-transform ease-out ${isOpen ? 'animate-slide-up' : 'animate-slide-down'}`}
+                className={`${isTransparent ? 'bg-transparent' : 'bg-zinc-100'} rounded-t-3xl w-full ${maxWidth} px-4 pb-6 pt-[6px] transform transition-transform ease-out ${isOpen ? 'animate-slide-up' : 'animate-slide-down'}`}
                 style={{ transitionDuration: 'var(--transition-duration)' }}
                 {...props}
             >

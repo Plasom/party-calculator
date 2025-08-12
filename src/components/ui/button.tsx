@@ -2,6 +2,21 @@
 
 import { useLongPress } from '@/hooks/useLongPress';
 
+interface ButtonProps {
+    className?: string;
+    label?: string;
+    rightIcon?: React.ReactNode;
+    leftIcon?: React.ReactNode;
+    onClick: () => void;
+    onLongPress?: () => void;
+    longPressDuration?: number;
+    disabled?: boolean;
+    type?: 'primary' | 'secondary' | 'ghost' | 'quartiary';
+    size?: 'xs' | 'sm' | 'md';
+    fontSize?: 'font-semibold' | 'font-normal' | 'font-medium' | 'font-bold';
+    textSize?: 'text-sm' | 'text-md' | 'text-lg' | 'text-xl';
+}
+
 export function Button({
     className = '',
     label,
@@ -13,20 +28,9 @@ export function Button({
     disabled = false,
     type = 'primary',
     size = 'sm',
-    fontSize = 'font-normal'
-}: {
-    className?: string;
-    label?: string;
-    rightIcon?: React.ReactNode;
-    leftIcon?: React.ReactNode;
-    onClick: () => void;
-    onLongPress?: () => void;
-    longPressDuration?: number;
-    disabled?: boolean;
-    type?: 'primary' | 'secondary' | 'ghost' | 'quartiary';
-    size?: 'xs' | 'sm' | 'md';
-    fontSize?: 'font-semibold' | 'font-normal' | 'font-bold';
-}) {
+    fontSize = 'font-normal',
+    textSize = 'text-xl'
+}: ButtonProps) {
     const longPressHandlers = useLongPress({
         onLongPress,
         duration: longPressDuration,
@@ -91,7 +95,7 @@ export function Button({
             {leftIcon && <span className="material-symbols-rounded">
                 {leftIcon}
             </span>}
-            {label && <span className={fontSize}>{label}</span>}
+            {label && <span className={`${fontSize} ${textSize}`}>{label}</span>}
             {rightIcon && <span className="material-symbols-rounded">
                 {rightIcon}
             </span>}

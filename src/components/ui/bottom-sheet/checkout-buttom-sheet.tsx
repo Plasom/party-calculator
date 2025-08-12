@@ -35,8 +35,7 @@ export function CheckoutBottomSheet({
             disableBackground
             {...props}
         >
-            <div className={`flex flex-col pt-2 text-sm text-[var(--color-grey-tertiary)]`}>
-                
+            <div className={`flex flex-col text-sm text-[var(--color-grey-tertiary)]`}>
                 {isExpanded &&
                     <div className={`${isExpanded ? 'animate-slide-up' : 'animate-slide-down'}`}>
                         <div className="flex flex-row justify-between">
@@ -55,6 +54,8 @@ export function CheckoutBottomSheet({
                     type="primary"
                     size="md"
                     label="Checkout"
+                    fontSize='font-medium'
+                    textSize='text-xl'
                     onClick={() => console.log('hello world')}
                 />
             </div>
