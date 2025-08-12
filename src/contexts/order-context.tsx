@@ -24,6 +24,9 @@ interface IOrderContext {
     getMemberOrderTotal: (memberId: string) => number;
     getMemberOrderPrice: (memberId: string, dishesData: Array<{id: string; price?: number}>) => number;
     getAllMembersWithOrders: () => Array<{ memberId: string; orders: OrderItem[]; total: number }>;
+    removeAllMemberOrderByOrderId: (dishId: string) => void;
+    getOrderTotal: () => number;
+    getOrderPriceTotal: () => number;
 }
 
 const OrderContext = createContext<IOrderContext | undefined>(undefined);
@@ -127,6 +130,35 @@ export function OrderProvider({ children }: OrderProviderProps) {
         }));
     };
 
+    const removeAllMemberOrderByOrderId = (dishId: string) => {
+        setPathOrders(prev => {
+            const currentPathOrders = prev[currentPath] || {};
+            const updatedOrders = Object.fromEntries(
+                Object.entries(currentPathOrders).map(([memberId, orders]) => [
+                    memberId,
+                    orders.filter(item => item.id !== dishId)
+                ])
+            );
+            return {
+                ...prev,
+                [currentPath]: updatedOrders
+            };
+        });
+    };
+
+    const getOrderTotal = (): number => {
+        return Object.values(memberOrders).reduce((sum, orders) => {
+            return sum + orders.reduce((orderSum, item) => orderSum + item.count, 0);
+        }, 0);
+    };
+
+    const getOrderPriceTotal = (): number => {
+        console.log(memberOrders)
+        return 1
+    };
+
+
+
     return (
         <OrderContext.Provider value={{
             memberOrders,
@@ -135,7 +167,10 @@ export function OrderProvider({ children }: OrderProviderProps) {
             clearAllOrders,
             getMemberOrderTotal,
             getMemberOrderPrice,
-            getAllMembersWithOrders
+            getAllMembersWithOrders,
+            removeAllMemberOrderByOrderId,
+            getOrderTotal,
+            getOrderPriceTotal
         }}>
             {children}
         </OrderContext.Provider>

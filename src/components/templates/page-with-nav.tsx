@@ -5,11 +5,14 @@ import { NavigationMenu } from "../ui/navigation-menu";
 import { Button } from "../ui/button";
 import { SectionElement } from "./section";
 
+interface PageWithNavProps extends React.HTMLAttributes<HTMLDivElement> {
+    children: SectionElement | SectionElement[];
+}
+
 export function PageWithNav({
     children,
-}: {
-    children: SectionElement | SectionElement[];
-}) {
+    ...props
+}: PageWithNavProps) {
     const pathname = usePathname();
     const router = useRouter();
     const sections = Array.isArray(children) ? children : [children];
@@ -25,7 +28,7 @@ export function PageWithNav({
     };
 
     return (
-        <div className="mobile-width mt-[63px]">
+        <div className={`mobile-width mt-16 ${props.className || ''}`} {...props}>
             <NavigationMenu />
             <div className="px-1">
                 {!isHomePage && (

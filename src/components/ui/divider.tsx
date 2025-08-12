@@ -1,5 +1,9 @@
 'use client';
 
-export function Divider() {
-    return <div className="h-px bg-gray-200 my-2" />
+interface DividerProps {
+    className?: string;
+}
+
+export function Divider({ className }: DividerProps) {
+    return <div className={`h-px bg-[var(--color-grey-primary)] ${className ? className : 'my-2'}`} />
 }

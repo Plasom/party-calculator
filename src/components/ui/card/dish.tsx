@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Button } from "../button";
-import { QuantityValidator } from "@/lib/helper";
+import { QuantityValidator } from "@/lib/quantity-helper";
 import { useLongPress } from "@/hooks/useLongPress";
 
 export function CardDish({
