@@ -76,10 +76,10 @@ export function CardDish({
     return (
         <div 
             className="flex flex-col items-center px-5 py-4 w-fit h-fit gap-2 hover:bg-[var(--button-ghost-state-hovered)] rounded-2 cursor-pointer select-none" 
-            onClick={handleCardClick}
         >
             <div
                 className="flex w-[120px] h-[120px] relative items-center justify-center transition-transform duration-150 ease-out hover:scale-105 active:scale-95"
+                onClick={handleCardClick}
                 {...longPressHandlers}
             >
                 <Image
