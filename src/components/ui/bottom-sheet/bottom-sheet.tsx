@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { Button } from '../button';
 import { Blanket } from '@/components/templates/blanket';
 
@@ -44,22 +43,11 @@ export function BottomSheet({
         ),
         hidden: null
     }
-    useEffect(() => {
-        if (isOpen && !disableBackground) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'unset';
-        }
-
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
-    }, [isOpen, disableBackground]);
 
     if (!isOpen) return null;
 
     return (
-        <Blanket onClose={onClose} itemAlignment="end" disableBackground={disableBackground}>
+        <Blanket  onClose={onClose} itemAlignment="end" disableBackground={disableBackground}>
             <div
                 className={`${isTransparent ? 'bg-transparent' : 'bg-zinc-100'} rounded-t-3xl w-full ${maxWidth} px-4 pb-6 pt-3 transform transition-transform ease-out ${isOpen ? 'animate-slide-up' : 'animate-slide-down'}`}
                 style={{ transitionDuration: 'var(--transition-duration)' }}

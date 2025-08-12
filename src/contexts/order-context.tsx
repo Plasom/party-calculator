@@ -25,7 +25,7 @@ interface IOrderContext {
     getMemberOrderPrice: (memberId: string, dishesData: Array<{id: string; price?: number}>) => number;
     getAllMembersWithOrders: () => Array<{ memberId: string; orders: OrderItem[]; total: number }>;
     removeAllMemberOrderByOrderId: (dishId: string) => void;
-    getOrderTotal: () => number;
+    getOrderDishesTotal: () => number;
     getOrderPriceTotal: () => number;
 }
 
@@ -146,7 +146,7 @@ export function OrderProvider({ children }: OrderProviderProps) {
         });
     };
 
-    const getOrderTotal = (): number => {
+    const getOrderDishesTotal = (): number => {
         return Object.values(memberOrders).reduce((sum, orders) => {
             return sum + orders.reduce((orderSum, item) => orderSum + item.count, 0);
         }, 0);
@@ -169,7 +169,7 @@ export function OrderProvider({ children }: OrderProviderProps) {
             getMemberOrderPrice,
             getAllMembersWithOrders,
             removeAllMemberOrderByOrderId,
-            getOrderTotal,
+            getOrderDishesTotal,
             getOrderPriceTotal
         }}>
             {children}

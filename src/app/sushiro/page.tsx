@@ -22,7 +22,7 @@ import { useElementHeight } from "@/hooks/useElementHeight";
 export default function SushiroPage() {
     // Hooks
     const { members, selectedMember, addMember, changeMemberName, selectMember, removeMember } = useMember();
-    const { memberOrders, updateMemberOrder, getMemberOrderPrice, clearMemberOrders, getOrderTotal } = useOrder();
+    const { memberOrders, updateMemberOrder, getMemberOrderPrice, clearMemberOrders, getOrderDishesTotal } = useOrder();
     const { dishes, addDish, removeDish } = useDishes();
 
     // State
@@ -42,7 +42,7 @@ export default function SushiroPage() {
     const checkoutBottomSheetRef = useRef<HTMLDivElement | null>(null);
 
     // Custom hooks
-    const orderTotal = getOrderTotal();
+    const orderTotal = getOrderDishesTotal();
     const isCheckoutOpen = !isBottomSheetOpen && !isAddDishBottomSheetOpen && !isMenuBottomSheetOpen && (orderTotal > 0);
     const checkoutBottomSheetHeight = useElementHeight(checkoutBottomSheetRef, [orderTotal, isCheckoutOpen]);
 
@@ -56,8 +56,6 @@ export default function SushiroPage() {
         if (!selectedMember || !selectedDishId) return;
 
         const dishToDelete = dishes.find(dish => dish.id === selectedDishId);
-        
-        // updateMemberOrder(selectedMember.id, { id: selectedDishId, count: 0 });
         
         if (dishToDelete && !dishToDelete.isDefault) {
             removeDish(selectedDishId);
