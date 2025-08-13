@@ -87,7 +87,7 @@ export function Button({
         },
         md: {
             buttonSize: 'h-[48px] text-md font-medium',
-            textSize: 'text-md font-medium',
+            textSize: 'text-xl font-medium',
             iconSize: 32
         }
     }
