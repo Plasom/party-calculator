@@ -14,6 +14,7 @@ interface ButtonProps {
     disabled?: boolean;
     type?: 'primary' | 'secondary' | 'ghost' | 'quartiary';
     customSize?: 'xs' | 'sm' | 'md';
+    customFontSize?: 'xs' | 'sm' | 'md';
     textColor?: string;
 }
 
@@ -28,6 +29,7 @@ export function Button({
     disabled = false,
     type = 'primary',
     customSize = 'sm',
+    customFontSize,
     textColor
 }: ButtonProps) {
     const longPressHandlers = useLongPress({
@@ -107,7 +109,7 @@ export function Button({
             {leftIcon && <span className="material-symbols-rounded" style={{ fontSize: sizeProps[customSize].iconSize }}>
                 {leftIcon}
             </span>}
-            {label && <span className={sizeProps[customSize].textSize}>{label}</span>}
+            {label && <span className={customFontSize ? sizeProps[customFontSize].textSize : sizeProps[customSize].textSize}>{label}</span>}
             {rightIcon && <span className="material-symbols-rounded" style={{ fontSize: sizeProps[customSize].iconSize }}>
                 {rightIcon}
             </span>}

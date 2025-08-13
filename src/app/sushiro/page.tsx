@@ -46,6 +46,22 @@ export default function SushiroPage() {
     const isCheckoutOpen = !isBottomSheetOpen && !isAddDishBottomSheetOpen && !isMenuBottomSheetOpen && (orderTotal > 0);
     const checkoutBottomSheetHeight = useElementHeight(checkoutBottomSheetRef, [orderTotal, isCheckoutOpen]);
 
+    // Object Arrays
+    const menuItems: MenuItem[] = [
+        {
+            label: "Split plate",
+            onClick: () => console.log('Split plate clicked'),
+            isShow: true
+        },
+        {
+            label: "Delete plate",
+            onClick: () => handleDeleteDish(),
+            textColor: 'text-[var(--components-button-ghost-desctructive-text)]',
+            isShow: !!selectedDishId && dishes.some(dish => dish.id === selectedDishId && !dish.isDefault)
+        }
+    ]
+
+    // Function & Action
     const handleDishAdd = (data: { id: string; count: number }) => {
         if (!selectedMember) return;
 
@@ -87,20 +103,6 @@ export default function SushiroPage() {
         };
         addDish(newDish);
     };
-
-    const menuItems: MenuItem[] = [
-        {
-            label: "Split plate",
-            onClick: () => console.log('Split plate clicked'),
-            isShow: true
-        },
-        {
-            label: "Delete plate",
-            onClick: () => handleDeleteDish(),
-            textColor: 'text-[var(--components-button-ghost-desctructive-text)]',
-            isShow: !!selectedDishId && dishes.some(dish => dish.id === selectedDishId && !dish.isDefault)
-        }
-    ]
 
     const handleChangeMemberName = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (selectedMember?.name !== e.target.value) {
@@ -147,6 +149,7 @@ export default function SushiroPage() {
         setIsDeleteMemberModalOpen(false);
     }
 
+    // useEffect
     useEffect(() => {
         setSelectedMemberNameTemp(selectedMember?.name || null);
     }, [selectedMember, members]);

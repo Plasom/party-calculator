@@ -23,6 +23,7 @@ function MenuItemButton({ label, onClick, textColor }: MenuItem) {
             <Button
                 type="ghost"
                 customSize="md"
+                customFontSize="sm"
                 label={label}
                 onClick={() => {
                     onClick();
@@ -72,6 +73,7 @@ export function MenuBottomSheet({
                 <Button
                     type="quartiary"
                     customSize="md"
+                    customFontSize="sm"
                     label="Cancel"
                     onClick={() => {
                         onClose();
