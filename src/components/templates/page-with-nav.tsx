@@ -38,7 +38,6 @@ export function PageWithNav({
                         leftIcon="arrow_back"
                         label="back"
                         onClick={handleBackClick}
-                        fontSize="font-semibold"
                     />
                 )}
             </div>

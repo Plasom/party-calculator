@@ -13,8 +13,6 @@ interface ButtonProps {
     disabled?: boolean;
     type?: 'primary' | 'secondary' | 'ghost' | 'quartiary';
     buttonSize?: 'xs' | 'sm' | 'md';
-    fontSize?: 'font-semibold' | 'font-normal' | 'font-medium' | 'font-bold';
-    textSize?: 'text-xs' | 'text-sm' | 'text-md' | 'text-lg' | 'text-xl';
     textColor?: string;
 }
 
@@ -29,8 +27,6 @@ export function Button({
     disabled = false,
     type = 'primary',
     buttonSize = 'sm',
-    fontSize = 'font-normal',
-    textSize = 'text-xs',
     textColor
 }: ButtonProps) {
     const longPressHandlers = useLongPress({
@@ -44,6 +40,7 @@ export function Button({
             onClick();
         }
     };
+
     const classMap = {
         primary: {
             default: 'bg-[var(--components-button-primary-state-default)]',
@@ -78,9 +75,15 @@ export function Button({
     };
 
     const sizeButton = {
-        xs: 'h-[28px]',
-        sm: 'h-[32px]',
-        md: 'h-[48px]'
+        xs: 'h-[28px] text-sm font-medium',
+        sm: 'h-[32px] text-base font-medium',
+        md: 'h-[48px] text-md font-medium'
+    }
+
+    const fontButton = {
+        xs: 'text-sm font-medium',
+        sm: 'text-base font-medium',
+        md: 'text-xl font-medium'
     }
 
     return (
@@ -97,7 +100,7 @@ export function Button({
             {leftIcon && <span className="material-symbols-rounded">
                 {leftIcon}
             </span>}
-            {label && <span className={`${fontSize} ${textSize}`}>{label}</span>}
+            {label && <span className={`${fontButton[buttonSize]}`}>{label}</span>}
             {rightIcon && <span className="material-symbols-rounded">
                 {rightIcon}
             </span>}

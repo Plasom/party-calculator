@@ -57,8 +57,6 @@ export function CheckoutBottomSheet({
                     type="primary"
                     buttonSize="md"
                     label="Checkout"
-                    fontSize='font-medium'
-                    textSize='text-xl'
                     onClick={() => console.log('hello world')}
                 />
             </div>

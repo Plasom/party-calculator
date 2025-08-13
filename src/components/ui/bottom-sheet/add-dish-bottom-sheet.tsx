@@ -76,8 +76,6 @@ export function AddDishBottomSheet({
                         type="primary"
                         buttonSize="md"
                         label="Add"
-                        fontSize='font-medium'
-                        textSize='text-xl'
                         onClick={handleSubmit}
                         disabled={!isFormValid}
                         className="flex-1"
