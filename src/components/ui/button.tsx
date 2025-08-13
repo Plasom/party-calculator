@@ -1,12 +1,13 @@
 'use client';
 
 import { useLongPress } from '@/hooks/useLongPress';
+import { MaterialSymbol } from 'material-symbols';
 
 interface ButtonProps {
     className?: string;
     label?: string;
-    rightIcon?: React.ReactNode;
-    leftIcon?: React.ReactNode;
+    rightIcon?: MaterialSymbol;
+    leftIcon?: MaterialSymbol;
     onClick: () => void;
     onLongPress?: () => void;
     longPressDuration?: number;
@@ -41,7 +42,7 @@ export function Button({
         }
     };
 
-    const classMap = {
+    const typeProps = {
         primary: {
             default: 'bg-[var(--components-button-primary-state-default)]',
             hovered: 'hover:bg-[var(--components-button-primary-state-hovered)]',
@@ -96,7 +97,7 @@ export function Button({
         <button
             className={`flex ${sizeProps[customSize].buttonSize} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
                     ? `${disabledClasses.default} ${disabledClasses.textColor} ${disabledClasses.cursor}`
-                    : `${classMap[type].default} ${classMap[type].hovered} ${classMap[type].pressed} ${textColor ? textColor : classMap[type].textColor} cursor-pointer`
+                    : `${typeProps[type].default} ${typeProps[type].hovered} ${typeProps[type].pressed} ${textColor ? textColor : typeProps[type].textColor} cursor-pointer`
                 }`}
             onClick={handleClick}
             {...longPressHandlers}
@@ -110,7 +111,6 @@ export function Button({
             {rightIcon && <span className="material-symbols-rounded" style={{ fontSize: sizeProps[customSize].iconSize }}>
                 {rightIcon}
             </span>}
-
         </button>
     )
 }

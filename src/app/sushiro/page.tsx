@@ -180,10 +180,10 @@ export default function SushiroPage() {
                                 <>
                                     <IconButton
                                         icon="check"
+                                        type="primary"
+                                        customSize="sm"
                                         onClick={handleSubmitChangeMemberName}
-                                        customColor="white"
-                                        bgColor="black"
-                                        disable={selectedMemberNameTemp === ""}
+                                        disabled={selectedMemberNameTemp === ""}
                                     />
                                     <Button
                                         type="ghost"
@@ -195,9 +195,9 @@ export default function SushiroPage() {
                                 :
                                 <IconButton
                                     icon="delete"
+                                    type="ghost-desctructive"
+                                    customSize="md"
                                     onClick={() => setIsDeleteMemberModalOpen(true)}
-                                    customSize={32}
-                                    customColor="var(--color-rose-700)"
                                     fill
                                 />}
                         </div>
