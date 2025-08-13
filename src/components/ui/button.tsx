@@ -12,7 +12,7 @@ interface ButtonProps {
     longPressDuration?: number;
     disabled?: boolean;
     type?: 'primary' | 'secondary' | 'ghost' | 'quartiary';
-    buttonSize?: 'xs' | 'sm' | 'md';
+    customSize?: 'xs' | 'sm' | 'md';
     textColor?: string;
 }
 
@@ -26,7 +26,7 @@ export function Button({
     longPressDuration,
     disabled = false,
     type = 'primary',
-    buttonSize = 'sm',
+    customSize = 'sm',
     textColor
 }: ButtonProps) {
     const longPressHandlers = useLongPress({
@@ -74,21 +74,27 @@ export function Button({
         cursor: 'cursor-not-allowed'
     };
 
-    const sizeButton = {
-        xs: 'h-[28px] text-sm font-medium',
-        sm: 'h-[32px] text-base font-medium',
-        md: 'h-[48px] text-md font-medium'
-    }
-
-    const fontButton = {
-        xs: 'text-sm font-medium',
-        sm: 'text-base font-medium',
-        md: 'text-xl font-medium'
+    const sizeProps = {
+        xs: {
+            buttonSize: 'h-[28px] text-sm font-medium',
+            textSize: 'text-sm font-medium',
+            iconSize: 16
+        },
+        sm: {
+            buttonSize: 'h-[32px] text-base font-medium',
+            textSize: 'text-base font-medium',
+            iconSize: 24
+        },
+        md: {
+            buttonSize: 'h-[48px] text-md font-medium',
+            textSize: 'text-md font-medium',
+            iconSize: 32
+        }
     }
 
     return (
         <button
-            className={`flex ${sizeButton[buttonSize]} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
+            className={`flex ${sizeProps[customSize].buttonSize} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
                     ? `${disabledClasses.default} ${disabledClasses.textColor} ${disabledClasses.cursor}`
                     : `${classMap[type].default} ${classMap[type].hovered} ${classMap[type].pressed} ${textColor ? textColor : classMap[type].textColor} cursor-pointer`
                 }`}
@@ -97,11 +103,11 @@ export function Button({
             disabled={disabled}
             type="button"
         >
-            {leftIcon && <span className="material-symbols-rounded">
+            {leftIcon && <span className="material-symbols-rounded" style={{ fontSize: sizeProps[customSize].iconSize }}>
                 {leftIcon}
             </span>}
-            {label && <span className={`${fontButton[buttonSize]}`}>{label}</span>}
-            {rightIcon && <span className="material-symbols-rounded">
+            {label && <span className={sizeProps[customSize].textSize}>{label}</span>}
+            {rightIcon && <span className="material-symbols-rounded" style={{ fontSize: sizeProps[customSize].iconSize }}>
                 {rightIcon}
             </span>}
 

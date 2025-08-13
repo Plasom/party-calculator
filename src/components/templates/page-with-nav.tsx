@@ -34,7 +34,7 @@ export function PageWithNav({
                 {!isHomePage && (
                     <Button
                         type="ghost"
-                        buttonSize="sm"
+                        customSize="sm"
                         leftIcon="arrow_back"
                         label="back"
                         onClick={handleBackClick}

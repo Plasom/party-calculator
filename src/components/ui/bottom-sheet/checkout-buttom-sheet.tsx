@@ -55,7 +55,7 @@ export function CheckoutBottomSheet({
 
                 <Button
                     type="primary"
-                    buttonSize="md"
+                    customSize="md"
                     label="Checkout"
                     onClick={() => console.log('hello world')}
                 />

@@ -34,7 +34,7 @@ export function BottomSheet({
         cancel: (
             <Button
                 type="secondary"
-                buttonSize="sm"
+                customSize="sm"
                 label="Cancel"
                 onClick={onClose!}
             />

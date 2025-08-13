@@ -187,7 +187,7 @@ export default function SushiroPage() {
                                     />
                                     <Button
                                         type="ghost"
-                                        buttonSize="xs"
+                                        customSize="xs"
                                         label="cancel"
                                         onClick={handleCancelChangeMemberName}
                                     />

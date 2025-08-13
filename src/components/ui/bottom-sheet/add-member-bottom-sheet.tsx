@@ -56,7 +56,7 @@ export function AddMemberBottomSheet({
                 <div className="flex gap-3 pt-2">
                     <Button
                         type="primary"
-                        buttonSize="md"
+                        customSize="md"
                         label="Add"
                         onClick={handleSubmit}
                         disabled={!name.trim()}
