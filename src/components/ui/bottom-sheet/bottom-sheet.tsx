@@ -34,10 +34,9 @@ export function BottomSheet({
         cancel: (
             <Button
                 type="secondary"
+                customSize="sm"
                 label="Cancel"
                 onClick={onClose!}
-                fontSize="font-medium"
-                textSize="text-sm"
             />
         ),
         hidden: null

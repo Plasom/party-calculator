@@ -22,14 +22,13 @@ function MenuItemButton({ label, onClick, textColor }: MenuItem) {
         <>
             <Button
                 type="ghost"
-                buttonSize="md"
+                customSize="md"
+                customFontSize="sm"
                 label={label}
                 onClick={() => {
                     onClick();
                 }}
-                fontSize='font-medium'
                 textColor={textColor}
-                textSize='text-sm'
                 className="w-full"
             />
         </>
@@ -50,7 +49,7 @@ export function MenuBottomSheet({
             button='hidden'
             showHandle={false}
         >
-            <div className="bg-[var(--components-button-quartiary-state-default)] rounded-xl w-full ">
+            <div className="bg-[var(--components-button-quartiary-state-default)] rounded-xl w-full">
                 {menuItems?.map((item, index) => (
                     <div key={index}>
                         {item.isShow && <MenuItemButton
@@ -73,13 +72,12 @@ export function MenuBottomSheet({
             <div className="flex mt-3">
                 <Button
                     type="quartiary"
-                    buttonSize="md"
+                    customSize="md"
+                    customFontSize="sm"
                     label="Cancel"
                     onClick={() => {
                         onClose();
                     }}
-                    fontSize='font-medium'
-                    textSize='text-sm'
                     className="flex-1"
                 />
             </div>
