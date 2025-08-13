@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
 import { Button } from '../button';
+import { Blanket } from '@/components/templates/blanket';
 
-interface BottomSheetProps {
+interface BottomSheetProps extends React.HTMLAttributes<HTMLDivElement> {
     isOpen: boolean;
-    onClose: () => void;
+    onClose?: () => void;
     title?: string;
     description?: string;
     children: React.ReactNode;
@@ -13,6 +13,7 @@ interface BottomSheetProps {
     maxWidth?: string;
     isTransparent?: boolean;
     button?: 'cancel' | 'hidden';
+    disableBackground?: boolean;
 }
 
 export function BottomSheet({
@@ -24,51 +25,32 @@ export function BottomSheet({
     showHandle = true,
     maxWidth = "max-w-md",
     isTransparent = false,
-    button = 'cancel'
+    button = 'cancel',
+    disableBackground = false,
+    ...props
 }: BottomSheetProps) {
 
     const buttonGroup = {
         cancel: (
             <Button
                 type="secondary"
-                size="sm"
                 label="Cancel"
-                onClick={onClose}
-                className="text-gray-500 hover:text-gray-700"
-                fontSize="font-semibold"
+                onClick={onClose!}
+                fontSize="font-medium"
+                textSize="text-sm"
             />
         ),
         hidden: null
     }
-    useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'unset';
-        }
-
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
-    }, [isOpen]);
-
-    const handleBackdropClick = (e: React.MouseEvent) => {
-        if (e.target === e.currentTarget) {
-            onClose();
-        }
-    };
 
     if (!isOpen) return null;
 
     return (
-        <div
-            className="fixed inset-0 z-99 bg-black/50 flex items-end justify-center"
-            onClick={handleBackdropClick}
-        >
+        <Blanket onClose={onClose} itemAlignment="end" disableBackground={disableBackground}>
             <div
-                className={`${isTransparent ? 'bg-transparent' : 'bg-white'} rounded-t-3xl w-full ${maxWidth} px-4 pb-6 pt-3 transform transition-transform ease-out ${isOpen ? 'animate-slide-up' : 'animate-slide-down'
-                    }`}
+                className={`${isTransparent ? 'bg-transparent' : 'bg-zinc-100'} flex-1 rounded-t-3xl w-full ${maxWidth} px-4 pb-6 pt-[6px] transform transition-transform ease-out ${isOpen ? 'animate-slide-up' : 'animate-slide-down'}`}
                 style={{ transitionDuration: 'var(--transition-duration)' }}
+                {...props}
             >
                 {/* Handle bar */}
                 {showHandle && (
@@ -97,7 +79,7 @@ export function BottomSheet({
                 {/* Content */}
                 {children}
             </div>
-        </div>
+        </Blanket>
     );
 }
 

@@ -2,6 +2,22 @@
 
 import { useLongPress } from '@/hooks/useLongPress';
 
+interface ButtonProps {
+    className?: string;
+    label?: string;
+    rightIcon?: React.ReactNode;
+    leftIcon?: React.ReactNode;
+    onClick: () => void;
+    onLongPress?: () => void;
+    longPressDuration?: number;
+    disabled?: boolean;
+    type?: 'primary' | 'secondary' | 'ghost' | 'quartiary';
+    buttonSize?: 'xs' | 'sm' | 'md';
+    fontSize?: 'font-semibold' | 'font-normal' | 'font-medium' | 'font-bold';
+    textSize?: 'text-xs' | 'text-sm' | 'text-md' | 'text-lg' | 'text-xl';
+    textColor?: string;
+}
+
 export function Button({
     className = '',
     label,
@@ -12,21 +28,11 @@ export function Button({
     longPressDuration,
     disabled = false,
     type = 'primary',
-    size = 'sm',
-    fontSize = 'font-normal'
-}: {
-    className?: string;
-    label?: string;
-    rightIcon?: React.ReactNode;
-    leftIcon?: React.ReactNode;
-    onClick: () => void;
-    onLongPress?: () => void;
-    longPressDuration?: number;
-    disabled?: boolean;
-    type?: 'primary' | 'secondary' | 'ghost' | 'quartiary';
-    size?: 'xs' | 'sm' | 'md';
-    fontSize?: 'font-semibold' | 'font-normal' | 'font-bold';
-}) {
+    buttonSize = 'sm',
+    fontSize = 'font-normal',
+    textSize = 'text-xs',
+    textColor
+}: ButtonProps) {
     const longPressHandlers = useLongPress({
         onLongPress,
         duration: longPressDuration,
@@ -79,9 +85,9 @@ export function Button({
 
     return (
         <button
-            className={`flex ${sizeButton[size]} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
+            className={`flex ${sizeButton[buttonSize]} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
                     ? `${disabledClasses.default} ${disabledClasses.textColor} ${disabledClasses.cursor}`
-                    : `${classMap[type].default} ${classMap[type].hovered} ${classMap[type].pressed} ${classMap[type].textColor} cursor-pointer`
+                    : `${classMap[type].default} ${classMap[type].hovered} ${classMap[type].pressed} ${textColor ? textColor : classMap[type].textColor} cursor-pointer`
                 }`}
             onClick={handleClick}
             {...longPressHandlers}
@@ -91,7 +97,7 @@ export function Button({
             {leftIcon && <span className="material-symbols-rounded">
                 {leftIcon}
             </span>}
-            {label && <span className={fontSize}>{label}</span>}
+            {label && <span className={`${fontSize} ${textSize}`}>{label}</span>}
             {rightIcon && <span className="material-symbols-rounded">
                 {rightIcon}
             </span>}

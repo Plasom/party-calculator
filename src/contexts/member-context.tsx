@@ -49,7 +49,7 @@ export function MemberProvider({ children }: MemberProviderProps) {
         const names = name.split(',').map(n => n.trim()).filter(n => n.length > 0);
 
         setPathMembers(prev => {
-            const current = prev[currentPath] || { members: [], selectedMember: null, selectedMemberName: null };
+            const current = prev[currentPath] || { members: [], selectedMember: null };
             
             const newMembers = names.map((memberName, index) => ({
                 id: Date.now().toString() + index.toString(),
@@ -87,8 +87,7 @@ export function MemberProvider({ children }: MemberProviderProps) {
                 ...prev,
                 [currentPath]: {
                     members: updatedMembers,
-                    selectedMember: currentData.selectedMember,
-                    selectedMemberName: name
+                    selectedMember: updatedMembers.find(m => m.id === currentData.selectedMember?.id) || null,
                 }
             };
         });
@@ -114,7 +113,6 @@ export function MemberProvider({ children }: MemberProviderProps) {
             [currentPath]: {
                 members: [],
                 selectedMember: null,
-                selectedMemberName: null
             }
         }));
     };
@@ -125,7 +123,7 @@ export function MemberProvider({ children }: MemberProviderProps) {
 
     const removeMember = (memberId: string) => {
         setPathMembers(prev => {
-            const current = prev[currentPath] || { members: [], selectedMember: null, selectedMemberName: null };
+            const current = prev[currentPath] || { members: [], selectedMember: null };
             const updatedMembers = current.members.filter(member => member.id !== memberId);
             
             const selectedMember = current.selectedMember?.id === memberId

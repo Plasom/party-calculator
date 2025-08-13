@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Button } from "../button";
-import { QuantityValidator } from "@/lib/helper";
+import { QuantityValidator } from "@/lib/quantity-helper";
 import { useLongPress } from "@/hooks/useLongPress";
 
 export function CardDish({
@@ -76,10 +76,10 @@ export function CardDish({
     return (
         <div 
             className="flex flex-col items-center px-5 py-4 w-fit h-fit gap-2 hover:bg-[var(--button-ghost-state-hovered)] rounded-2 cursor-pointer select-none" 
-            onClick={handleCardClick}
         >
             <div
                 className="flex w-[120px] h-[120px] relative items-center justify-center transition-transform duration-150 ease-out hover:scale-105 active:scale-95"
+                onClick={handleCardClick}
                 {...longPressHandlers}
             >
                 <Image
@@ -101,7 +101,7 @@ export function CardDish({
             {isButton && <div className="w-full flex flex-row gap-2 mt-5" onClick={(e) => e.stopPropagation()}>
                 <Button
                     type="primary"
-                    size="sm"
+                    buttonSize="sm"
                     leftIcon="check_indeterminate_small"
                     onClick={handleDecrease}
                     onLongPress={handleRemoveAll}

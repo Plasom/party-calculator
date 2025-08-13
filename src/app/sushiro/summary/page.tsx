@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function SushiroSummaryPage() {
     const { members, selectedMember, clearMembers } = useMember();
 
-    const selectedMemberData = members.find(m => m.id === selectedMember);
+    const selectedMemberData = members.find(m => m.id === selectedMember?.id);
 
     return (
         <PageWithNav>
@@ -44,11 +44,11 @@ export default function SushiroSummaryPage() {
                             <div className="space-y-2">
                                 {members.map(member => (
                                     <div key={member.id} className={`p-2 rounded ${
-                                        member.id === selectedMember 
+                                        member.id === selectedMember?.id
                                             ? 'bg-red-200 text-red-900 border border-red-300' 
                                             : 'bg-white text-red-700 border border-red-200'
                                     }`}>
-                                        {member.name} {member.id === selectedMember && '(Selected)'}
+                                        {member.name} {member.id === selectedMember?.id && '(Selected)'}
                                     </div>
                                 ))}
                             </div>

@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import { DishData, sushiroDishes, tenoiDishes } from '@/data/dishes';
+import { useOrder } from './order-context';
 
 interface DishesContextType {
     dishes: DishData[];
@@ -27,6 +28,9 @@ export function DishesProvider({ children }: DishesProviderProps) {
     const pathname = usePathname();
     const [pathDishes, setPathDishes] = useState<IPathDishes>({});
 
+    // Hooks
+    const { removeAllMemberOrderByOrderId } = useOrder();
+
     const getBasePath = (path: string) => {
         if (path.startsWith('/sushiro')) return '/sushiro';
         if (path.startsWith('/teenoi')) return '/teenoi';
@@ -50,6 +54,7 @@ export function DishesProvider({ children }: DishesProviderProps) {
     };
 
     const removeDish = (dishId: string) => {
+        removeAllMemberOrderByOrderId(dishId);
         setPathDishes(prev => {
             const dishToRemove = currentDishes.find(dish => dish.id === dishId);
             if (dishToRemove?.isDefault) {

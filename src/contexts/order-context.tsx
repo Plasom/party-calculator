@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { DishData } from '@/data/dishes';
 
 export interface OrderItem {
     id: string;
@@ -24,6 +25,9 @@ interface IOrderContext {
     getMemberOrderTotal: (memberId: string) => number;
     getMemberOrderPrice: (memberId: string, dishesData: Array<{id: string; price?: number}>) => number;
     getAllMembersWithOrders: () => Array<{ memberId: string; orders: OrderItem[]; total: number }>;
+    removeAllMemberOrderByOrderId: (dishId: string) => void;
+    getOrderDishesTotal: () => number;
+    getOrderPriceTotal: (dishes: DishData[]) => number;
 }
 
 const OrderContext = createContext<IOrderContext | undefined>(undefined);
@@ -127,6 +131,39 @@ export function OrderProvider({ children }: OrderProviderProps) {
         }));
     };
 
+    const removeAllMemberOrderByOrderId = (dishId: string) => {
+        setPathOrders(prev => {
+            const currentPathOrders = prev[currentPath] || {};
+            const updatedOrders = Object.fromEntries(
+                Object.entries(currentPathOrders).map(([memberId, orders]) => [
+                    memberId,
+                    orders.filter(item => item.id !== dishId)
+                ])
+            );
+            return {
+                ...prev,
+                [currentPath]: updatedOrders
+            };
+        });
+    };
+
+    const getOrderDishesTotal = (): number => {
+        return Object.values(memberOrders).reduce((sum, orders) => {
+            return sum + orders.reduce((orderSum, item) => orderSum + item.count, 0);
+        }, 0);
+    };
+
+    const getOrderPriceTotal = (dishes: DishData[]): number => {
+        const dishesData = Object.values(memberOrders).flatMap(orders => orders);
+        return dishesData.reduce((sum, item) => {
+            const dish = dishes.find(d => d.id === item.id);
+            const price = dish?.price || 0;
+            return sum + (price * item.count);
+        }, 0);
+    };
+
+
+
     return (
         <OrderContext.Provider value={{
             memberOrders,
@@ -135,7 +172,10 @@ export function OrderProvider({ children }: OrderProviderProps) {
             clearAllOrders,
             getMemberOrderTotal,
             getMemberOrderPrice,
-            getAllMembersWithOrders
+            getAllMembersWithOrders,
+            removeAllMemberOrderByOrderId,
+            getOrderDishesTotal,
+            getOrderPriceTotal
         }}>
             {children}
         </OrderContext.Provider>

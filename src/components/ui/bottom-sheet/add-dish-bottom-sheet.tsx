@@ -74,8 +74,10 @@ export function AddDishBottomSheet({
                 <div className="flex gap-3 pt-2">
                     <Button
                         type="primary"
-                        size="md"
+                        buttonSize="md"
                         label="Add"
+                        fontSize='font-medium'
+                        textSize='text-xl'
                         onClick={handleSubmit}
                         disabled={!isFormValid}
                         className="flex-1"

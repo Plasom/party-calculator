@@ -7,7 +7,7 @@ import { AddDishBottomSheet } from "@/components/ui/bottom-sheet/add-dish-bottom
 import { MemberBadge } from "@/components/ui/member-badge";
 import { CardList } from "@/components/ui/card/card-list";
 import { CardDish } from "@/components/ui/card/dish";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMember, IMember } from "@/contexts/member-context";
 import { useOrder } from "@/contexts/order-context";
 import { useDishes } from "@/contexts/dishes-context";
@@ -17,27 +17,35 @@ import { Button } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
 import { AlertModal, DeleteModal } from "@/components/ui/modal/alert-modal";
 import { CardSummary } from "@/components/ui/card/summary";
+import { CheckoutBottomSheet } from "@/components/ui/bottom-sheet/checkout-buttom-sheet";
+import { useElementHeight } from "@/hooks/useElementHeight";
 
 export default function SushiroPage() {
     // Hooks
     const { members, selectedMember, addMember, changeMemberName, selectMember, removeMember } = useMember();
-    const { memberOrders, updateMemberOrder, getMemberOrderPrice, clearMemberOrders } = useOrder();
-    const { dishes, addDish } = useDishes();
+    const { memberOrders, updateMemberOrder, getMemberOrderPrice, clearMemberOrders, getOrderDishesTotal } = useOrder();
+    const { dishes, addDish, removeDish } = useDishes();
 
     // State
-    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-    const [isAddDishBottomSheetOpen, setIsAddDishBottomSheetOpen] = useState(false);
-    const [isMenuBottomSheetOpen, setIsMenuBottomSheetOpen] = useState(false);
+    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false);
+    const [isAddDishBottomSheetOpen, setIsAddDishBottomSheetOpen] = useState<boolean>(false);
+    const [isMenuBottomSheetOpen, setIsMenuBottomSheetOpen] = useState<boolean>(false);
+    const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
     const [selectedMemberNameTemp, setSelectedMemberNameTemp] = useState<string | null>(null);
-    const [isEditMode, setIsEditMode] = useState(false);
 
     // Modal State
-    const [isUnsavedModalOpen, setIsUnsavedModalOpen] = useState(false);
-    const [isDeleteMemberModalOpen, setIsDeleteMemberModalOpen] = useState(false);
+    const [isUnsavedModalOpen, setIsUnsavedModalOpen] = useState<boolean>(false);
+    const [isDeleteMemberModalOpen, setIsDeleteMemberModalOpen] = useState<boolean>(false);
 
     // Refs
-    const inputChangeNameRef = React.useRef<HTMLInputElement | null>(null);
+    const inputChangeNameRef = useRef<HTMLInputElement | null>(null);
+    const checkoutBottomSheetRef = useRef<HTMLDivElement | null>(null);
+
+    // Custom hooks
+    const orderTotal = getOrderDishesTotal();
+    const isCheckoutOpen = !isBottomSheetOpen && !isAddDishBottomSheetOpen && !isMenuBottomSheetOpen && (orderTotal > 0);
+    const checkoutBottomSheetHeight = useElementHeight(checkoutBottomSheetRef, [orderTotal, isCheckoutOpen]);
 
     const handleDishAdd = (data: { id: string; count: number }) => {
         if (!selectedMember) return;
@@ -48,7 +56,12 @@ export default function SushiroPage() {
     const handleDeleteDish = () => {
         if (!selectedMember || !selectedDishId) return;
 
-        updateMemberOrder(selectedMember.id, { id: selectedDishId, count: 0 });
+        const dishToDelete = dishes.find(dish => dish.id === selectedDishId);
+        
+        if (dishToDelete && !dishToDelete.isDefault) {
+            removeDish(selectedDishId);
+        }
+        
         setSelectedDishId(null);
     };
 
@@ -78,9 +91,15 @@ export default function SushiroPage() {
 
     const menuItems: MenuItem[] = [
         {
+            label: "Split plate",
+            onClick: () => console.log('Split plate clicked'),
+            isShow: true
+        },
+        {
             label: "Delete plate",
             onClick: () => handleDeleteDish(),
-            textColor: 'red'
+            textColor: 'text-[var(--components-button-ghost-desctructive-text)]',
+            isShow: !!selectedDishId && dishes.some(dish => dish.id === selectedDishId && !dish.isDefault)
         }
     ]
 
@@ -134,7 +153,7 @@ export default function SushiroPage() {
     }, [selectedMember, members]);
 
     return (
-        <PageWithNav>
+        <PageWithNav style={{ marginBottom: isCheckoutOpen ? checkoutBottomSheetHeight : 0 }}>
             <Section
                 header="Who's eating?"
                 description="Add members to track their dishes."
@@ -142,7 +161,6 @@ export default function SushiroPage() {
                 showHeader={members.length === 0}
                 showDescription={members.length === 0}
                 ignoreClassName={members.length > 0}
-
             >
                 {members.length > 0 &&
                     <div className="flex flex-row mb-4 gap-2 items-center">
@@ -170,7 +188,7 @@ export default function SushiroPage() {
                                     />
                                     <Button
                                         type="ghost"
-                                        size="xs"
+                                        buttonSize="xs"
                                         label="cancel"
                                         onClick={handleCancelChangeMemberName}
                                     />
@@ -292,6 +310,11 @@ export default function SushiroPage() {
                 onCancel={() => setIsDeleteMemberModalOpen(false)}
                 title="Delete member?"
                 message="This will permanently remove the member and their plates. Delete?"
+            />
+
+            <CheckoutBottomSheet
+                ref={checkoutBottomSheetRef}
+                isOpen={isCheckoutOpen}
             />
         </PageWithNav>
     )
