@@ -26,11 +26,6 @@ export function IconButton({
     type = 'primary',
     className,
 }: IconButtonProps) {
-    // const bgColorStyle = {
-    //     black: 'bg-black',
-    //     white: 'bg-white',
-    //     transparent: 'bg-transparent',
-    // }
     const longPressHandlers = useLongPress({
         onLongPress,
         duration: longPressDuration,

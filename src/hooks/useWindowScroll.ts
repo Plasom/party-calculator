@@ -11,20 +11,30 @@ type ScrollDirection = 'up' | 'down' | null;
  */
 export function useWindowScroll(threshold = 0): ScrollDirection {
   const [scrollDir, setScrollDir] = useState<ScrollDirection>(null);
+  
   let lastScrollY = 0;
 
   useEffect(() => {
+    const maxScrollY = document.documentElement.scrollHeight - window.innerHeight;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     lastScrollY = window.scrollY;
-
+    
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      const currentScrollY = scrollY;
       const diff = currentScrollY - lastScrollY;
 
       if (Math.abs(diff) < threshold) {
         return;
       }
-      console.log(window.scrollY);
+
+      if (currentScrollY <= 0) {
+        setScrollDir('up');
+        return;
+      } else if (currentScrollY >= maxScrollY) {
+        setScrollDir('down');
+        return;
+      }
+
       if (diff > 0) {
         setScrollDir('down');
       } else if (diff < 0) {

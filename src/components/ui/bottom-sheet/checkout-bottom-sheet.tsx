@@ -38,20 +38,30 @@ export function CheckoutBottomSheet({
             disableBackground
             {...props}
         >
-            <div className={`flex flex-col text-sm text-[var(--color-grey-tertiary)]`}>
-                {isExpanded &&
-                    <div className={`${isExpanded ? 'animate-slide-up' : 'animate-slide-down'}`}>
+            <div className="flex flex-col text-sm text-[var(--color-grey-tertiary)]">
+                <div 
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                        isExpanded ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                >
+                    <div className="pb-2">
                         <div className="flex flex-row justify-between">
-                            <span>Total Dishes</span>
-                            <span>{getOrderDishesTotal()}</span>
+                            <span className="text-left">Total Dishes</span>
+                            <span className="text-right font-medium">{getOrderDishesTotal()}</span>
                         </div>
                         <div className="flex flex-row justify-between">
                             <span>SubTotal</span>
                             <span>{getOrderPriceTotal(dishes)} ฿</span>
                         </div>
-                    </div>}
+                    </div>
+                </div>
 
-                {isExpanded && <Divider className="my-4" />}
+                <div className={`transition-opacity duration-300 ${
+                        isExpanded ? 'opacity-100' : 'opacity-0'
+                    }`}
+                >
+                    {isExpanded && <Divider className="my-4" />}
+                </div>
 
                 <Button
                     type="primary"

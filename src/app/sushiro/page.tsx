@@ -16,7 +16,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
 import { AlertModal, DeleteModal } from "@/components/ui/modal/alert-modal";
-import { CheckoutBottomSheet } from "@/components/ui/bottom-sheet/checkout-buttom-sheet";
+import { CardSummary } from "@/components/ui/card/summary";
+import { CheckoutBottomSheet } from "@/components/ui/bottom-sheet/checkout-bottom-sheet";
 
 export default function SushiroPage() {
     // Hooks
@@ -259,6 +260,15 @@ export default function SushiroPage() {
                         );
                     })}
                 </CardList>
+            </Section>
+
+            <Section 
+                header = "Added item list"
+                className="pt-4"
+            >
+                <CardSummary>
+                    
+                </CardSummary>
             </Section>
 
             <AddMemberBottomSheet
