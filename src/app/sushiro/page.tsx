@@ -262,9 +262,10 @@ export default function SushiroPage() {
                 </CardList>
             </Section>
 
-            <Section>
+            <Section 
                 header = "Added item list"
                 className="pt-4"
+            >
                 <CardSummary>
                     
                 </CardSummary>
