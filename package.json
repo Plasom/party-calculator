@@ -8,9 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "tokens:build": "node build-tokens.js",
-    "tokens:clean": "rm -rf src/styles/design-tokens.css",
-    "tokens:convert": "node convert-figma-tokens.js"
+    "tokens:build": "node ./src/styles/build-tokens.js",
+    "tokens:clean": "rm -rf ./src/styles/design-tokens.css"
   },
   "dependencies": {
     "@radix-ui/react-navigation-menu": "^1.2.13",
