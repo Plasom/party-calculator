@@ -45,7 +45,7 @@ export function CheckoutBottomSheet({
                     }`}
                 >
                     <div className="pb-2">
-                        <div className="flex flex-row justify-between py-1 min-h-[24px]">
+                        <div className="flex flex-row justify-between">
                             <span className="text-left">Total Dishes</span>
                             <span className="text-right font-medium">{getOrderDishesTotal()}</span>
                         </div>

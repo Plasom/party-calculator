@@ -26,7 +26,6 @@ export function useWindowScroll(threshold = 0): ScrollDirection {
       if (Math.abs(diff) < threshold) {
         return;
       }
-      console.log('current: ', currentScrollY, 'diff: ', diff, 'fddf', document.documentElement.scrollHeight - window.innerHeight);
 
       if (currentScrollY <= 0) {
         setScrollDir('up');
