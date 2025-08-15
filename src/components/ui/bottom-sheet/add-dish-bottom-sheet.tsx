@@ -25,9 +25,9 @@ export function AddDishBottomSheet({
     onClose,
 
 }: AddDishBottomSheetProps) {
-    const { addDish } = useDishes();
+    const { addDish, dishes } = useDishes();
     const { selectedMember } = useMember();
-    const { updateMemberOrder } = useOrder();
+    const { updateMemberOrder, memberOrders } = useOrder();
 
     const [price, setPrice] = useState<number>(0);
     const [idPrice, setIdPrice] = useState<number>(999);
@@ -50,15 +50,21 @@ export function AddDishBottomSheet({
             id: `custom-${Date.now()}`,
             url: "/images/sushiro_asset/dishes/custom/default.svg",
             label: `${price}.-`,
-            textColor: "black" ,
+            textColor: "black",
             isButton: true,
             price: price,
             name: 'custom',
             isDefault: false
         };
-        
-        addDish(newDish);
-        updateMemberOrder(selectedMember!.id, { id: newDish.id, count: quantity });
+
+        const existingDish = dishes.find(dish => dish.price === newDish.price && dish.name === 'custom');
+        const existingMember = memberOrders[selectedMember!.id]?.find(item => item.id === existingDish?.id);
+        if (existingDish && existingMember) {
+            updateMemberOrder(selectedMember!.id, { id: existingDish.id, count: existingMember.count + quantity });
+        } else {
+            addDish(newDish);
+            updateMemberOrder(selectedMember!.id, { id: newDish.id, count: quantity });
+        }
     };
 
     const handleSubmit = (e?: React.FormEvent) => {
@@ -93,7 +99,7 @@ export function AddDishBottomSheet({
             description: "Select a price, or tap 'other'."
         },
         2: {
-            title: "Enter the item's price.", 
+            title: "Enter the item's price.",
             description: ''
         },
     };
@@ -104,7 +110,7 @@ export function AddDishBottomSheet({
         switch (currentPage) {
             case 1:
                 return (
-                    <Page1 
+                    <Page1
                         priceChoose={priceChoose}
                         idPrice={idPrice}
                         setPrice={setPrice}
@@ -118,7 +124,7 @@ export function AddDishBottomSheet({
                 );
             case 2:
                 return (
-                    <Page2 
+                    <Page2
                         price={price}
                         setPrice={setPrice}
                         handleSubmit={handleSubmit}
@@ -129,7 +135,7 @@ export function AddDishBottomSheet({
                 );
             default:
                 return (
-                    <Page1 
+                    <Page1
                         priceChoose={priceChoose}
                         idPrice={idPrice}
                         setPrice={setPrice}
@@ -169,13 +175,13 @@ interface Page1Props {
     setQuantity: (quantity: number) => void;
 }
 
-const Page1 = ({ 
-    priceChoose, 
-    idPrice, 
-    setPrice, 
-    setIdPrice, 
-    handleNextPage, 
-    handleSubmit, 
+const Page1 = ({
+    priceChoose,
+    idPrice,
+    setPrice,
+    setIdPrice,
+    handleNextPage,
+    handleSubmit,
     isFormValid,
     quantity,
     setQuantity
