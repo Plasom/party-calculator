@@ -47,6 +47,7 @@ export function DishesProvider({ children }: DishesProviderProps) {
     const currentDishes = pathDishes[currentPath] || getDefaultDishes(currentPath);
 
     const addDish = (dish: DishData) => {
+        console.log(pathDishes)
         setPathDishes(prev => ({
             ...prev,
             [currentPath]: [...currentDishes.slice(0, currentDishes.length-1), { ...dish, isDefault: false }, currentDishes[currentDishes.length-1]]

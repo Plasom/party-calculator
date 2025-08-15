@@ -21,7 +21,7 @@ export function IconButton({
     longPressDuration,
     disabled = false,
     icon,
-    customSize = 'xs',
+    customSize = 'sm',
     fill = false,
     type = 'primary',
     className,
@@ -73,23 +73,20 @@ export function IconButton({
 
     const disabledClasses = {
         default: 'bg-[var(--components-button-disabled-state-default)]',
-        textColor: 'text-[var(--components-button-disabled-text)]',
+        iconColor: 'var(--components-button-disabled-icon)',
         cursor: 'cursor-not-allowed'
     };
 
     const sizeProps = {
         xs: {
-            buttonSize: 'h-[28px] text-sm font-medium',
             textSize: 'text-sm font-medium',
             iconSize: 16
         },
         sm: {
-            buttonSize: 'h-[32px] text-base font-medium',
             textSize: 'text-base font-medium',
             iconSize: 24
         },
         md: {
-            buttonSize: 'h-[48px] text-md font-medium',
             textSize: 'text-xl font-medium',
             iconSize: 32
         }
@@ -97,8 +94,8 @@ export function IconButton({
 
     return (
         <button
-            className={`flex ${sizeProps[customSize].buttonSize} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
-                ? `${disabledClasses.default} ${disabledClasses.textColor} ${disabledClasses.cursor}`
+            className={`flex p-1 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
+                ? `${disabledClasses.default} ${disabledClasses.cursor}`
                 : `${typeProps[type].default} ${typeProps[type].hovered} ${typeProps[type].pressed} cursor-pointer`
                 }`}
             onClick={handleClick}
@@ -106,7 +103,7 @@ export function IconButton({
             disabled={disabled}
             type="button"
         >
-            <span className={`material-symbols-rounded ${fill? 'material-setting-fill' : ''}`} style={{ fontSize: sizeProps[customSize].iconSize, color: typeProps[type].iconColor }}>
+            <span className={`material-symbols-rounded ${fill? 'material-setting-fill' : ''}`} style={{ fontSize: sizeProps[customSize].iconSize, color: disabled ? disabledClasses.iconColor : typeProps[type].iconColor }}>
                 {icon}
             </span>
         </button>

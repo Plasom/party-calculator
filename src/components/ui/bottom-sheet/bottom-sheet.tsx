@@ -2,10 +2,12 @@
 
 import { Button } from '../button';
 import { Blanket } from '@/components/templates/blanket';
+import { IconButton } from '../icon-button';
 
 interface BottomSheetProps extends React.HTMLAttributes<HTMLDivElement> {
     isOpen: boolean;
     onClose?: () => void;
+    onBack?: () => void;
     title?: string;
     description?: string;
     children: React.ReactNode;
@@ -19,10 +21,12 @@ interface BottomSheetProps extends React.HTMLAttributes<HTMLDivElement> {
 export function BottomSheet({
     isOpen,
     onClose,
+    onBack,
     title,
     description,
     children,
     showHandle = true,
+    maxWidth = "max-w-md",
     isTransparent = false,
     button = 'cancel',
     disableBackground = false,
@@ -46,7 +50,7 @@ export function BottomSheet({
     return (
         <Blanket onClose={onClose} itemAlignment="end" disableBackground={disableBackground}>
             <div
-                className={`${isTransparent ? 'bg-transparent' : 'bg-zinc-100'} flex-1 rounded-t-3xl sm:max-w-[390px] w-full px-4 pb-6 pt-[6px] transform transition-transform ease-out ${isOpen ? 'animate-slide-up' : 'animate-slide-down'}`}
+                className={`${isTransparent ? 'bg-transparent' : 'bg-zinc-100'} flex-1 rounded-t-3xl w-full ${maxWidth} px-4 pb-6 pt-[6px] transform transition-transform ease-out ${isOpen ? 'animate-slide-up' : 'animate-slide-down'}`}
                 style={{ transitionDuration: 'var(--transition-duration)' }}
                 {...props}
             >
@@ -56,23 +60,26 @@ export function BottomSheet({
                 )}
 
                 <div className="flex flex-row w-full justify-between">
-                    {/* Header */}
-                    {(title || description) && (
-                        <div className="mb-4">
-                            {title && (
-                                <h2 className="text-2xl font-semibold text-gray-900">
-                                    {title}
-                                </h2>
-                            )}
-                            {description && (
-                                <p className="text-gray-500 text-sm mt-1">
-                                    {description}
-                                </p>
-                            )}
-                        </div>
-                    )}
-                    {buttonGroup[button]}
-                </div>
+                        {/* Header */}
+                        {(title || description) && (
+                            <div className="mb-4">
+                                {onBack && <IconButton icon="arrow_back" type="ghost" customSize='sm' className='mb-4' onClick={onBack} />}
+                                {title && (
+                                    <h2 className="text-2xl font-semibold text-gray-900">
+                                        {title}
+                                    </h2>
+                                )}
+                                {description && (
+                                    <p className="text-gray-500 text-sm mt-1">
+                                        {description}
+                                    </p>
+                                )}
+                            </div>
+                        )}
+                        {buttonGroup[button]}
+                    </div>
+
+
 
                 {/* Content */}
                 {children}
