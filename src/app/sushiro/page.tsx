@@ -4,7 +4,7 @@ import { PageWithNav } from "@/components/templates/page-with-nav";
 import { Section } from "@/components/templates/section";
 import { AddMemberBottomSheet } from "@/components/ui/bottom-sheet/add-member-bottom-sheet";
 import { AddDishBottomSheet } from "@/components/ui/bottom-sheet/add-dish-bottom-sheet";
-import { MemberBadge } from "@/components/ui/member-badge";
+import { MemberBadge } from "@/components/ui/Badge/member-badge";
 import { CardList } from "@/components/ui/card/card-list";
 import { CardDish } from "@/components/ui/card/dish";
 import React, { useEffect, useRef, useState } from "react";
@@ -23,7 +23,7 @@ export default function SushiroPage() {
     // Hooks
     const { members, selectedMember, addMember, changeMemberName, selectMember, removeMember } = useMember();
     const { memberOrders, updateMemberOrder, getMemberOrderPrice, clearMemberOrders, getOrderDishesTotal } = useOrder();
-    const { dishes, addDish, removeDish } = useDishes();
+    const { dishes, removeDish } = useDishes();
 
     // State
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false);
@@ -71,11 +71,11 @@ export default function SushiroPage() {
         if (!selectedMember || !selectedDishId) return;
 
         const dishToDelete = dishes.find(dish => dish.id === selectedDishId);
-        
+
         if (dishToDelete && !dishToDelete.isDefault) {
             removeDish(selectedDishId);
         }
-        
+
         setSelectedDishId(null);
     };
 
@@ -86,21 +86,6 @@ export default function SushiroPage() {
 
     const handleCustomDishClick = () => {
         setIsAddDishBottomSheetOpen(true);
-    };
-
-    const handleAddCustomDish = (name: string, price: number) => {
-        const newDish = {
-            id: `custom-${Date.now()}`,
-            url: "/images/sushiro_asset/dishes/custom/default.svg",
-            label: `${price}.-`,
-            textColor: "black" as const,
-            isButton: true,
-            initialQuantity: 0,
-            price: price,
-            name: name,
-            isDefault: false
-        };
-        addDish(newDish);
     };
 
     const handleChangeMemberName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -203,7 +188,8 @@ export default function SushiroPage() {
                                     fill
                                 />}
                         </div>
-                    </div>}
+                    </div>
+                }
                 <div className="flex items-center flex-wrap w-full gap-1.5">
                     <MemberBadge
                         variant="outline"
@@ -262,12 +248,12 @@ export default function SushiroPage() {
                 </CardList>
             </Section>
 
-            <Section 
-                header = "Added item list"
+            <Section
+                header="Added item list"
                 className="pt-4"
             >
                 <CardSummary>
-                    
+
                 </CardSummary>
             </Section>
 
@@ -286,7 +272,6 @@ export default function SushiroPage() {
                     setIsAddDishBottomSheetOpen(false);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                onAddDish={handleAddCustomDish}
             />
 
             <MenuBottomSheet

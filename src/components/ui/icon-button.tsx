@@ -73,7 +73,7 @@ export function IconButton({
 
     const disabledClasses = {
         default: 'bg-[var(--components-button-disabled-state-default)]',
-        textColor: 'text-[var(--components-button-disabled-text)]',
+        iconColor: 'var(--components-button-disabled-icon)',
         cursor: 'cursor-not-allowed'
     };
 
@@ -97,8 +97,8 @@ export function IconButton({
 
     return (
         <button
-            className={`flex ${sizeProps[customSize].buttonSize} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
-                ? `${disabledClasses.default} ${disabledClasses.textColor} ${disabledClasses.cursor}`
+            className={`flex ${sizeProps[customSize].buttonSize} p-1 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
+                ? `${disabledClasses.default} ${disabledClasses.cursor}`
                 : `${typeProps[type].default} ${typeProps[type].hovered} ${typeProps[type].pressed} cursor-pointer`
                 }`}
             onClick={handleClick}
@@ -106,7 +106,7 @@ export function IconButton({
             disabled={disabled}
             type="button"
         >
-            <span className={`material-symbols-rounded ${fill? 'material-setting-fill' : ''}`} style={{ fontSize: sizeProps[customSize].iconSize, color: typeProps[type].iconColor }}>
+            <span className={`material-symbols-rounded ${fill? 'material-setting-fill' : ''}`} style={{ fontSize: sizeProps[customSize].iconSize, color: disabled ? disabledClasses.iconColor : typeProps[type].iconColor }}>
                 {icon}
             </span>
         </button>

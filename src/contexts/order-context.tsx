@@ -54,6 +54,7 @@ export function OrderProvider({ children }: OrderProviderProps) {
     },[pathOrders]);
 
     const updateMemberOrder = (memberId: string, orderItem: OrderItem) => {
+        console.log(memberId, orderItem)
         setPathOrders(prev => {
             const currentPathOrders = prev[currentPath] || {};
             const currentMemberOrders = currentPathOrders[memberId] || [];
