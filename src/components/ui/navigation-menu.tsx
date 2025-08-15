@@ -30,8 +30,9 @@ export function NavigationMenu() {
           />
           <IconButton
             icon="lunch_dining"
+            type="ghost"
+            customSize="sm"
             onClick={() => setOpen(!open)}
-            customColor="var(--color-neutral-800)"
             fill
           />
         </div>

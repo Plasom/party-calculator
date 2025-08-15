@@ -1,20 +1,20 @@
 'use client';
 
 import { useLongPress } from '@/hooks/useLongPress';
+import { MaterialSymbol } from 'material-symbols';
 
 interface ButtonProps {
     className?: string;
     label?: string;
-    rightIcon?: React.ReactNode;
-    leftIcon?: React.ReactNode;
+    rightIcon?: MaterialSymbol;
+    leftIcon?: MaterialSymbol;
     onClick: () => void;
     onLongPress?: () => void;
     longPressDuration?: number;
     disabled?: boolean;
     type?: 'primary' | 'secondary' | 'ghost' | 'quartiary';
-    buttonSize?: 'xs' | 'sm' | 'md';
-    fontSize?: 'font-semibold' | 'font-normal' | 'font-medium' | 'font-bold';
-    textSize?: 'text-xs' | 'text-sm' | 'text-md' | 'text-lg' | 'text-xl';
+    customSize?: 'xs' | 'sm' | 'md';
+    customFontSize?: 'xs' | 'sm' | 'md';
     textColor?: string;
 }
 
@@ -28,9 +28,8 @@ export function Button({
     longPressDuration,
     disabled = false,
     type = 'primary',
-    buttonSize = 'sm',
-    fontSize = 'font-normal',
-    textSize = 'text-xs',
+    customSize = 'sm',
+    customFontSize,
     textColor
 }: ButtonProps) {
     const longPressHandlers = useLongPress({
@@ -44,7 +43,8 @@ export function Button({
             onClick();
         }
     };
-    const classMap = {
+
+    const typeProps = {
         primary: {
             default: 'bg-[var(--components-button-primary-state-default)]',
             hovered: 'hover:bg-[var(--components-button-primary-state-hovered)]',
@@ -77,31 +77,42 @@ export function Button({
         cursor: 'cursor-not-allowed'
     };
 
-    const sizeButton = {
-        xs: 'h-[28px]',
-        sm: 'h-[32px]',
-        md: 'h-[48px]'
+    const sizeProps = {
+        xs: {
+            buttonSize: 'h-[28px] text-sm font-medium',
+            textSize: 'text-sm font-medium',
+            iconSize: 16
+        },
+        sm: {
+            buttonSize: 'h-[32px] text-base font-medium',
+            textSize: 'text-base font-medium',
+            iconSize: 24
+        },
+        md: {
+            buttonSize: 'h-[48px] text-md font-medium',
+            textSize: 'text-xl font-medium',
+            iconSize: 32
+        }
     }
 
     return (
         <button
-            className={`flex ${sizeButton[buttonSize]} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
+            className={`flex ${sizeProps[customSize].buttonSize} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
                     ? `${disabledClasses.default} ${disabledClasses.textColor} ${disabledClasses.cursor}`
-                    : `${classMap[type].default} ${classMap[type].hovered} ${classMap[type].pressed} ${textColor ? textColor : classMap[type].textColor} cursor-pointer`
+                    : `${typeProps[type].default} ${typeProps[type].hovered} ${typeProps[type].pressed} ${textColor ? textColor : typeProps[type].textColor} cursor-pointer`
                 }`}
             onClick={handleClick}
             {...longPressHandlers}
             disabled={disabled}
             type="button"
         >
-            {leftIcon && <span className="material-symbols-rounded">
+            {leftIcon && <span className="material-symbols-rounded" style={{ fontSize: sizeProps[customSize].iconSize }}>
                 {leftIcon}
             </span>}
-            {label && <span className={`${fontSize} ${textSize}`}>{label}</span>}
-            {rightIcon && <span className="material-symbols-rounded">
+            {label && <span className={customFontSize ? sizeProps[customFontSize].textSize : sizeProps[customSize].textSize}>{label}</span>}
+            {rightIcon && <span className="material-symbols-rounded" style={{ fontSize: sizeProps[customSize].iconSize }}>
                 {rightIcon}
             </span>}
-
         </button>
     )
 }

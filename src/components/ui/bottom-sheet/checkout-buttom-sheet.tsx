@@ -21,7 +21,7 @@ export function CheckoutBottomSheet({
     const { dishes } = useDishes();
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
-    const scrollDirection = useWindowScroll();
+    const scrollDirection = useWindowScroll(5);
 
     useEffect(() => {
         if (scrollDirection === 'down') {
@@ -55,10 +55,8 @@ export function CheckoutBottomSheet({
 
                 <Button
                     type="primary"
-                    buttonSize="md"
+                    customSize="md"
                     label="Checkout"
-                    fontSize='font-medium'
-                    textSize='text-xl'
                     onClick={() => console.log('hello world')}
                 />
             </div>

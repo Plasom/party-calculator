@@ -1,3 +1,5 @@
+'use client';
+
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Button } from "../button";
@@ -101,7 +103,7 @@ export function CardDish({
             {isButton && <div className="w-full flex flex-row gap-2 mt-5" onClick={(e) => e.stopPropagation()}>
                 <Button
                     type="primary"
-                    buttonSize="sm"
+                    customSize="sm"
                     leftIcon="check_indeterminate_small"
                     onClick={handleDecrease}
                     onLongPress={handleRemoveAll}

@@ -18,7 +18,6 @@ import { IconButton } from "@/components/ui/icon-button";
 import { AlertModal, DeleteModal } from "@/components/ui/modal/alert-modal";
 import { CardSummary } from "@/components/ui/card/summary";
 import { CheckoutBottomSheet } from "@/components/ui/bottom-sheet/checkout-buttom-sheet";
-import { useElementHeight } from "@/hooks/useElementHeight";
 
 export default function SushiroPage() {
     // Hooks
@@ -45,8 +44,23 @@ export default function SushiroPage() {
     // Custom hooks
     const orderTotal = getOrderDishesTotal();
     const isCheckoutOpen = !isBottomSheetOpen && !isAddDishBottomSheetOpen && !isMenuBottomSheetOpen && (orderTotal > 0);
-    const checkoutBottomSheetHeight = useElementHeight(checkoutBottomSheetRef, [orderTotal, isCheckoutOpen]);
 
+    // Object Arrays
+    const menuItems: MenuItem[] = [
+        {
+            label: "Split plate",
+            onClick: () => console.log('Split plate clicked'),
+            isShow: true
+        },
+        {
+            label: "Delete plate",
+            onClick: () => handleDeleteDish(),
+            textColor: 'text-[var(--components-button-ghost-desctructive-text)]',
+            isShow: !!selectedDishId && dishes.some(dish => dish.id === selectedDishId && !dish.isDefault)
+        }
+    ]
+
+    // Function & Action
     const handleDishAdd = (data: { id: string; count: number }) => {
         if (!selectedMember) return;
 
@@ -88,20 +102,6 @@ export default function SushiroPage() {
         };
         addDish(newDish);
     };
-
-    const menuItems: MenuItem[] = [
-        {
-            label: "Split plate",
-            onClick: () => console.log('Split plate clicked'),
-            isShow: true
-        },
-        {
-            label: "Delete plate",
-            onClick: () => handleDeleteDish(),
-            textColor: 'text-[var(--components-button-ghost-desctructive-text)]',
-            isShow: !!selectedDishId && dishes.some(dish => dish.id === selectedDishId && !dish.isDefault)
-        }
-    ]
 
     const handleChangeMemberName = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (selectedMember?.name !== e.target.value) {
@@ -148,12 +148,13 @@ export default function SushiroPage() {
         setIsDeleteMemberModalOpen(false);
     }
 
+    // useEffect
     useEffect(() => {
         setSelectedMemberNameTemp(selectedMember?.name || null);
     }, [selectedMember, members]);
 
     return (
-        <PageWithNav style={{ marginBottom: isCheckoutOpen ? checkoutBottomSheetHeight : 0 }}>
+        <PageWithNav style={{ marginBottom: isCheckoutOpen ? 100 : 0 }}>
             <Section
                 header="Who's eating?"
                 description="Add members to track their dishes."
@@ -181,14 +182,14 @@ export default function SushiroPage() {
                                 <>
                                     <IconButton
                                         icon="check"
+                                        type="primary"
+                                        customSize="sm"
                                         onClick={handleSubmitChangeMemberName}
-                                        customColor="white"
-                                        bgColor="black"
-                                        disable={selectedMemberNameTemp === ""}
+                                        disabled={selectedMemberNameTemp === ""}
                                     />
                                     <Button
                                         type="ghost"
-                                        buttonSize="xs"
+                                        customSize="xs"
                                         label="cancel"
                                         onClick={handleCancelChangeMemberName}
                                     />
@@ -196,9 +197,9 @@ export default function SushiroPage() {
                                 :
                                 <IconButton
                                     icon="delete"
+                                    type="ghost-desctructive"
+                                    customSize="md"
                                     onClick={() => setIsDeleteMemberModalOpen(true)}
-                                    customSize={32}
-                                    customColor="var(--color-rose-700)"
                                     fill
                                 />}
                         </div>

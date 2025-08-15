@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 
 type ScrollDirection = 'up' | 'down' | null;
@@ -22,7 +24,7 @@ export function useWindowScroll(threshold = 0): ScrollDirection {
       if (Math.abs(diff) < threshold) {
         return;
       }
-
+      console.log(window.scrollY);
       if (diff > 0) {
         setScrollDir('down');
       } else if (diff < 0) {
