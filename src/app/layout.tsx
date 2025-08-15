@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html>
       <body
-        className={`${promptFont.className} overflow-auto scrollbar-hide select-none antialiased`}
+        className={`${promptFont.className} scrollbar-hide select-none antialiased`}
       >
         <MemberProvider>
           <OrderProvider>

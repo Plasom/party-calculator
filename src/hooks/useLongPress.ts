@@ -49,7 +49,6 @@ export function useLongPress({
     onMouseDown: startLongPress,
     onMouseUp: endLongPress,
     onMouseLeave: cancelLongPress,
-    onMouseMove: cancelLongPress, // Cancel on mouse drag
     
     // Touch events (for mobile/iOS support)
     onTouchStart: startLongPress,

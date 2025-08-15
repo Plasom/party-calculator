@@ -17,7 +17,6 @@ import { Button } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
 import { AlertModal, DeleteModal } from "@/components/ui/modal/alert-modal";
 import { CheckoutBottomSheet } from "@/components/ui/bottom-sheet/checkout-buttom-sheet";
-import { useElementHeight } from "@/hooks/useElementHeight";
 
 export default function SushiroPage() {
     // Hooks
@@ -44,7 +43,6 @@ export default function SushiroPage() {
     // Custom hooks
     const orderTotal = getOrderDishesTotal();
     const isCheckoutOpen = !isBottomSheetOpen && !isAddDishBottomSheetOpen && !isMenuBottomSheetOpen && (orderTotal > 0);
-    const checkoutBottomSheetHeight = useElementHeight(checkoutBottomSheetRef, [orderTotal, isCheckoutOpen]);
 
     // Object Arrays
     const menuItems: MenuItem[] = [
@@ -155,7 +153,7 @@ export default function SushiroPage() {
     }, [selectedMember, members]);
 
     return (
-        <PageWithNav style={{ marginBottom: isCheckoutOpen ? checkoutBottomSheetHeight : 0 }}>
+        <PageWithNav style={{ marginBottom: isCheckoutOpen ? 100 : 0 }}>
             <Section
                 header="Who's eating?"
                 description="Add members to track their dishes."

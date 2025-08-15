@@ -21,7 +21,7 @@ export function CheckoutBottomSheet({
     const { dishes } = useDishes();
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
-    const scrollDirection = useWindowScroll();
+    const scrollDirection = useWindowScroll(5);
 
     useEffect(() => {
         if (scrollDirection === 'down') {
