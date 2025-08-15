@@ -21,7 +21,7 @@ export function IconButton({
     longPressDuration,
     disabled = false,
     icon,
-    customSize = 'xs',
+    customSize = 'sm',
     fill = false,
     type = 'primary',
     className,
@@ -79,17 +79,14 @@ export function IconButton({
 
     const sizeProps = {
         xs: {
-            buttonSize: 'h-[28px] text-sm font-medium',
             textSize: 'text-sm font-medium',
             iconSize: 16
         },
         sm: {
-            buttonSize: 'h-[32px] text-base font-medium',
             textSize: 'text-base font-medium',
             iconSize: 24
         },
         md: {
-            buttonSize: 'h-[48px] text-md font-medium',
             textSize: 'text-xl font-medium',
             iconSize: 32
         }
@@ -97,7 +94,7 @@ export function IconButton({
 
     return (
         <button
-            className={`flex ${sizeProps[customSize].buttonSize} p-1 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
+            className={`flex p-1 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
                 ? `${disabledClasses.default} ${disabledClasses.cursor}`
                 : `${typeProps[type].default} ${typeProps[type].hovered} ${typeProps[type].pressed} cursor-pointer`
                 }`}
