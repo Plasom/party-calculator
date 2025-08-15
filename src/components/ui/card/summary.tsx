@@ -1,5 +1,4 @@
 import { IconButton } from "../icon-button";
-import { MemberBadge } from "../member-badge";
 import { ShowMemberBadge } from "../show-member-badge";
 
 export function CardSummary(){
