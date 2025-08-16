@@ -1,8 +1,9 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useMemo, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { DishData } from '@/data/dishes';
+import { SortHelper } from '@/lib/sort-helper';
 
 export interface OrderItem {
     id: string;
@@ -13,21 +14,27 @@ export interface MemberOrders {
     [memberId: string]: OrderItem[];
 }
 
+export interface OrderTotalSummary {
+    dishes: DishData[];
+    totalDishes: number;
+    totalPrice: number;
+}
+
 interface PathOrders {
     [path: string]: MemberOrders;
 }
 
 interface IOrderContext {
     memberOrders: MemberOrders;
+    selectedOrders: OrderItem[];
     updateMemberOrder: (memberId: string, orderItem: OrderItem) => void;
     clearMemberOrders: (memberId: string) => void;
     clearAllOrders: () => void;
     getMemberOrderTotal: (memberId: string) => number;
-    getMemberOrderPrice: (memberId: string, dishesData: Array<{id: string; price?: number}>) => number;
+    getMemberOrderPrice: (memberId: string, dishesData: Array<{ id: string; price?: number }>) => number;
     getAllMembersWithOrders: () => Array<{ memberId: string; orders: OrderItem[]; total: number }>;
     removeAllMemberOrderByOrderId: (dishId: string) => void;
-    getOrderDishesTotal: () => number;
-    getOrderPriceTotal: (dishes: DishData[]) => number;
+    getOrderTotalSummary: (dishes: DishData[]) => OrderTotalSummary;
 }
 
 const OrderContext = createContext<IOrderContext | undefined>(undefined);
@@ -39,6 +46,7 @@ interface OrderProviderProps {
 export function OrderProvider({ children }: OrderProviderProps) {
     const pathname = usePathname();
     const [pathOrders, setPathOrders] = useState<PathOrders>({});
+    const [selectedOrders, setSelectedOrders] = useState<OrderItem[]>([]);
 
     const getBasePath = (path: string) => {
         if (path.startsWith('/sushiro')) return '/sushiro';
@@ -47,11 +55,27 @@ export function OrderProvider({ children }: OrderProviderProps) {
     };
 
     const currentPath = getBasePath(pathname || '/');
-    const memberOrders = pathOrders[currentPath] || {};
+    const memberOrders = useMemo(() => pathOrders[currentPath] || {}, [pathOrders, currentPath]);
 
     useEffect(() => {
-        console.log(pathOrders)
-    },[pathOrders]);
+        const allOrders: OrderItem[] = [];
+        const orderMap = new Map<string, number>();
+        
+        Object.values(memberOrders).forEach((memberOrderList) => {
+            memberOrderList.forEach((orderItem) => {
+                const existingCount = orderMap.get(orderItem.id) || 0;
+                orderMap.set(orderItem.id, existingCount + orderItem.count);
+            });
+        });
+        orderMap.forEach((count, id) => {
+            console.log('count', count, 'id', id)
+            if (count > 0) {
+                allOrders.push({ id, count });
+            }
+        });
+        
+        setSelectedOrders(allOrders);
+    }, [memberOrders]);
 
     const updateMemberOrder = (memberId: string, orderItem: OrderItem) => {
         setPathOrders(prev => {
@@ -93,7 +117,7 @@ export function OrderProvider({ children }: OrderProviderProps) {
             const currentPathOrders = prev[currentPath] || {};
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { [memberId]: _, ...remainingOrders } = currentPathOrders;
-            
+
             return {
                 ...prev,
                 [currentPath]: remainingOrders
@@ -114,7 +138,7 @@ export function OrderProvider({ children }: OrderProviderProps) {
         return orders.reduce((sum, item) => sum + item.count, 0);
     };
 
-    const getMemberOrderPrice = (memberId: string, dishesData: Array<{id: string; price?: number}>): number => {
+    const getMemberOrderPrice = (memberId: string, dishesData: Array<{ id: string; price?: number }>): number => {
         const orders = memberOrders[memberId] || [];
         return orders.reduce((sum, orderItem) => {
             const dish = dishesData.find(d => d.id === orderItem.id);
@@ -147,6 +171,27 @@ export function OrderProvider({ children }: OrderProviderProps) {
         });
     };
 
+    const getOrderTotalSummary = (dishes: DishData[]): OrderTotalSummary => {
+        const totalDishes = getOrderDishesTotal();
+        const totalPrice = getOrderPriceTotal(dishes);
+
+        const orderedDishes = SortHelper.multiLevelSort(selectedOrders.flatMap(orderItem =>{
+            const dish: DishData = dishes.find(d => d.id === orderItem.id)!;
+            dish.amount = orderItem.count;
+
+            return dish ? [dish] : [];
+        }), [
+            { key: 'isDefault', order: 'desc' },
+            { key: 'price', order: 'asc' }
+        ]);
+
+        return {
+            dishes: orderedDishes,
+            totalDishes,
+            totalPrice
+        };
+    };
+
     const getOrderDishesTotal = (): number => {
         return Object.values(memberOrders).reduce((sum, orders) => {
             return sum + orders.reduce((orderSum, item) => orderSum + item.count, 0);
@@ -162,11 +207,10 @@ export function OrderProvider({ children }: OrderProviderProps) {
         }, 0);
     };
 
-
-
     return (
         <OrderContext.Provider value={{
             memberOrders,
+            selectedOrders,
             updateMemberOrder,
             clearMemberOrders,
             clearAllOrders,
@@ -174,8 +218,7 @@ export function OrderProvider({ children }: OrderProviderProps) {
             getMemberOrderPrice,
             getAllMembersWithOrders,
             removeAllMemberOrderByOrderId,
-            getOrderDishesTotal,
-            getOrderPriceTotal
+            getOrderTotalSummary,
         }}>
             {children}
         </OrderContext.Provider>

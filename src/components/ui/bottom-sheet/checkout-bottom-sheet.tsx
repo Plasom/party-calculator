@@ -7,6 +7,7 @@ import { BottomSheet } from './bottom-sheet';
 import { useWindowScroll } from '@/hooks/useWindowScroll';
 import { useEffect, useState } from 'react';
 import { useDishes } from '@/contexts/dishes-context';
+import { useRouter } from 'next/navigation';
 
 interface CheckoutBottomSheetProps extends React.RefAttributes<HTMLDivElement> {
     isOpen?: boolean;
@@ -17,10 +18,12 @@ export function CheckoutBottomSheet({
     isOpen = true,
     ...props
 }: CheckoutBottomSheetProps) {
-    const { getOrderDishesTotal, getOrderPriceTotal } = useOrder();
+    const { getOrderTotalSummary } = useOrder();
     const { dishes } = useDishes();
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
+    const router = useRouter();
     const scrollDirection = useWindowScroll(5);
 
     useEffect(() => {
@@ -47,11 +50,11 @@ export function CheckoutBottomSheet({
                     <div className="pb-2">
                         <div className="flex flex-row justify-between">
                             <span className="text-left">Total Dishes</span>
-                            <span className="text-right font-medium">{getOrderDishesTotal()}</span>
+                            <span className="text-right font-medium">{getOrderTotalSummary(dishes).totalDishes}</span>
                         </div>
                         <div className="flex flex-row justify-between">
                             <span>SubTotal</span>
-                            <span>{getOrderPriceTotal(dishes)} ฿</span>
+                            <span>{getOrderTotalSummary(dishes).totalPrice} ฿</span>
                         </div>
                     </div>
                 </div>
@@ -67,7 +70,7 @@ export function CheckoutBottomSheet({
                     type="primary"
                     customSize="md"
                     label="Checkout"
-                    onClick={() => console.log('hello world')}
+                    onClick={() => router.push('/sushiro/checkout')}
                 />
             </div>
         </BottomSheet>

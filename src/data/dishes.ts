@@ -7,7 +7,8 @@ export interface DishData {
   leftIcon?: string;
   price?: number;
   name?: string;
-  isDefault?: boolean;
+  amount?: number;
+  isDefault: boolean;
 }
 
 export const sushiroDishes: DishData[] = [
