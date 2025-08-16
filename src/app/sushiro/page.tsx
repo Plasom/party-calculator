@@ -280,6 +280,12 @@ export default function SushiroPage() {
                 menuItems={menuItems}
             />
 
+            <CheckoutBottomSheet
+                ref={checkoutBottomSheetRef}
+                isOpen={isCheckoutOpen}
+                warningModal={isUnsavedModalOpen}
+            />
+
             <AlertModal
                 id="unsaved-changes"
                 isOpen={isUnsavedModalOpen}
@@ -297,11 +303,6 @@ export default function SushiroPage() {
                 onCancel={() => setIsDeleteMemberModalOpen(false)}
                 title="Delete member?"
                 message="This will permanently remove the member and their plates. Delete?"
-            />
-
-            <CheckoutBottomSheet
-                ref={checkoutBottomSheetRef}
-                isOpen={isCheckoutOpen}
             />
         </PageWithNav>
     )
