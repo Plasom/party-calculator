@@ -8,7 +8,7 @@ interface ButtonProps {
     label?: string;
     rightIcon?: MaterialSymbol;
     leftIcon?: MaterialSymbol;
-    onClick: () => void;
+    onClick?: () => void;
     onLongPress?: () => void;
     longPressDuration?: number;
     disabled?: boolean;
@@ -40,7 +40,7 @@ export function Button({
 
     const handleClick = () => {
         if (!disabled) {
-            onClick();
+            onClick?.();
         }
     };
 

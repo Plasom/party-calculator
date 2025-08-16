@@ -12,7 +12,7 @@ import { Badge } from '../badge';
 import { DishData } from '@/data/dishes';
 import { useMember } from '@/contexts/member-context';
 import { useOrder } from '@/contexts/order-context';
-import { QuantityValidator } from '@/lib/quantity-helper';
+import { ValidatorHelper } from '@/lib/validator-helper';
 
 interface AddDishBottomSheetProps {
     isOpen: boolean;
@@ -47,7 +47,7 @@ export function AddDishBottomSheet({
 
     const handleAddCustomDish = (price: number, quantity: number) => {
         const newDish: DishData = {
-            id: `custom-${Date.now()}`,
+            id: `custom-${price}`,
             url: "/images/sushiro_asset/dishes/custom/default.svg",
             label: `${price}.-`,
             textColor: "black",
@@ -60,10 +60,10 @@ export function AddDishBottomSheet({
         const existingDish = dishes.find(dish => dish.price === newDish.price && dish.name === 'custom');
         const existingMember = memberOrders[selectedMember!.id]?.find(item => item.id === existingDish?.id);
         if (existingDish && existingMember) {
-            updateMemberOrder(selectedMember!.id, { id: existingDish.id, count: existingMember.count + quantity });
+            updateMemberOrder(selectedMember!.id, { id: existingDish.id, price: existingDish.price, count: existingMember.count + quantity });
         } else {
             addDish(newDish);
-            updateMemberOrder(selectedMember!.id, { id: newDish.id, count: quantity });
+            updateMemberOrder(selectedMember!.id, { id: newDish.id, price: newDish.price, count: quantity });
         }
     };
 
@@ -248,7 +248,7 @@ interface Page2Props {
 
 const Page2 = ({ price, setPrice, handleSubmit, isFormValid, quantity, setQuantity }: Page2Props) => {
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const validator = new QuantityValidator(0, 9999);
+        const validator = new ValidatorHelper(0, 9999);
         const numValue = validator.processStringInput(e.target.value);
 
         setPrice(numValue);

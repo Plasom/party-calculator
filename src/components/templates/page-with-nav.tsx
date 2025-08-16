@@ -7,10 +7,12 @@ import { SectionElement } from "./section";
 
 interface PageWithNavProps extends React.HTMLAttributes<HTMLDivElement> {
     children: SectionElement | SectionElement[];
+    disableBack?: boolean;
 }
 
 export function PageWithNav({
     children,
+    disableBack,
     ...props
 }: PageWithNavProps) {
     const pathname = usePathname();
@@ -28,10 +30,10 @@ export function PageWithNav({
     };
 
     return (
-        <div className={`mobile-width mt-16 ${props.className || ''}`} {...props}>
+        <div className={`mobile-width mt-16`} {...props}>
             <NavigationMenu />
             <div className="px-1">
-                {!isHomePage && (
+                {!isHomePage && !disableBack && (
                     <Button
                         type="ghost"
                         customSize="sm"

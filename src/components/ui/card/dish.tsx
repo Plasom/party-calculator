@@ -2,13 +2,15 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { QuantityValidator } from "@/lib/quantity-helper";
+import { ValidatorHelper } from "@/lib/validator-helper";
 import { useLongPress } from "@/hooks/useLongPress";
 import { IconButton } from "../icon-button";
+import { OrderItem } from "@/contexts/order-context";
 
 export function CardDish({
     id,
     url,
+    price,
     alt = 'Placeholder Image',
     onAdd,
     onClick,
@@ -20,9 +22,10 @@ export function CardDish({
     isButton = true
 }: {
     id: string;
+    price: number;
     url: string;
     alt?: string;
-    onAdd?: (data: { id: string; count: number }) => void;
+    onAdd?: (data: OrderItem) => void;
     onClick?: () => void;
     onLongPress?: () => void;
     label?: string;
@@ -34,7 +37,7 @@ export function CardDish({
     const [quantity, setQuantity] = useState(initialQuantity);
     const [inputValue, setInputValue] = useState(initialQuantity.toString());
 
-    const validator = new QuantityValidator(0, 999);
+    const validator = new ValidatorHelper(0, 999);
 
     const longPressHandlers = useLongPress({
         onLongPress,
@@ -50,7 +53,7 @@ export function CardDish({
         const newQuantity = validator.validateAndClean(quantity + 1);
         setQuantity(newQuantity);
         setInputValue(newQuantity.toString());
-        onAdd?.({ id, count: newQuantity });
+        onAdd?.({ id, price, count: newQuantity });
         onClick?.();
     };
 
@@ -58,13 +61,13 @@ export function CardDish({
         const newQuantity = validator.validateAndClean(quantity - 1);
         setQuantity(newQuantity);
         setInputValue(newQuantity.toString());
-        onAdd?.({ id, count: newQuantity });
+        onAdd?.({ id, price, count: newQuantity });
     };
 
     const handleRemoveAll = () => {
         setQuantity(0);
         setInputValue('0');
-        onAdd?.({ id, count: 0 });
+        onAdd?.({ id, price, count: 0 });
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,7 +75,7 @@ export function CardDish({
 
         setInputValue(numValue.toString());
         setQuantity(numValue);
-        onAdd?.({ id, count: numValue });
+        onAdd?.({ id, price, count: numValue });
     };
 
     return (

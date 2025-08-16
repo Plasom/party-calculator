@@ -24,6 +24,8 @@ interface IMemberContext {
     clearMembers: () => void;
     removeMember: (memberId: string) => void;
     clearAllMembers: () => void;
+    setPromptPay: (value: string) => void;
+    promptPay: string;
 }
 
 const MemberContext = createContext<IMemberContext | undefined>(undefined);
@@ -35,6 +37,7 @@ interface MemberProviderProps {
 export function MemberProvider({ children }: MemberProviderProps) {
     const pathname = usePathname();
     const [pathMembers, setPathMembers] = useState<IPathMembers>({});
+    const [promptPay, setPromptPay] = useState<string>('null');
 
     const getBasePath = (path: string) => {
         if (path.startsWith('/sushiro')) return '/sushiro';
@@ -150,6 +153,8 @@ export function MemberProvider({ children }: MemberProviderProps) {
             clearMembers,
             removeMember,
             clearAllMembers,
+            setPromptPay,
+            promptPay
         }}>
             {children}
         </MemberContext.Provider>

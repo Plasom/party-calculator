@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react"
 import 'material-symbols';
 import { IconButton } from "./icon-button";
+import Link from "next/link";
 
 export function NavigationMenu() {
   const router = useRouter();
@@ -39,14 +40,14 @@ export function NavigationMenu() {
         {open && (
           <div className="flex flex-col px-4 py-2 backdrop-saturate-[180%] backdrop-blur-[20px] bg-[var(--components-nav-bg)]">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.label}
                 href={item.href}
                 className="flex items-center gap-3 text-gray-700 py-3 px-2 hover:bg-gray-200 rounded-md transition-colors bg-transparent"
                 onClick={() => setOpen(false)}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </div>
         )}

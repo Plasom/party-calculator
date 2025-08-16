@@ -37,8 +37,8 @@ export function AlertModal({ id, isOpen, onAction, onCancel, title, message, col
             <div id={id} className="w-[256px] bg-[var(--color-white)] rounded-xl">
                 <div className="px-[8.5px] pt-4 pb-6">
                     <div className="px-4 flex flex-col items-center gap-1">
-                        <p className="font-lg font-semibold">{title}</p>
-                        <p className="font-xs text-[#AAA] text-center">{message}</p>
+                        <p className="text-lg font-semibold">{title}</p>
+                        <p className="text-xs text-[#AAA] text-center">{message}</p>
                     </div>
                 </div>
 

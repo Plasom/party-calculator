@@ -1,9 +1,10 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { DishData, sushiroDishes, tenoiDishes } from '@/data/dishes';
 import { useOrder } from './order-context';
+import { SortHelper } from '@/lib/sort-helper';
 
 interface DishesContextType {
     dishes: DishData[];
@@ -44,10 +45,9 @@ export function DishesProvider({ children }: DishesProviderProps) {
     };
 
     const currentPath = getBasePath(pathname || '/');
-    const currentDishes = pathDishes[currentPath] || getDefaultDishes(currentPath);
+    const currentDishes = useMemo(() => pathDishes[currentPath] || getDefaultDishes(currentPath), [pathDishes, currentPath]);
 
     const addDish = (dish: DishData) => {
-        console.log(pathDishes)
         setPathDishes(prev => ({
             ...prev,
             [currentPath]: [...currentDishes.slice(0, currentDishes.length-1), { ...dish, isDefault: false }, currentDishes[currentDishes.length-1]]
@@ -95,7 +95,10 @@ export function DishesProvider({ children }: DishesProviderProps) {
     };
 
     const value: DishesContextType = {
-        dishes: currentDishes,
+        dishes: SortHelper.multiLevelSort(currentDishes, [
+            { key: 'isDefault', order: 'desc' },
+            { key: 'price', order: 'asc' }
+        ]),
         addDish,
         removeDish,
         updateDish,

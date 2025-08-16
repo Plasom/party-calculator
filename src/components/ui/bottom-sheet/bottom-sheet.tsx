@@ -26,7 +26,7 @@ export function BottomSheet({
     description,
     children,
     showHandle = true,
-    maxWidth = "max-w-md",
+    maxWidth,
     isTransparent = false,
     button = 'cancel',
     disableBackground = false,
@@ -39,7 +39,7 @@ export function BottomSheet({
                 type="secondary"
                 customSize="sm"
                 label="Cancel"
-                onClick={onClose!}
+                onClick={onClose}
             />
         ),
         hidden: null
@@ -50,7 +50,7 @@ export function BottomSheet({
     return (
         <Blanket onClose={onClose} itemAlignment="end" disableBackground={disableBackground}>
             <div
-                className={`${isTransparent ? 'bg-transparent' : 'bg-zinc-100'} flex-1 rounded-t-3xl w-full ${maxWidth} px-4 pb-6 pt-[6px] transform transition-transform ease-out ${isOpen ? 'animate-slide-up' : 'animate-slide-down'}`}
+                className={`${isTransparent ? 'bg-transparent' : 'bg-zinc-100'} flex-1 rounded-t-3xl w-full ${maxWidth} px-4 pb-6 pt-[6px] transform transition-transform ease-out ${isOpen ? 'animate-slide-up' : 'animate-slide-down'} pointer-events-auto`}
                 style={{ transitionDuration: 'var(--transition-duration)' }}
                 {...props}
             >
@@ -78,9 +78,6 @@ export function BottomSheet({
                         )}
                         {buttonGroup[button]}
                     </div>
-
-
-
                 {/* Content */}
                 {children}
             </div>

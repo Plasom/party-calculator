@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { QuantityValidator } from '@/lib/quantity-helper';
+import { ValidatorHelper } from '@/lib/validator-helper';
 import { IconButton } from './icon-button';
 
 interface CounterButtonProps {
@@ -18,7 +18,7 @@ export function CounterButton({ ...props }: CounterButtonProps) {
     const [quantity, setQuantity] = useState(props.initialQuantity);
     const [inputValue, setInputValue] = useState(props.initialQuantity.toString());
 
-    const validator = new QuantityValidator(0, 999);
+    const validator = new ValidatorHelper(0, 999);
 
     useEffect(() => {
         setQuantity(props.initialQuantity);
