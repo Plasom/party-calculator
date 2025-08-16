@@ -33,7 +33,7 @@ export default function CheckoutPage() {
     };
 
     return (
-        <PageWithNav style={{ paddingBottom: 40 }}>
+        <PageWithNav style={{ paddingBottom: 120 }}>
             <Section
                 header="Group bill summary"
                 className="pt-4"
