@@ -39,7 +39,7 @@ export function BottomSheet({
                 type="secondary"
                 customSize="sm"
                 label="Cancel"
-                onClick={onClose!}
+                onClick={onClose}
             />
         ),
         hidden: null
@@ -78,9 +78,6 @@ export function BottomSheet({
                         )}
                         {buttonGroup[button]}
                     </div>
-
-
-
                 {/* Content */}
                 {children}
             </div>

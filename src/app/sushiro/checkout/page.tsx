@@ -9,6 +9,7 @@ import { useOrder } from "@/contexts/order-context";
 import { SortHelper } from "@/lib/sort-helper";
 import { NumberHelper } from "@/lib/number-helper";
 import { Fragment, useState } from "react";
+import { ConfirmPaymentBottomSheet } from "@/components/ui/bottom-sheet/confirm-payment-bottom-sheet";
 
 export default function CheckoutPage() {
     const [isOpenTotal, setIsOpenTotal] = useState<boolean>(false);
@@ -210,6 +211,9 @@ export default function CheckoutPage() {
                 </div>
             </Section>
 
+            <ConfirmPaymentBottomSheet
+                isOpen={true}
+            />
         </PageWithNav>
     )
 }

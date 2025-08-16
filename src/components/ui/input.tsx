@@ -5,12 +5,12 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 interface InputProps extends React.ComponentProps<"input"> {
-  customSize?: 'normal' | 'xl'
+  customSize?: 'sm' | 'xl'
 }
 
-function Input({ className, type, customSize = 'normal', ...props }: InputProps) {
+function Input({ className, type, customSize = 'sm', ...props }: InputProps) {
   const fontStyles = {
-    normal: {
+    sm: {
       fontSize: "var(--font-size-normal)",
       fontWeight: "medium",
     },

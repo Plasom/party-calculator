@@ -11,4 +11,9 @@ export class NumberHelper {
         const cleanResult = Math.round(a * b);
         return cleanResult;
     }
+
+    public static cleanString(value: string): string {
+        return value.replace(/[^0-9]/g, "");
+    }
+
 }

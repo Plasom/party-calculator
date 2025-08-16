@@ -12,7 +12,7 @@ import { Badge } from '../badge';
 import { DishData } from '@/data/dishes';
 import { useMember } from '@/contexts/member-context';
 import { useOrder } from '@/contexts/order-context';
-import { QuantityValidator } from '@/lib/quantity-helper';
+import { ValidatorHelper } from '@/lib/validator-helper';
 
 interface AddDishBottomSheetProps {
     isOpen: boolean;
@@ -248,7 +248,7 @@ interface Page2Props {
 
 const Page2 = ({ price, setPrice, handleSubmit, isFormValid, quantity, setQuantity }: Page2Props) => {
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const validator = new QuantityValidator(0, 9999);
+        const validator = new ValidatorHelper(0, 9999);
         const numValue = validator.processStringInput(e.target.value);
 
         setPrice(numValue);

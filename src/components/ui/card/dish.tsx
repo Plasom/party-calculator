@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { QuantityValidator } from "@/lib/quantity-helper";
+import { ValidatorHelper } from "@/lib/validator-helper";
 import { useLongPress } from "@/hooks/useLongPress";
 import { IconButton } from "../icon-button";
 import { OrderItem } from "@/contexts/order-context";
@@ -37,7 +37,7 @@ export function CardDish({
     const [quantity, setQuantity] = useState(initialQuantity);
     const [inputValue, setInputValue] = useState(initialQuantity.toString());
 
-    const validator = new QuantityValidator(0, 999);
+    const validator = new ValidatorHelper(0, 999);
 
     const longPressHandlers = useLongPress({
         onLongPress,

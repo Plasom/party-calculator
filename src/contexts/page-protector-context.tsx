@@ -14,7 +14,7 @@ const PageProtectorContext = createContext<IPageProtectorContext | undefined>(un
 
 interface PageProtectorProviderProps {
     children: ReactNode;
-    requiredOrderPages?: string[]; // หน้าที่ต้องมี order
+    requiredOrderPages?: string[];
 }
 
 export function PageProtectorProvider({ 
@@ -25,10 +25,8 @@ export function PageProtectorProvider({
     const pathname = usePathname();
     const { selectedOrders, getAllMembersWithOrders } = useOrder();
 
-    // ตรวจสอบว่ามี order หรือไม่
     const hasOrders = selectedOrders.length > 0 || getAllMembersWithOrders().length > 0;
     
-    // ตรวจสอบว่าหน้าปัจจุบันต้องการ order หรือไม่ (เช็ค */checkout, */payment, */summary)
     const isOrderRequired = Boolean(pathname && (
         pathname.includes('/checkout') || 
         pathname.includes('/payment') || 
@@ -36,13 +34,10 @@ export function PageProtectorProvider({
         requiredOrderPages.some(page => pathname.startsWith(page))
     ));
     
-    // สามารถเข้าหน้าได้หรือไม่
     const canAccessPage = !isOrderRequired || hasOrders;
 
     useEffect(() => {
-        // ถ้าเป็นหน้าที่ต้องมี order แต่ไม่มี order ให้ redirect กลับ
         if (isOrderRequired && !hasOrders) {
-            // หาหน้าหลักของร้านจาก pathname
             if (pathname?.startsWith('/sushiro')) {
                 router.replace('/sushiro');
             } else if (pathname?.startsWith('/teenoi')) {
