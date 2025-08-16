@@ -28,7 +28,7 @@ export function PageWithNav({
     };
 
     return (
-        <div className={`mobile-width mt-16 ${props.className || ''}`} {...props}>
+        <div className={`mobile-width mt-16`} {...props}>
             <NavigationMenu />
             <div className="px-1">
                 {!isHomePage && (

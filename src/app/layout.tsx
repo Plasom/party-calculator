@@ -4,6 +4,7 @@ import "./globals.css";
 import { MemberProvider } from "@/contexts/member-context";
 import { OrderProvider } from "@/contexts/order-context";
 import { DishesProvider } from "@/contexts/dishes-context";
+import { PageProtectorProvider } from "@/contexts/page-protector-context";
 
 const promptFont = Prompt({
   subsets: ["thai", "latin"],
@@ -29,7 +30,9 @@ export default function RootLayout({
         <MemberProvider>
           <OrderProvider>
             <DishesProvider>
-              {children}
+              <PageProtectorProvider>
+                {children}
+              </PageProtectorProvider>
             </DishesProvider>
           </OrderProvider>
         </MemberProvider>

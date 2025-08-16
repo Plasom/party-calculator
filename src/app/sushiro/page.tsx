@@ -9,14 +9,13 @@ import { CardList } from "@/components/ui/card/card-list";
 import { CardDish } from "@/components/ui/card/dish";
 import React, { useEffect, useRef, useState } from "react";
 import { useMember, IMember } from "@/contexts/member-context";
-import { useOrder } from "@/contexts/order-context";
+import { OrderItem, useOrder } from "@/contexts/order-context";
 import { useDishes } from "@/contexts/dishes-context";
 import { MenuBottomSheet, MenuItem } from "@/components/ui/bottom-sheet/menu-bottom-sheet";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
 import { AlertModal, DeleteModal } from "@/components/ui/modal/alert-modal";
-import { CardSummary } from "@/components/ui/card/summary";
 import { CheckoutBottomSheet } from "@/components/ui/bottom-sheet/checkout-bottom-sheet";
 
 export default function SushiroPage() {
@@ -61,10 +60,10 @@ export default function SushiroPage() {
     ]
 
     // Function & Action
-    const handleDishAdd = (data: { id: string; count: number }) => {
+    const handleDishAdd = (data: OrderItem) => {
         if (!selectedMember) return;
 
-        updateMemberOrder(selectedMember.id, { id: data.id, count: data.count });
+        updateMemberOrder(selectedMember.id, { id: data.id, price: data.price, count: data.count });
     };
 
     const handleDeleteDish = () => {
@@ -234,6 +233,7 @@ export default function SushiroPage() {
                                 key={`${dish.id}-${selectedMember || 'no-member'}`}
                                 id={dish.id}
                                 url={dish.url}
+                                price={dish.price}
                                 label={dish.label}
                                 textColor={dish.textColor as "white" | "black"}
                                 leftIcon={dish.leftIcon}
@@ -248,14 +248,14 @@ export default function SushiroPage() {
                 </CardList>
             </Section>
 
-            <Section
+            {/* <Section
                 header="Added item list"
                 className="pt-4"
             >
                 <CardSummary>
 
                 </CardSummary>
-            </Section>
+            </Section> */}
 
             <AddMemberBottomSheet
                 isOpen={isBottomSheetOpen}

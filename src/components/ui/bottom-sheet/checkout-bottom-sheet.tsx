@@ -54,7 +54,7 @@ export function CheckoutBottomSheet({
                         </div>
                         <div className="flex flex-row justify-between">
                             <span>SubTotal</span>
-                            <span>{getOrderTotalSummary(dishes).totalPrice} ฿</span>
+                            <span>{getOrderTotalSummary(dishes).subTotalPrice} ฿</span>
                         </div>
                     </div>
                 </div>

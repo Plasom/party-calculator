@@ -4,9 +4,12 @@ import React, { createContext, useContext, useState, ReactNode, useMemo, useEffe
 import { usePathname } from 'next/navigation';
 import { DishData } from '@/data/dishes';
 import { SortHelper } from '@/lib/sort-helper';
+import { NumberHelper } from '@/lib/number-helper';
+import { SERVICE_CHARGE_RATE } from '@/config/constants';
 
 export interface OrderItem {
     id: string;
+    price: number;
     count: number;
 }
 
@@ -17,6 +20,8 @@ export interface MemberOrders {
 export interface OrderTotalSummary {
     dishes: DishData[];
     totalDishes: number;
+    serviceCharge: number;
+    subTotalPrice: number;
     totalPrice: number;
 }
 
@@ -35,6 +40,7 @@ interface IOrderContext {
     getAllMembersWithOrders: () => Array<{ memberId: string; orders: OrderItem[]; total: number }>;
     removeAllMemberOrderByOrderId: (dishId: string) => void;
     getOrderTotalSummary: (dishes: DishData[]) => OrderTotalSummary;
+    getOrderMemberSummary: (memberId: string, dishes: DishData[]) => OrderTotalSummary;
 }
 
 const OrderContext = createContext<IOrderContext | undefined>(undefined);
@@ -68,13 +74,14 @@ export function OrderProvider({ children }: OrderProviderProps) {
             });
         });
         orderMap.forEach((count, id) => {
-            console.log('count', count, 'id', id)
             if (count > 0) {
-                allOrders.push({ id, count });
+                const price = selectedOrders.find(item => item.id === id)?.price || 0;
+                allOrders.push({ id, price, count });
             }
         });
         
         setSelectedOrders(allOrders);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [memberOrders]);
 
     const updateMemberOrder = (memberId: string, orderItem: OrderItem) => {
@@ -140,11 +147,12 @@ export function OrderProvider({ children }: OrderProviderProps) {
 
     const getMemberOrderPrice = (memberId: string, dishesData: Array<{ id: string; price?: number }>): number => {
         const orders = memberOrders[memberId] || [];
-        return orders.reduce((sum, orderItem) => {
+        const total = orders.reduce((sum, orderItem) => {
             const dish = dishesData.find(d => d.id === orderItem.id);
             const price = dish?.price || 0;
             return sum + (price * orderItem.count);
         }, 0);
+        return NumberHelper.parse(NumberHelper.toFixed(total, 2));
     };
 
     const getAllMembersWithOrders = (): Array<{ memberId: string; orders: OrderItem[]; total: number }> => {
@@ -171,27 +179,6 @@ export function OrderProvider({ children }: OrderProviderProps) {
         });
     };
 
-    const getOrderTotalSummary = (dishes: DishData[]): OrderTotalSummary => {
-        const totalDishes = getOrderDishesTotal();
-        const totalPrice = getOrderPriceTotal(dishes);
-
-        const orderedDishes = SortHelper.multiLevelSort(selectedOrders.flatMap(orderItem =>{
-            const dish: DishData = dishes.find(d => d.id === orderItem.id)!;
-            dish.amount = orderItem.count;
-
-            return dish ? [dish] : [];
-        }), [
-            { key: 'isDefault', order: 'desc' },
-            { key: 'price', order: 'asc' }
-        ]);
-
-        return {
-            dishes: orderedDishes,
-            totalDishes,
-            totalPrice
-        };
-    };
-
     const getOrderDishesTotal = (): number => {
         return Object.values(memberOrders).reduce((sum, orders) => {
             return sum + orders.reduce((orderSum, item) => orderSum + item.count, 0);
@@ -207,6 +194,62 @@ export function OrderProvider({ children }: OrderProviderProps) {
         }, 0);
     };
 
+    const getOrderTotalSummary = (dishes: DishData[]): OrderTotalSummary => {
+        const totalDishes = getOrderDishesTotal();
+        const subTotalPrice = getOrderPriceTotal(dishes);
+        const serviceCharge = NumberHelper.multiply(SERVICE_CHARGE_RATE.SUSHISO, subTotalPrice);
+        const totalPrice = subTotalPrice + serviceCharge;
+
+        const orderedDishes = SortHelper.multiLevelSort(selectedOrders.flatMap(orderItem =>{
+            const dish: DishData = dishes.find(d => d.id === orderItem.id)!;
+            dish.amount = orderItem.count;
+
+            return dish ? [dish] : [];
+        }), [
+            { key: 'isDefault', order: 'desc' },
+            { key: 'price', order: 'asc' }
+        ]);
+
+        return {
+            dishes: orderedDishes,
+            totalDishes,
+            subTotalPrice: subTotalPrice,
+            serviceCharge: serviceCharge,
+            totalPrice
+        };
+    };
+
+    const getOrderMemberSummary = (memberId: string, dishes: DishData[]): OrderTotalSummary => {
+        const orders = memberOrders[memberId] || [];
+
+        const totalDishes = orders.reduce((sum, item) => sum + item.count, 0);
+        const subTotalPrice = orders.reduce((sum, item) => {
+            const dish = dishes.find(d => d.id === item.id);
+            const price = dish?.price || 0;
+            return sum + (price * item.count);
+        }, 0);
+        const serviceCharge = NumberHelper.multiply(SERVICE_CHARGE_RATE.SUSHISO, subTotalPrice);
+        const totalPrice = subTotalPrice + serviceCharge
+
+        const orderedDishes = SortHelper.multiLevelSort(orders.flatMap(orderItem =>{
+            const dish: DishData = dishes.find(d => d.id === orderItem.id)!;
+            dish.amount = orderItem.count;
+
+            return dish ? [dish] : [];
+        }), [
+            { key: 'isDefault', order: 'desc' },
+            { key: 'price', order: 'asc' }
+        ]);
+
+        return {
+            dishes: orderedDishes,
+            totalDishes,
+            subTotalPrice: subTotalPrice,
+            serviceCharge: serviceCharge,
+            totalPrice
+        };
+    };
+
     return (
         <OrderContext.Provider value={{
             memberOrders,
@@ -219,6 +262,7 @@ export function OrderProvider({ children }: OrderProviderProps) {
             getAllMembersWithOrders,
             removeAllMemberOrderByOrderId,
             getOrderTotalSummary,
+            getOrderMemberSummary
         }}>
             {children}
         </OrderContext.Provider>

@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, ReactNode, useMemo } from '
 import { usePathname } from 'next/navigation';
 import { DishData, sushiroDishes, tenoiDishes } from '@/data/dishes';
 import { useOrder } from './order-context';
+import { SortHelper } from '@/lib/sort-helper';
 
 interface DishesContextType {
     dishes: DishData[];
@@ -94,7 +95,10 @@ export function DishesProvider({ children }: DishesProviderProps) {
     };
 
     const value: DishesContextType = {
-        dishes: currentDishes,
+        dishes: SortHelper.multiLevelSort(currentDishes, [
+            { key: 'isDefault', order: 'desc' },
+            { key: 'price', order: 'asc' }
+        ]),
         addDish,
         removeDish,
         updateDish,

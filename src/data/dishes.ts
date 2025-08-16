@@ -5,7 +5,7 @@ export interface DishData {
   textColor: "white" | "black";
   isButton: boolean;
   leftIcon?: string;
-  price?: number;
+  price: number;
   name?: string;
   amount?: number;
   isDefault: boolean;
@@ -45,23 +45,23 @@ export const sushiroDishes: DishData[] = [
   {
     id: "4",
     url: "/images/sushiro_asset/dishes/black/default.svg",
-    label: "100.-",
+    label: "120.-",
     textColor: "white",
     isButton: true,
-    price: 100,
+    price: 120,
     name: "Black Plate",
     isDefault: true,
   },
   {
-    id: "9999",
+    id: "NO_ID_JUST_OBJECT",
     url: "/images/sushiro_asset/dishes/custom/default.svg",
     label: "custom",
     textColor: "black",
     leftIcon: "add",
     isButton: false,
-    price: 0,
+    price: 99999,
     name: "Custom Dish",
-    isDefault: true,
+    isDefault: false,
   },
 ];
 
