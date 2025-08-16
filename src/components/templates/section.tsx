@@ -13,6 +13,7 @@ export function Section({
     showHeader = true,
     showDescription = true,
     ignoreClassName = false,
+    hidden = false,
     disable
 }: {
     header?: string;
@@ -22,10 +23,11 @@ export function Section({
     showHeader?: boolean;
     showDescription?: boolean;
     ignoreClassName?: boolean;
+    hidden?: boolean;
     disable?: boolean;
 }) {
     return (
-        <div className="px-4 py-2">
+        <div className={`px-4 py-2 ${hidden ? 'hidden' : ''}`}>
             {showHeader && <p className="text-2xl font-bold">{header}</p>}
             {showDescription && <p className="text-sm text-[#99A1AF]">{description}</p>}
             <div className={`${!ignoreClassName ? className : ''} ${disable ? 'opacity-40 pointer-events-none' : ''}`}>

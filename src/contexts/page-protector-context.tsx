@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, ReactNode, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useOrder } from './order-context';
 
@@ -8,6 +8,7 @@ interface IPageProtectorContext {
     isOrderRequired: boolean;
     hasOrders: boolean;
     canAccessPage: boolean;
+    isAllowed: (bool: boolean) => void;
 }
 
 const PageProtectorContext = createContext<IPageProtectorContext | undefined>(undefined);
@@ -19,11 +20,12 @@ interface PageProtectorProviderProps {
 
 export function PageProtectorProvider({ 
     children, 
-    requiredOrderPages = [] 
+    requiredOrderPages = [],
 }: PageProtectorProviderProps) {
     const router = useRouter();
     const pathname = usePathname();
     const { selectedOrders, getAllMembersWithOrders } = useOrder();
+    const [byPassPageProtection, setByPassPageProtection] = useState<boolean>(false);
 
     const hasOrders = selectedOrders.length > 0 || getAllMembersWithOrders().length > 0;
     
@@ -33,11 +35,11 @@ export function PageProtectorProvider({
         pathname.includes('/summary') ||
         requiredOrderPages.some(page => pathname.startsWith(page))
     ));
-    
-    const canAccessPage = !isOrderRequired || hasOrders;
+
+    const canAccessPage = !isOrderRequired || hasOrders || byPassPageProtection;
 
     useEffect(() => {
-        if (isOrderRequired && !hasOrders) {
+        if (!byPassPageProtection && isOrderRequired && !hasOrders) {
             if (pathname?.startsWith('/sushiro')) {
                 router.replace('/sushiro');
             } else if (pathname?.startsWith('/teenoi')) {
@@ -46,13 +48,23 @@ export function PageProtectorProvider({
                 router.replace('/');
             }
         }
-    }, [pathname, isOrderRequired, hasOrders, router]);
+
+    }, [pathname, isOrderRequired, hasOrders, router, byPassPageProtection]);
+
+    useEffect(() => {
+        setByPassPageProtection(false);
+    }, [pathname]);
+
+    const isAllowed = (bool: boolean): void => {
+        setByPassPageProtection(bool);
+    }
 
     return (
         <PageProtectorContext.Provider value={{
             isOrderRequired,
             hasOrders,
-            canAccessPage
+            canAccessPage,
+            isAllowed
         }}>
             {canAccessPage ? children : (
                 <div className="flex items-center justify-center min-h-screen">

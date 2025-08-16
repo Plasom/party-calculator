@@ -42,7 +42,7 @@ export function Blanket({
 
     return (
         <div
-            className={`fixed inset-0 z-99 flex ${alignmentClasses[itemAlignment]} justify-center ${disableBackground
+            className={`fixed mobile-width inset-0 z-99 flex ${alignmentClasses[itemAlignment]} justify-center ${disableBackground
                 ? 'bg-transparent pointer-events-none'
                 : 'bg-black/50 pointer-events-auto'
                 }`}

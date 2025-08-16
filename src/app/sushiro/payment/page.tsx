@@ -12,17 +12,37 @@ import Image from "next/image";
 import { BottomSheet } from "@/components/ui/bottom-sheet/bottom-sheet";
 import { AlertModal } from "@/components/ui/modal/alert-modal";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { usePageProtector } from "@/contexts/page-protector-context";
 
 export default function PaymentPage() {
-    const { getAllMembersWithOrders, getOrderMemberSummary } = useOrder();
-    const { members, promptPay } = useMember();
+    const { isAllowed } = usePageProtector();
+    const { getAllMembersWithOrders, getOrderMemberSummary, clearAllOrders } = useOrder();
+    const { members, promptPay, clearMembers } = useMember();
     const { dishes } = useDishes();
+
     const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isUnsavedModalOpen, setIsUnsavedModalOpen] = useState<boolean>(false);
+    const [isPaymentComplete, setIsPaymentComplete] = useState<boolean>(false);
+    
+    const router = useRouter();
 
     const handleCompletePayment = () => {
-        setIsUnsavedModalOpen(true);
+        isAllowed(true);
+        clearAllOrders();
+        clearMembers();
+
+        setIsUnsavedModalOpen(false);
+        setIsPaymentComplete(true);
+    };
+
+    const handleBottomSheetButtonClick = () => {
+        if (isPaymentComplete) {
+            router.replace('/');
+        } else {
+            setIsUnsavedModalOpen(true);
+        }
     };
 
     useEffect(() => {
@@ -42,9 +62,10 @@ export default function PaymentPage() {
     }, [promptPay]);
 
     return (
-        <PageWithNav style={{ paddingBottom: 120 }}>
+        <PageWithNav style={{ paddingBottom: 120 }} disableBack={isPaymentComplete}>
             <Section
                 header="Payment Status"
+                hidden={isPaymentComplete}
             >
                 <div className="w-full my-2 h-auto flex items-center justify-center">
                     {isLoading && (
@@ -95,13 +116,39 @@ export default function PaymentPage() {
                 </table>
             </Section>
 
+            <Section
+                hidden={!isPaymentComplete}
+                className="fixed inset-0 flex items-center justify-center bg-white z-10"
+            >
+                <div className="text-center">
+                    <div className="flex justify-center mb-6">
+                        <Image
+                            src="/images/icons/check.svg"
+                            alt="Payment Complete"
+                            width={80}
+                            height={80}
+                            className="drop-shadow-lg"
+                        />
+                    </div>
+                    <h2 className="text-2xl font-semibold text-green-600 mb-2">
+                        Payment Complete!
+                    </h2>
+                    <p className="text-gray-600">
+                        การชำระเงินเสร็จสิ้นแล้ว
+                    </p>
+                </div>
+            </Section>
+
             <BottomSheet
                 button="hidden"
                 isOpen={true}
                 disableBackground
             >
                 <div className="flex flex-1">
-                    <Button label="Complete" customSize="md" onClick={() => setIsUnsavedModalOpen(true)} className="flex-1" />
+                    <Button
+                        label={isPaymentComplete ? "Back to main page" : "Complete"}
+                        customSize="md"
+                        onClick={handleBottomSheetButtonClick} className="flex-1" />
                 </div>
             </BottomSheet>
 

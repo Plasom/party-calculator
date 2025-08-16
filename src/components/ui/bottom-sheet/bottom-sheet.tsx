@@ -26,7 +26,7 @@ export function BottomSheet({
     description,
     children,
     showHandle = true,
-    maxWidth = "max-w-md",
+    maxWidth,
     isTransparent = false,
     button = 'cancel',
     disableBackground = false,
