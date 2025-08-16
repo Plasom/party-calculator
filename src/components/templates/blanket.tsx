@@ -46,7 +46,7 @@ export function Blanket({
                 ? 'bg-transparent pointer-events-none'
                 : 'bg-black/50 pointer-events-auto'
                 }`}
-            onClick={disableBackground ? undefined : handleBackdropClick}
+            onClick={handleBackdropClick}
         >
             {children}
         </div>
