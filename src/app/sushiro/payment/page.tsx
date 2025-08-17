@@ -14,11 +14,13 @@ import { AlertModal } from "@/components/ui/modal/alert-modal";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { usePageProtector } from "@/contexts/page-protector-context";
+import { usePayment } from "@/contexts/payment-context";
 
 export default function PaymentPage() {
     const { isAllowed } = usePageProtector();
     const { getAllMembersWithOrders, getOrderMemberSummary, clearAllOrders } = useOrder();
-    const { members, promptPay, clearMembers } = useMember();
+    const { members, clearMembers } = useMember();
+    const { promptPay } = usePayment();
     const { dishes } = useDishes();
 
     const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>('');
@@ -82,7 +84,7 @@ export default function PaymentPage() {
                                 width={250}
                                 height={250}
                                 className="max-h-full max-w-full object-contain"
-                                loading="lazy"
+                                loading="eager"
                                 priority={false}
                                 draggable={false}
                             />
@@ -131,7 +133,7 @@ export default function PaymentPage() {
                             width={80}
                             height={80}
                             className="drop-shadow-lg"
-                            loading="lazy"
+                            loading="eager"
                             priority={false}
                             draggable={false}
                         />

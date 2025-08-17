@@ -21,7 +21,7 @@ import { CheckoutBottomSheet } from "@/components/ui/bottom-sheet/checkout-botto
 export default function SushiroPage() {
     // Hooks
     const { members, selectedMember, addMember, changeMemberName, selectMember, removeMember } = useMember();
-    const { memberOrders, updateMemberOrder, getMemberOrderPrice, clearMemberOrders, getOrderTotalSummary } = useOrder();
+    const { memberOrders, updateMemberOrder, getMemberOrderPrice, clearMemberOrders, getOrderTotalSummary, removeAllMemberOrderByOrderId } = useOrder();
     const { dishes, removeDish } = useDishes();
 
     // State
@@ -72,6 +72,7 @@ export default function SushiroPage() {
         const dishToDelete = dishes.find(dish => dish.id === selectedDishId);
 
         if (dishToDelete && !dishToDelete.isDefault) {
+            removeAllMemberOrderByOrderId(selectedDishId);
             removeDish(selectedDishId);
         }
 

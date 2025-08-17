@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { Prompt } from "next/font/google";
 import "./globals.css";
-import { MemberProvider } from "@/contexts/member-context";
-import { OrderProvider } from "@/contexts/order-context";
-import { DishesProvider } from "@/contexts/dishes-context";
-import { PageProtectorProvider } from "@/contexts/page-protector-context";
+import { AppProviders } from "@/components/templates/app-provider";
 
 const promptFont = Prompt({
   subsets: ["thai", "latin"],
@@ -27,15 +24,9 @@ export default function RootLayout({
       <body
         className={`${promptFont.className} scrollbar-hide select-none antialiased`}
       >
-        <MemberProvider>
-          <OrderProvider>
-            <DishesProvider>
-              <PageProtectorProvider>
-                {children}
-              </PageProtectorProvider>
-            </DishesProvider>
-          </OrderProvider>
-        </MemberProvider>
+        <AppProviders>
+          {children}
+        </AppProviders>
       </body>
     </html>
   );

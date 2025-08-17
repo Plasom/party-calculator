@@ -90,7 +90,7 @@ export function CardDish({
                 <Image
                     src={url}
                     alt={alt}
-                    loading="lazy"
+                    loading="eager"
                     fill
                     className="object-cover rounded-lg pointer-events-none"
                     priority={false}

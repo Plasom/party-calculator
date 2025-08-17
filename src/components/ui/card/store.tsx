@@ -20,7 +20,7 @@ export function CardStore({
             <Image
                 src={url}
                 alt={alt}
-                loading="lazy"
+                loading="eager"
                 width={122}
                 height={122}
                 priority={false}

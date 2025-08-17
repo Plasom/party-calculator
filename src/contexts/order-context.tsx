@@ -201,23 +201,17 @@ export function OrderProvider({ children }: OrderProviderProps) {
         const totalPrice = subTotalPrice + serviceCharge;
 
 
-        // const orderedDishes = SortHelper.multiLevelSort(selectedOrders.flatMap(orderItem =>{
-        //     const dish: DishData = dishes.find(d => d.id === orderItem.id)!;
-        //     dish.amount = orderItem.count;
-
-        //     return dish ? [dish] : [];
-        // }), [
-        //     { key: 'isDefault', order: 'desc' },
-        //     { key: 'price', order: 'asc' }
-        // ]);
-
-        const orderedDishes = selectedOrders.flatMap(orderItem => {
+        const orderedDishes = SortHelper.multiLevelSort(selectedOrders.flatMap(orderItem =>{
             const dish: DishData = dishes.find(d => d.id === orderItem.id)!;
-            console.log(dish)
-            // dish.amount = orderItem.count;
+            if (dish) {
+                dish.amount = orderItem.count;
+            }
 
             return dish ? [dish] : [];
-        })
+        }), [
+            { key: 'isDefault', order: 'desc' },
+            { key: 'price', order: 'asc' }
+        ]);
 
         return {
             dishes: orderedDishes || [],
@@ -242,7 +236,9 @@ export function OrderProvider({ children }: OrderProviderProps) {
 
         const orderedDishes = SortHelper.multiLevelSort(orders.flatMap(orderItem =>{
             const dish: DishData = dishes.find(d => d.id === orderItem.id)!;
-            dish.amount = orderItem.count;
+            if (dish) {
+                dish.amount = orderItem.count;
+            }
 
             return dish ? [dish] : [];
         }), [

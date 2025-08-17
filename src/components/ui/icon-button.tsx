@@ -33,22 +33,6 @@ export function IconButton({
     });
 
     const handleClick = () => {
-        // ปิดคีย์บอร์ดเมื่อคลิกปุ่ม
-        const active = document.activeElement as HTMLElement | null;
-
-        if (active && active.tagName === "INPUT") {
-            const hidden = document.createElement("input");
-            hidden.style.position = "absolute";
-            hidden.style.opacity = "0";
-            hidden.style.height = "0";
-            hidden.style.fontSize = "16px";
-
-            document.body.appendChild(hidden);
-            hidden.focus();
-            hidden.blur();
-            document.body.removeChild(hidden);
-        }
-        
         if (!disabled) {
             onClick?.();
         }
