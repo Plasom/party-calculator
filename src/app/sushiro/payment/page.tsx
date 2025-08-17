@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { usePageProtector } from "@/contexts/page-protector-context";
 import { usePayment } from "@/contexts/payment-context";
+import Link from "next/link";
 
 export default function PaymentPage() {
     const { isAllowed } = usePageProtector();
@@ -143,6 +144,9 @@ export default function PaymentPage() {
                     <p className="text-sm">
                         Payment completed successfully.
                     </p>
+                    <Link className="text-sm underline text-blue-500" href="https://forms.gle/evoepisLFdMSfpTN8">
+                        Feedback: Party Calculator
+                    </Link>
                 </div>
             </Section>
 
