@@ -18,12 +18,12 @@ export function CardStore({
     return (
         <Link href={href} className="flex flex-col items-center px-5 py-4 w-fit h-fit gap-2 hover:bg-[var(--button-ghost-state-hovered)] rounded-2 select-none">
             <Image
+                fetchPriority="high"
                 src={url}
                 alt={alt}
-                loading="eager"
                 width={122}
                 height={122}
-                priority={false}
+                priority={true}
                 draggable={false}
             />
             <p className="text-lg font-medium text-[var(--color-black-tertiary)]">{label}</p>

@@ -88,12 +88,12 @@ export function CardDish({
                 {...longPressHandlers}
             >
                 <Image
+                    fetchPriority="high"
                     src={url}
                     alt={alt}
-                    loading="eager"
                     fill
                     className="object-cover rounded-lg pointer-events-none"
-                    priority={false}
+                    priority={true}
                     draggable={false}
                 />
                 <p className={`flex items-center justify-center absolute text-lg font-semibold text-${textColor}`}>

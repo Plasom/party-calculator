@@ -79,13 +79,13 @@ export default function PaymentPage() {
                     {qrCodeDataUrl && !isLoading && (
                         <div className="text-center">
                             <Image
+                                fetchPriority="high"
                                 src={qrCodeDataUrl}
                                 alt="PromptPay QR Code"
                                 width={250}
                                 height={250}
                                 className="max-h-full max-w-full object-contain"
-                                loading="eager"
-                                priority={false}
+                                priority={true}
                                 draggable={false}
                             />
                             <p className="text-sm text-[#45C2B2]">สแกน QR เพื่อโอนเข้าบัญชี</p>
@@ -128,13 +128,13 @@ export default function PaymentPage() {
                 <div className="text-center text-[var(--color-black-primary)]">
                     <div className="flex justify-center mb-6">
                         <Image
+                            fetchPriority="high"
                             src="/images/icons/check.svg"
                             alt="Payment Complete"
                             width={80}
                             height={80}
                             className="drop-shadow-lg"
-                            loading="eager"
-                            priority={false}
+                            priority={true}
                             draggable={false}
                         />
                     </div>

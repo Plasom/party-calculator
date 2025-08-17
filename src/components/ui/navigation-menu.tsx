@@ -22,6 +22,7 @@ export function NavigationMenu() {
       <div className="flex flex-col backdrop-saturate-[180%] backdrop-blur-[20px] bg-[var(--nav-bg)] sm:w-[390px] w-full">
         <div className="flex items-center justify-between px-[20px] h-[63px]">
           <Image
+            fetchPriority="high"
             src="/logo.svg"
             alt="Logo"
             width={72}
