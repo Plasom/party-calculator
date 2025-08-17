@@ -28,7 +28,7 @@ export function AlertModal({ id, isOpen, onAction, onCancel, title, message, col
             textColor: 'text-[var(--color-black-tertiary)]',
         },
         delete: {
-            textColor: 'text-[var(--components-button-ghost-desctructive-text)]',
+            textColor: 'text-[var(--button-ghost-desctructive-text)]',
         }
     }[colorTheme];
 
@@ -46,7 +46,7 @@ export function AlertModal({ id, isOpen, onAction, onCancel, title, message, col
 
                 <div className="w-full flex flex-row">
                     <div
-                        className="w-full font-semibold py-3 border-r-[0.5px] flex items-center justify-center text-[var(--components-button-quartiary-text)] cursor-pointer"
+                        className="w-full font-semibold py-3 border-r-[0.5px] flex items-center justify-center text-[var(--button-quartiary-text)] cursor-pointer"
                         onClick={onCancel}
                     >
                         Cancel

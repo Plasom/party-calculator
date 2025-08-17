@@ -30,7 +30,7 @@ export function Button({
     type = 'primary',
     customSize = 'sm',
     customFontSize,
-    textColor
+    textColor,
 }: ButtonProps) {
     const longPressHandlers = useLongPress({
         onLongPress,
@@ -46,34 +46,34 @@ export function Button({
 
     const typeProps = {
         primary: {
-            default: 'bg-[var(--components-button-primary-state-default)]',
-            hovered: 'hover:bg-[var(--components-button-primary-state-hovered)]',
-            pressed: 'active:bg-[var(--components-button-primary-state-pressed)]',
-            textColor: 'text-[var(--components-button-primary-text)]'
+            default: 'bg-[var(--button-primary-state-default)]',
+            hovered: 'hover:bg-[var(--button-primary-state-hovered)]',
+            pressed: 'active:bg-[var(--button-primary-state-pressed)]',
+            textColor: 'text-[var(--button-primary-text)]'
         },
         secondary: {
-            default: 'bg-[var(--components-button-secondary-state-default)]',
-            hovered: 'hover:bg-[var(--components-button-secondary-state-hovered)]',
-            pressed: 'active:bg-[var(--components-button-secondary-state-pressed)]',
-            textColor: 'text-[var(--components-button-secondary-text)]'
+            default: 'bg-[var(--button-secondary-state-default)]',
+            hovered: 'hover:bg-[var(--button-secondary-state-hovered)]',
+            pressed: 'active:bg-[var(--button-secondary-state-pressed)]',
+            textColor: 'text-[var(--button-secondary-text)]'
         },
         ghost: {
             default: 'bg-transparent',
-            hovered: 'hover:bg-[var(--components-button-ghost-state-hovered)]',
-            pressed: 'active:bg-[var(--components-button-ghost-state-pressed)]',
-            textColor: 'text-[var(--components-button-ghost-text)]'
+            hovered: 'hover:bg-[var(--button-ghost-state-hovered)]',
+            pressed: 'active:bg-[var(--button-ghost-state-pressed)]',
+            textColor: 'text-[var(--button-ghost-text)]'
         },
         quartiary: {
-            default: 'bg-[var(--components-button-quartiary-state-default)]',
-            hovered: 'hover:bg-[var(--components-button-quartiary-state-hovered)]',
-            pressed: 'active:bg-[var(--components-button-quartiary-state-pressed)]',
-            textColor: 'text-[var(--components-button-quartiary-text)]'
+            default: 'bg-[var(--button-quartiary-state-default)]',
+            hovered: 'hover:bg-[var(--button-quartiary-state-hovered)]',
+            pressed: 'active:bg-[var(--button-quartiary-state-pressed)]',
+            textColor: 'text-[var(--button-quartiary-text)]'
         }
     }
 
     const disabledClasses = {
-        default: 'bg-[var(--components-button-disabled-state-default)]',
-        textColor: 'text-[var(--components-button-disabled-text)]',
+        default: 'bg-[var(--button-disabled-state-default)]',
+        textColor: 'text-[var(--button-disabled-text)]',
         cursor: 'cursor-not-allowed'
     };
 
@@ -98,8 +98,8 @@ export function Button({
     return (
         <button
             className={`flex ${sizeProps[customSize].buttonSize} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
-                    ? `${disabledClasses.default} ${disabledClasses.textColor} ${disabledClasses.cursor}`
-                    : `${typeProps[type].default} ${typeProps[type].hovered} ${typeProps[type].pressed} ${textColor ? textColor : typeProps[type].textColor} cursor-pointer`
+                ? `${disabledClasses.default} ${disabledClasses.textColor} ${disabledClasses.cursor}`
+                : `${typeProps[type].default} ${typeProps[type].hovered} ${typeProps[type].pressed} ${textColor ? textColor : typeProps[type].textColor} cursor-pointer`
                 }`}
             onClick={handleClick}
             {...longPressHandlers}

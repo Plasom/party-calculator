@@ -49,7 +49,7 @@ export function MenuBottomSheet({
             button='hidden'
             showHandle={false}
         >
-            <div className="bg-[var(--components-button-quartiary-state-default)] rounded-xl w-full">
+            <div className="bg-[var(--button-quartiary-state-default)] rounded-xl w-full">
                 {menuItems?.map((item, index) => (
                     <div key={index}>
                         {item.isShow && <MenuItemButton

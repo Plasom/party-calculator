@@ -23,6 +23,7 @@ export function CardStore({
                 loading="lazy"
                 width={122}
                 height={122}
+                priority={false}
                 draggable={false}
             />
             <p className="text-lg font-medium text-[var(--color-black-tertiary)]">{label}</p>

@@ -82,6 +82,9 @@ export default function PaymentPage() {
                                 width={250}
                                 height={250}
                                 className="max-h-full max-w-full object-contain"
+                                loading="lazy"
+                                priority={false}
+                                draggable={false}
                             />
                             <p className="text-sm text-[#45C2B2]">สแกน QR เพื่อโอนเข้าบัญชี</p>
                             <p className="text-sm text-gray-600">บัญชี: {'x'.repeat(promptPay!.length - 4)}{promptPay?.slice(-4)}</p>
@@ -128,6 +131,9 @@ export default function PaymentPage() {
                             width={80}
                             height={80}
                             className="drop-shadow-lg"
+                            loading="lazy"
+                            priority={false}
+                            draggable={false}
                         />
                     </div>
                     <p className="font-semibold mb-2">

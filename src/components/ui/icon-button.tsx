@@ -33,6 +33,22 @@ export function IconButton({
     });
 
     const handleClick = () => {
+        // ปิดคีย์บอร์ดเมื่อคลิกปุ่ม
+        const active = document.activeElement as HTMLElement | null;
+
+        if (active && active.tagName === "INPUT") {
+            const hidden = document.createElement("input");
+            hidden.style.position = "absolute";
+            hidden.style.opacity = "0";
+            hidden.style.height = "0";
+            hidden.style.fontSize = "16px";
+
+            document.body.appendChild(hidden);
+            hidden.focus();
+            hidden.blur();
+            document.body.removeChild(hidden);
+        }
+        
         if (!disabled) {
             onClick?.();
         }
@@ -40,40 +56,40 @@ export function IconButton({
 
     const typeProps = {
         primary: {
-            default: 'bg-[var(--components-button-primary-state-default)]',
-            hovered: 'hover:bg-[var(--components-button-primary-state-hovered)]',
-            pressed: 'active:bg-[var(--components-button-primary-state-pressed)]',
-            iconColor: 'var(--components-button-primary-icon)'
+            default: 'bg-[var(--button-primary-state-default)]',
+            hovered: 'hover:bg-[var(--button-primary-state-hovered)]',
+            pressed: 'active:bg-[var(--button-primary-state-pressed)]',
+            iconColor: 'var(--button-primary-icon)'
         },
         secondary: {
-            default: 'bg-[var(--components-button-secondary-state-default)]',
-            hovered: 'hover:bg-[var(--components-button-secondary-state-hovered)]',
-            pressed: 'active:bg-[var(--components-button-secondary-state-pressed)]',
-            iconColor: 'var(--components-button-secondary-icon)'
+            default: 'bg-[var(--button-secondary-state-default)]',
+            hovered: 'hover:bg-[var(--button-secondary-state-hovered)]',
+            pressed: 'active:bg-[var(--button-secondary-state-pressed)]',
+            iconColor: 'var(--button-secondary-icon)'
         },
         tertiary: {
-            default: 'border-1 border-[var(--components-button-secondary-border)] bg-[var(--components-button-secondary-state-default)]',
-            hovered: 'border-1 border-[var(--components-button-secondary-border)] hover:bg-[var(--components-button-secondary-state-hovered)]',
-            pressed: 'border-1 border-[var(--components-button-secondary-border)] active:bg-[var(--components-button-secondary-state-pressed)]',
-            iconColor: 'var(--components-button-secondary-icon)'
+            default: 'border-1 border-[var(--button-secondary-border)] bg-[var(--button-secondary-state-default)]',
+            hovered: 'border-1 border-[var(--button-secondary-border)] hover:bg-[var(--button-secondary-state-hovered)]',
+            pressed: 'border-1 border-[var(--button-secondary-border)] active:bg-[var(--button-secondary-state-pressed)]',
+            iconColor: 'var(--button-secondary-icon)'
         },
         ghost: {
             default: 'bg-transparent',
-            hovered: 'hover:bg-[var(--components-button-ghost-state-hovered)]',
-            pressed: 'active:bg-[var(--components-button-ghost-state-pressed)]',
-            iconColor: 'var(--components-button-secondary-icon)'
+            hovered: 'hover:bg-[var(--button-ghost-state-hovered)]',
+            pressed: 'active:bg-[var(--button-ghost-state-pressed)]',
+            iconColor: 'var(--button-secondary-icon)'
         },
         "ghost-desctructive": {
             default: 'bg-transparent',
-            hovered: 'hover:bg-[var(--components-button-ghost-desctructive-state-hovered)]',
-            pressed: 'active:bg-[var(--components-button-ghost-desctructive-state-pressed)]',
-            iconColor: 'var(--components-button-ghost-desctructive-icon)'
+            hovered: 'hover:bg-[var(--button-ghost-desctructive-state-hovered)]',
+            pressed: 'active:bg-[var(--button-ghost-desctructive-state-pressed)]',
+            iconColor: 'var(--button-ghost-desctructive-icon)'
         }
     }
 
     const disabledClasses = {
-        default: 'bg-[var(--components-button-disabled-state-default)]',
-        iconColor: 'var(--components-button-disabled-icon)',
+        default: 'bg-[var(--button-disabled-state-default)]',
+        iconColor: 'var(--button-disabled-icon)',
         cursor: 'cursor-not-allowed'
     };
 

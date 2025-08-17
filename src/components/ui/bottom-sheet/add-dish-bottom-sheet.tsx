@@ -53,6 +53,7 @@ export function AddDishBottomSheet({
             textColor: "black",
             isButton: true,
             price: price,
+            amount: 0,
             name: 'custom',
             isDefault: false
         };
@@ -204,7 +205,7 @@ const Page1 = ({
                     );
                 })}
                 <Badge
-                    className='bg-[var(--components-tag-secondary-bg)] cursor-pointer py-1.5 px-2 rounded-xl'
+                    className='bg-[var(--tag-secondary-bg)] cursor-pointer py-1.5 px-2 rounded-xl'
                     onClick={() => {
                         handleNextPage();
                     }}

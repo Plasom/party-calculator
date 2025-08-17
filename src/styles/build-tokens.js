@@ -35,7 +35,7 @@ function objectToCssVars(obj, prefix = '') {
   let css = '';
   
   for (const [key, value] of Object.entries(obj)) {
-    const cleanKey = key.replace(/^TailwindCSS/, ''); // ลบ TailwindCSS ออก
+    const cleanKey = key.replace(/^TailwindCSS/, '').replace(/^components/, ''); // Clean up here
     const cssKey = prefix ? `${prefix}-${cleanKey}` : cleanKey;
 
     if (value && typeof value === 'object' && value.value) {

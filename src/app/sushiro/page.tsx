@@ -54,7 +54,7 @@ export default function SushiroPage() {
         {
             label: "Delete plate",
             onClick: () => handleDeleteDish(),
-            textColor: 'text-[var(--components-button-ghost-desctructive-text)]',
+            textColor: 'text-[var(--button-ghost-desctructive-text)]',
             isShow: !!selectedDishId && dishes.some(dish => dish.id === selectedDishId && !dish.isDefault)
         }
     ]
@@ -155,7 +155,6 @@ export default function SushiroPage() {
                             value={selectedMemberNameTemp || ""}
                             customSize="xl"
                             onChange={(e) => handleChangeMemberName(e)}
-                            autoFocus
                             maxLength={50}
                             className="truncate"
                             onBlur={handleLeaveInput}
