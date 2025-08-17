@@ -4,34 +4,79 @@ import { PageWithNav } from "@/components/templates/page-with-nav";
 import { Section } from "@/components/templates/section";
 import { AddMemberBottomSheet } from "@/components/ui/bottom-sheet/add-member-bottom-sheet";
 import { AddDishBottomSheet } from "@/components/ui/bottom-sheet/add-dish-bottom-sheet";
-import { MemberBadge } from "@/components/ui/member-badge";
+import { MemberBadge } from "@/components/ui/Badge/member-badge";
 import { CardList } from "@/components/ui/card/card-list";
 import { CardDish } from "@/components/ui/card/dish";
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMember, IMember } from "@/contexts/member-context";
-import { useOrder } from "@/contexts/order-context";
+import { OrderItem, useOrder } from "@/contexts/order-context";
 import { useDishes } from "@/contexts/dishes-context";
 import { MenuBottomSheet, MenuItem } from "@/components/ui/bottom-sheet/menu-bottom-sheet";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { IconButton } from "@/components/ui/icon-button";
+import { AlertModal, DeleteModal } from "@/components/ui/modal/alert-modal";
+import { CheckoutBottomSheet } from "@/components/ui/bottom-sheet/checkout-bottom-sheet";
 
 export default function SushiroPage() {
-    const { members, selectedMember, addMember, selectMember } = useMember();
-    const { memberOrders, updateMemberOrder, getMemberOrderPrice } = useOrder();
-    const { dishes, addDish } = useDishes();
-    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-    const [isAddDishBottomSheetOpen, setIsAddDishBottomSheetOpen] = useState(false);
-    const [isMenuBottomSheetOpen, setIsMenuBottomSheetOpen] = useState(false);
+    // Hooks
+    const { members, selectedMember, addMember, changeMemberName, selectMember, removeMember } = useMember();
+    const { memberOrders, updateMemberOrder, getMemberOrderPrice, clearMemberOrders, getOrderTotalSummary, removeAllMemberOrderByOrderId } = useOrder();
+    const { dishes, removeDish } = useDishes();
+
+    // State
+    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState<boolean>(false);
+    const [isAddDishBottomSheetOpen, setIsAddDishBottomSheetOpen] = useState<boolean>(false);
+    const [isMenuBottomSheetOpen, setIsMenuBottomSheetOpen] = useState<boolean>(false);
+    const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [selectedDishId, setSelectedDishId] = useState<string | null>(null);
+    const [selectedMemberNameTemp, setSelectedMemberNameTemp] = useState<string | null>(null);
 
-    const handleDishAdd = (data: { id: string; count: number }) => {
-        if (!selectedMember) return; // ถ้าไม่มีสมาชิกที่เลือกให้หยุด
+    // Modal State
+    const [isUnsavedModalOpen, setIsUnsavedModalOpen] = useState<boolean>(false);
+    const [isDeleteMemberModalOpen, setIsDeleteMemberModalOpen] = useState<boolean>(false);
 
-        updateMemberOrder(selectedMember, { id: data.id, count: data.count });
+    // Refs
+    const inputChangeNameRef = useRef<HTMLInputElement | null>(null);
+    const checkoutBottomSheetRef = useRef<HTMLDivElement | null>(null);
+
+    // Custom hooks
+    const orderTotal = getOrderTotalSummary(dishes).totalDishes;
+    const isCheckoutOpen = !isBottomSheetOpen && !isAddDishBottomSheetOpen && !isMenuBottomSheetOpen && (orderTotal > 0);
+    const isModalOpen = isBottomSheetOpen || isAddDishBottomSheetOpen || isMenuBottomSheetOpen || isCheckoutOpen;
+
+    // Object Arrays
+    const menuItems: MenuItem[] = [
+        {
+            label: "Split plate",
+            onClick: () => console.log('Split plate clicked'),
+            isShow: false
+        },
+        {
+            label: "Delete plate",
+            onClick: () => handleDeleteDish(),
+            textColor: 'text-[var(--button-ghost-desctructive-text)]',
+            isShow: !!selectedDishId && dishes.some(dish => dish.id === selectedDishId && !dish.isDefault)
+        }
+    ]
+
+    // Function & Action
+    const handleDishAdd = (data: OrderItem) => {
+        if (!selectedMember) return;
+
+        updateMemberOrder(selectedMember.id, { id: data.id, price: data.price, count: data.count });
     };
 
     const handleDeleteDish = () => {
         if (!selectedMember || !selectedDishId) return;
-        
-        updateMemberOrder(selectedMember, { id: selectedDishId, count: 0 });
+
+        const dishToDelete = dishes.find(dish => dish.id === selectedDishId);
+
+        if (dishToDelete && !dishToDelete.isDefault) {
+            removeAllMemberOrderByOrderId(selectedDishId);
+            removeDish(selectedDishId);
+        }
+
         setSelectedDishId(null);
     };
 
@@ -44,33 +89,107 @@ export default function SushiroPage() {
         setIsAddDishBottomSheetOpen(true);
     };
 
-    const handleAddCustomDish = (name: string, price: number) => {
-        // สร้างจานใหม่
-        const newDish = {
-            id: `custom-${Date.now()}`,
-            url: "/images/sushiro_asset/dishes/custom/default.svg",
-            label: `${price}.-`,
-            textColor: "black" as const,
-            isButton: true,
-            initialQuantity: 0,
-            price: price,
-            name: name,
-            isDefault: false
-        };
-        addDish(newDish);
-    };
-
-    const menuItems: MenuItem[] = [
-        {
-            label: "Delete plate",
-            onClick: () => handleDeleteDish(),
-            textColor: 'red'
+    const handleChangeMemberName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (selectedMember?.name !== e.target.value) {
+            setIsEditMode(true)
+        } else {
+            setIsEditMode(false);
         }
-    ]
+
+        setSelectedMemberNameTemp(e.target.value);
+    }
+
+    const handleSubmitChangeMemberName = () => {
+        changeMemberName(selectedMemberNameTemp!);
+        setIsEditMode(false);
+    }
+
+    const handleCancelChangeMemberName = () => {
+        setSelectedMemberNameTemp(selectedMember!.name);
+        setIsEditMode(false);
+    }
+
+    const handleLeaveInput = () => {
+        if (isEditMode) {
+            setIsUnsavedModalOpen(true);
+        }
+    }
+
+    const unsavedChangeActionModal = () => {
+        setSelectedMemberNameTemp(selectedMember!.name);
+        setIsUnsavedModalOpen(false);
+        setIsEditMode(false);
+    }
+
+    const unsavedChangeCancelModal = () => {
+        setIsUnsavedModalOpen(false);
+        inputChangeNameRef.current?.focus();
+    }
+
+    const handleRemoveMember = () => {
+        if (!selectedMember) return;
+
+        removeMember(selectedMember.id);
+        clearMemberOrders(selectedMember.id);
+        setIsDeleteMemberModalOpen(false);
+    }
+
+    // useEffect
+    useEffect(() => {
+        setSelectedMemberNameTemp(selectedMember?.name || null);
+    }, [selectedMember, members]);
 
     return (
-        <PageWithNav>
-            <Section header="Who's eating?" description="Add members to track their dishes." className="pt-4">
+        <PageWithNav style={{ marginBottom: isModalOpen ? 100 : 0 }}>
+            <Section
+                header="Who's eating?"
+                description="Add members to track their dishes."
+                className="pt-4"
+                showHeader={members.length === 0}
+                showDescription={members.length === 0}
+                ignoreClassName={members.length > 0}
+            >
+                {members.length > 0 &&
+                    <div className="flex flex-row mb-4 gap-2 items-center">
+                        <Input
+                            id="memberName"
+                            type="text"
+                            value={selectedMemberNameTemp || ""}
+                            customSize="xl"
+                            onChange={(e) => handleChangeMemberName(e)}
+                            maxLength={50}
+                            className="truncate"
+                            onBlur={handleLeaveInput}
+                            ref={inputChangeNameRef}
+                        />
+                        <div className="flex flex-row gap-2" onMouseDown={(e) => e.preventDefault()}>
+                            {isEditMode ?
+                                <>
+                                    <IconButton
+                                        icon="check"
+                                        type="primary"
+                                        customSize="sm"
+                                        onClick={handleSubmitChangeMemberName}
+                                        disabled={selectedMemberNameTemp === ""}
+                                    />
+                                    <Button
+                                        type="ghost"
+                                        customSize="xs"
+                                        label="cancel"
+                                        onClick={handleCancelChangeMemberName}
+                                    />
+                                </>
+                                :
+                                <IconButton
+                                    icon="delete"
+                                    type="ghost-desctructive"
+                                    customSize="md"
+                                    onClick={() => setIsDeleteMemberModalOpen(true)}
+                                    fill
+                                />}
+                        </div>
+                    </div>
+                }
                 <div className="flex items-center flex-wrap w-full gap-1.5">
                     <MemberBadge
                         variant="outline"
@@ -81,7 +200,7 @@ export default function SushiroPage() {
                     />
                     {members && members.map((member: IMember) => {
                         const memberPrice = getMemberOrderPrice(member.id, dishes);
-                        const isSelected = selectedMember === member.id;
+                        const isSelected = selectedMember?.id === member.id;
 
                         return (
                             <MemberBadge
@@ -105,8 +224,8 @@ export default function SushiroPage() {
             >
                 <CardList>
                     {dishes.map((dish) => {
-                        const currentMemberOrder = selectedMember && memberOrders[selectedMember]
-                            ? memberOrders[selectedMember].find(item => item.id === dish.id)
+                        const currentMemberOrder = selectedMember && memberOrders[selectedMember.id]
+                            ? memberOrders[selectedMember.id].find(item => item.id === dish.id)
                             : null;
                         const currentQuantity = currentMemberOrder ? currentMemberOrder.count : 0;
 
@@ -115,6 +234,7 @@ export default function SushiroPage() {
                                 key={`${dish.id}-${selectedMember || 'no-member'}`}
                                 id={dish.id}
                                 url={dish.url}
+                                price={dish.price}
                                 label={dish.label}
                                 textColor={dish.textColor as "white" | "black"}
                                 leftIcon={dish.leftIcon}
@@ -128,6 +248,15 @@ export default function SushiroPage() {
                     })}
                 </CardList>
             </Section>
+
+            {/* <Section
+                header="Added item list"
+                className="pt-4"
+            >
+                <CardSummary>
+
+                </CardSummary>
+            </Section> */}
 
             <AddMemberBottomSheet
                 isOpen={isBottomSheetOpen}
@@ -144,13 +273,37 @@ export default function SushiroPage() {
                     setIsAddDishBottomSheetOpen(false);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                onAddDish={handleAddCustomDish}
             />
 
             <MenuBottomSheet
                 isOpen={isMenuBottomSheetOpen}
                 onClose={() => setIsMenuBottomSheetOpen(false)}
                 menuItems={menuItems}
+            />
+
+            <CheckoutBottomSheet
+                ref={checkoutBottomSheetRef}
+                isOpen={isCheckoutOpen}
+                warningModal={isUnsavedModalOpen}
+            />
+
+            <AlertModal
+                id="unsaved-changes"
+                isOpen={isUnsavedModalOpen}
+                onAction={unsavedChangeActionModal}
+                onCancel={unsavedChangeCancelModal}
+                title="Unsaved changes"
+                message="Changes you made may not be saved. Are you sure you want to leave?"
+                actionText="Leave"
+            />
+
+            <DeleteModal
+                id="delete-member"
+                isOpen={isDeleteMemberModalOpen}
+                onDelete={handleRemoveMember}
+                onCancel={() => setIsDeleteMemberModalOpen(false)}
+                title="Delete member?"
+                message="This will permanently remove the member and their plates. Delete?"
             />
         </PageWithNav>
     )

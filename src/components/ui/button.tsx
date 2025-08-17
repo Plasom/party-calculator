@@ -1,6 +1,22 @@
 'use client';
 
 import { useLongPress } from '@/hooks/useLongPress';
+import { MaterialSymbol } from 'material-symbols';
+
+interface ButtonProps {
+    className?: string;
+    label?: string;
+    rightIcon?: MaterialSymbol;
+    leftIcon?: MaterialSymbol;
+    onClick?: () => void;
+    onLongPress?: () => void;
+    longPressDuration?: number;
+    disabled?: boolean;
+    type?: 'primary' | 'secondary' | 'ghost' | 'quartiary';
+    customSize?: 'xs' | 'sm' | 'md';
+    customFontSize?: 'xs' | 'sm' | 'md';
+    textColor?: string;
+}
 
 export function Button({
     className = '',
@@ -12,21 +28,10 @@ export function Button({
     longPressDuration,
     disabled = false,
     type = 'primary',
-    size = 'sm',
-    fontSize = 'font-normal'
-}: {
-    className?: string;
-    label?: string;
-    rightIcon?: React.ReactNode;
-    leftIcon?: React.ReactNode;
-    onClick: () => void;
-    onLongPress?: () => void;
-    longPressDuration?: number;
-    disabled?: boolean;
-    type?: 'primary' | 'secondary' | 'ghost' | 'quartiary';
-    size?: 'xs' | 'sm' | 'md';
-    fontSize?: 'font-semibold' | 'font-normal' | 'font-bold';
-}) {
+    customSize = 'sm',
+    customFontSize,
+    textColor,
+}: ButtonProps) {
     const longPressHandlers = useLongPress({
         onLongPress,
         duration: longPressDuration,
@@ -35,67 +40,79 @@ export function Button({
 
     const handleClick = () => {
         if (!disabled) {
-            onClick();
+            onClick?.();
         }
     };
-    const classMap = {
+
+    const typeProps = {
         primary: {
-            default: 'bg-[var(--components-button-primary-state-default)]',
-            hovered: 'hover:bg-[var(--components-button-primary-state-hovered)]',
-            pressed: 'active:bg-[var(--components-button-primary-state-pressed)]',
-            textColor: 'text-[var(--components-button-primary-text)]'
+            default: 'bg-[var(--button-primary-state-default)]',
+            hovered: 'hover:bg-[var(--button-primary-state-hovered)]',
+            pressed: 'active:bg-[var(--button-primary-state-pressed)]',
+            textColor: 'text-[var(--button-primary-text)]'
         },
         secondary: {
-            default: 'bg-[var(--components-button-secondary-state-default)]',
-            hovered: 'hover:bg-[var(--components-button-secondary-state-hovered)]',
-            pressed: 'active:bg-[var(--components-button-secondary-state-pressed)]',
-            textColor: 'text-[var(--components-button-secondary-text)]'
+            default: 'bg-[var(--button-secondary-state-default)]',
+            hovered: 'hover:bg-[var(--button-secondary-state-hovered)]',
+            pressed: 'active:bg-[var(--button-secondary-state-pressed)]',
+            textColor: 'text-[var(--button-secondary-text)]'
         },
         ghost: {
             default: 'bg-transparent',
-            hovered: 'hover:bg-[var(--components-button-ghost-state-hovered)]',
-            pressed: 'active:bg-[var(--components-button-ghost-state-pressed)]',
-            textColor: 'text-[var(--components-button-ghost-text)]'
+            hovered: 'hover:bg-[var(--button-ghost-state-hovered)]',
+            pressed: 'active:bg-[var(--button-ghost-state-pressed)]',
+            textColor: 'text-[var(--button-ghost-text)]'
         },
         quartiary: {
-            default: 'bg-[var(--components-button-quartiary-state-default)]',
-            hovered: 'hover:bg-[var(--components-button-quartiary-state-hovered)]',
-            pressed: 'active:bg-[var(--components-button-quartiary-state-pressed)]',
-            textColor: 'text-[var(--components-button-quartiary-text)]'
+            default: 'bg-[var(--button-quartiary-state-default)]',
+            hovered: 'hover:bg-[var(--button-quartiary-state-hovered)]',
+            pressed: 'active:bg-[var(--button-quartiary-state-pressed)]',
+            textColor: 'text-[var(--button-quartiary-text)]'
         }
     }
 
     const disabledClasses = {
-        default: 'bg-[var(--components-button-disabled-state-default)]',
-        textColor: 'text-[var(--components-button-disabled-text)]',
+        default: 'bg-[var(--button-disabled-state-default)]',
+        textColor: 'text-[var(--button-disabled-text)]',
         cursor: 'cursor-not-allowed'
     };
 
-    const sizeButton = {
-        xs: 'h-[28px]',
-        sm: 'h-[32px]',
-        md: 'h-[48px]'
+    const sizeProps = {
+        xs: {
+            buttonSize: 'h-[28px] text-sm font-medium',
+            textSize: 'text-sm font-medium',
+            iconSize: 16
+        },
+        sm: {
+            buttonSize: 'h-[32px] text-base font-medium',
+            textSize: 'text-base font-medium',
+            iconSize: 24
+        },
+        md: {
+            buttonSize: 'h-[48px] text-md font-medium',
+            textSize: 'text-xl font-medium',
+            iconSize: 32
+        }
     }
 
     return (
         <button
-            className={`flex ${sizeButton[size]} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
-                    ? `${disabledClasses.default} ${disabledClasses.textColor} ${disabledClasses.cursor}`
-                    : `${classMap[type].default} ${classMap[type].hovered} ${classMap[type].pressed} ${classMap[type].textColor} cursor-pointer`
+            className={`flex ${sizeProps[customSize].buttonSize} py-1 px-2 items-center justify-center gap-1 rounded-xl transition-colors ${className} ${disabled
+                ? `${disabledClasses.default} ${disabledClasses.textColor} ${disabledClasses.cursor}`
+                : `${typeProps[type].default} ${typeProps[type].hovered} ${typeProps[type].pressed} ${textColor ? textColor : typeProps[type].textColor} cursor-pointer`
                 }`}
             onClick={handleClick}
             {...longPressHandlers}
             disabled={disabled}
             type="button"
         >
-            {leftIcon && <span className="material-symbols-outlined">
+            {leftIcon && <span className="material-symbols-rounded" style={{ fontSize: sizeProps[customSize].iconSize }}>
                 {leftIcon}
             </span>}
-            {label && <span className={fontSize}>{label}</span>}
-            {rightIcon && <span className="material-symbols-outlined">
+            {label && <span className={customFontSize ? sizeProps[customFontSize].textSize : sizeProps[customSize].textSize}>{label}</span>}
+            {rightIcon && <span className="material-symbols-rounded" style={{ fontSize: sizeProps[customSize].iconSize }}>
                 {rightIcon}
             </span>}
-
         </button>
     )
 }

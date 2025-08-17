@@ -1,15 +1,15 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { DishData, sushiroDishes, tenoiDishes } from '@/data/dishes';
+import { SortHelper } from '@/lib/sort-helper';
 
 interface DishesContextType {
     dishes: DishData[];
     addDish: (dish: DishData) => void;
     removeDish: (dishId: string) => void;
     updateDish: (dishId: string, updatedDish: Partial<DishData>) => void;
-    setDishes: (dishes: DishData[]) => void;
     resetToDefault: () => void;
 }
 
@@ -39,13 +39,21 @@ export function DishesProvider({ children }: DishesProviderProps) {
         return [];
     };
 
-    const currentPath = getBasePath(pathname || '/');
-    const currentDishes = pathDishes[currentPath] || getDefaultDishes(currentPath);
+    const currentPath = useMemo(() => {
+        return getBasePath(pathname || '/');
+    }, [pathname]);
+
+    const currentDishes = useMemo(() => {
+        return SortHelper.multiLevelSort((pathDishes[currentPath] || getDefaultDishes(currentPath)), [
+            { key: 'isDefault', order: 'desc' },
+            { key: 'price', order: 'asc' }
+        ]);
+    }, [pathDishes, currentPath]);
 
     const addDish = (dish: DishData) => {
         setPathDishes(prev => ({
             ...prev,
-            [currentPath]: [...currentDishes.slice(0, currentDishes.length-1), { ...dish, isDefault: false }, currentDishes[currentDishes.length-1]]
+            [currentPath]: [...currentDishes.slice(0, currentDishes.length - 1), { ...dish, isDefault: false }, currentDishes[currentDishes.length - 1]]
         }));
     };
 
@@ -66,18 +74,11 @@ export function DishesProvider({ children }: DishesProviderProps) {
     const updateDish = (dishId: string, updatedDish: Partial<DishData>) => {
         setPathDishes(prev => ({
             ...prev,
-            [currentPath]: currentDishes.map(dish => 
-                dish.id === dishId 
+            [currentPath]: currentDishes.map(dish =>
+                dish.id === dishId
                     ? { ...dish, ...updatedDish }
                     : dish
             )
-        }));
-    };
-
-    const setDishes = (newDishes: DishData[]) => {
-        setPathDishes(prev => ({
-            ...prev,
-            [currentPath]: newDishes
         }));
     };
 
@@ -93,7 +94,6 @@ export function DishesProvider({ children }: DishesProviderProps) {
         addDish,
         removeDish,
         updateDish,
-        setDishes,
         resetToDefault
     };
 

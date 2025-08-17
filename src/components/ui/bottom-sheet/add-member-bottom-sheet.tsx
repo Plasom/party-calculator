@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '../button';
 import { BottomSheet } from './bottom-sheet';
+import { Input } from '../input';
+import { Divider } from '../divider';
 
 interface AddMemberBottomSheetProps {
     isOpen: boolean;
@@ -16,6 +18,7 @@ export function AddMemberBottomSheet({
     onAddMember
 }: AddMemberBottomSheetProps) {
     const [name, setName] = useState('');
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (!isOpen) {
@@ -38,24 +41,24 @@ export function AddMemberBottomSheet({
             title="Add members"
             description="Use a comma for multiple names"
         >
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <input
+            <form onSubmit={handleSubmit} className="space-y-2">
+                <Input
+                    ref={inputRef}
                     id="memberName"
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. John, Bob, Alice"
-                    className="w-full px-3 py-2 h-[48px] text-[16px] border border-[#E5E7EB] rounded-lg bg-white font-medium text-[var(--color-black-tertiary)] focus:outline-none focus:border-[#D1D5DC] placeholder:text-[#E5E7EB]"
                     autoFocus
                     maxLength={50}
                 />
 
-                <div className="h-px bg-gray-200 mx-4 my-2" />
+                <Divider />
 
                 <div className="flex gap-3 pt-2">
                     <Button
                         type="primary"
-                        size="md"
+                        customSize="md"
                         label="Add"
                         onClick={handleSubmit}
                         disabled={!name.trim()}

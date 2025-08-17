@@ -1,14 +1,9 @@
-#!/usr/bin/env node
-
 import fs from 'fs';
 
-// Read tokens.json
-const tokens = JSON.parse(fs.readFileSync('./tokens.json', 'utf8'));
+const tokens = JSON.parse(fs.readFileSync('./src/styles/tokens.json', 'utf8'));
 
-// Function to resolve token references
 function resolveReferences(obj, allTokens) {
   if (typeof obj === 'string' && obj.startsWith('{') && obj.endsWith('}')) {
-    // This is a reference, resolve it
     const path = obj.slice(1, -1).split('.');
     let value = allTokens;
     
@@ -20,7 +15,7 @@ function resolveReferences(obj, allTokens) {
     if (value && value.value) {
       return resolveReferences(value.value, allTokens);
     }
-    return obj; // Return original if can't resolve
+    return obj;
   }
   
   if (typeof obj === 'object' && obj !== null) {
@@ -34,33 +29,27 @@ function resolveReferences(obj, allTokens) {
   return obj;
 }
 
-// Resolve all references
 const resolvedTokens = resolveReferences(tokens, tokens);
 
-// Function to convert nested object to CSS custom properties
 function objectToCssVars(obj, prefix = '') {
   let css = '';
   
   for (const [key, value] of Object.entries(obj)) {
-    const cssKey = prefix ? `${prefix}-${key}` : key;
-    
+    const cleanKey = key.replace(/^TailwindCSS/, '').replace(/^components/, ''); // Clean up here
+    const cssKey = prefix ? `${prefix}-${cleanKey}` : cleanKey;
+
     if (value && typeof value === 'object' && value.value) {
-      // This is a token with a value
       css += `  --${cssKey}: ${value.value};\n`;
     } else if (value && typeof value === 'object' && !value.value) {
-      // This is a nested object, recurse
       css += objectToCssVars(value, cssKey);
     }
   }
-  
   return css;
 }
 
-// Generate CSS
 const cssContent = `:root {
 ${objectToCssVars(resolvedTokens)}}\n`;
 
-// Ensure src/styles directory exists
 if (!fs.existsSync('./src')) {
   fs.mkdirSync('./src');
 }
@@ -68,7 +57,6 @@ if (!fs.existsSync('./src/styles')) {
   fs.mkdirSync('./src/styles');
 }
 
-// Write CSS file
 fs.writeFileSync('./src/styles/design-tokens.css', cssContent);
 
 console.log('✅ Design tokens generated successfully!');

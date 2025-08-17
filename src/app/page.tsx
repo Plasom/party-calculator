@@ -7,13 +7,15 @@ import { CardStore } from "@/components/ui/card/store";
 
 export default function Home() {
   return (
-    <PageWithNav>
-      <Section header="Pick a restaurant">
-        <CardList>
-          <CardStore href="/sushiro" url="/images/restaurant/sushiro.png" label="Sushiro" />
-          <CardStore url="/images/restaurant/teenoi.png" label="Teenoi" />
-        </CardList>
-      </Section>
-    </PageWithNav>
+    <>
+      <PageWithNav>
+        <Section header="Pick a restaurant">
+          <CardList>
+            <CardStore href="/sushiro" url="/images/restaurant/sushiro.png" label="Sushiro" />
+            <CardStore url="/images/restaurant/teenoi.png" label="Teenoi" disabled />
+          </CardList>
+        </Section>
+      </PageWithNav>
+    </>
   );
 }

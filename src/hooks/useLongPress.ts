@@ -1,6 +1,13 @@
 import { useRef } from 'react';
 import { LONG_PRESS_DURATION } from '@/config/constants';
 
+/**
+ * Custom hook to track the height of an element using ResizeObserver
+ * @param onLongPress - Callback function to be called on long press
+ * @param duration - Duration in milliseconds for the long press
+ * @param disabled - Flag to disable the long press functionality
+ * @returns Event handlers for mouse and touch events
+ */
 interface UseLongPressOptions {
   onLongPress?: () => void;
   duration?: number;
@@ -42,7 +49,6 @@ export function useLongPress({
     onMouseDown: startLongPress,
     onMouseUp: endLongPress,
     onMouseLeave: cancelLongPress,
-    onMouseMove: cancelLongPress, // Cancel on mouse drag
     
     // Touch events (for mobile/iOS support)
     onTouchStart: startLongPress,

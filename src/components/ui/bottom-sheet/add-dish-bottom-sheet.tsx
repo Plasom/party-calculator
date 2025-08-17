@@ -3,85 +3,287 @@
 import { useState, useEffect } from 'react';
 import { Button } from '../button';
 import { BottomSheet } from './bottom-sheet';
+import { useDishes } from '@/contexts/dishes-context';
+import { Divider } from '../divider';
+import { CounterButton } from '../counter-button';
+import { PriceBadge } from '../Badge/price-badge';
+import { Input } from '../input';
+import { Badge } from '../badge';
+import { DishData } from '@/data/dishes';
+import { useMember } from '@/contexts/member-context';
+import { useOrder } from '@/contexts/order-context';
+import { ValidatorHelper } from '@/lib/validator-helper';
 
 interface AddDishBottomSheetProps {
     isOpen: boolean;
     onClose: () => void;
-    onAddDish: (name: string, price: number) => void;
+    isEditMode?: boolean;
 }
 
 export function AddDishBottomSheet({
     isOpen,
     onClose,
-    onAddDish
+
 }: AddDishBottomSheetProps) {
-    const [name, setName] = useState('');
-    const [price, setPrice] = useState('');
+    const { addDish, dishes } = useDishes();
+    const { selectedMember } = useMember();
+    const { updateMemberOrder, memberOrders } = useOrder();
+
+    const [price, setPrice] = useState<number>(0);
+    const [idPrice, setIdPrice] = useState<number>(999);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [quantity, setQuantity] = useState<number>(0);
+
+    const priceChoose: number[] = [40, 60, 70, 80, 100, 120, 150, 160, 450, 850]
 
     useEffect(() => {
         if (!isOpen) {
-            setName('');
-            setPrice('');
+            setPrice(0);
+            setIdPrice(999);
+            setCurrentPage(1);
+            setQuantity(0);
         }
     }, [isOpen]);
 
+    const handleAddCustomDish = (price: number, quantity: number) => {
+        const newDish: DishData = {
+            id: `custom-${price}`,
+            url: "/images/sushiro_asset/dishes/custom/default.svg",
+            label: `${price}.-`,
+            textColor: "black",
+            isButton: true,
+            price: price,
+            amount: 0,
+            name: 'custom',
+            isDefault: false
+        };
+
+        const existingDish = dishes.find(dish => dish.price === newDish.price && dish.name === 'custom');
+        const existingMember = memberOrders[selectedMember!.id]?.find(item => item.id === existingDish?.id);
+        if (existingDish && existingMember) {
+            updateMemberOrder(selectedMember!.id, { id: existingDish.id, price: existingDish.price, count: existingMember.count + quantity });
+        } else {
+            addDish(newDish);
+            updateMemberOrder(selectedMember!.id, { id: newDish.id, price: newDish.price, count: quantity });
+        }
+    };
+
     const handleSubmit = (e?: React.FormEvent) => {
         e?.preventDefault();
-        if (name.trim() && price.trim() && !isNaN(Number(price))) {
-            onAddDish(name.trim(), Number(price));
+        if (price && !isNaN(price) && quantity > 0) {
+            handleAddCustomDish(price, quantity);
             onClose();
         }
     };
 
-    const isFormValid = name.trim() && price.trim() && !isNaN(Number(price)) && Number(price) > 0;
+    const handleClose = () => {
+        onClose();
+    }
+
+    const handleBackToPreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+            setPrice(0);
+            setIdPrice(0);
+        }
+    }
+
+    const handleNextPage = () => {
+        setCurrentPage(currentPage + 1);
+    }
+
+    const isFormValid = Boolean(price && !isNaN(price) && price > 0 && quantity > 0);
+
+    const pageConfigs = {
+        1: {
+            title: "Select a Price",
+            description: "Select a price, or tap 'other'."
+        },
+        2: {
+            title: "Enter the item's price.",
+            description: ''
+        },
+    };
+
+    const currentConfig = pageConfigs[currentPage as keyof typeof pageConfigs] || pageConfigs[1];
+
+    const renderCurrentPage = () => {
+        switch (currentPage) {
+            case 1:
+                return (
+                    <Page1
+                        priceChoose={priceChoose}
+                        idPrice={idPrice}
+                        setPrice={setPrice}
+                        setIdPrice={setIdPrice}
+                        handleNextPage={handleNextPage}
+                        handleSubmit={handleSubmit}
+                        isFormValid={isFormValid}
+                        quantity={quantity}
+                        setQuantity={setQuantity}
+                    />
+                );
+            case 2:
+                return (
+                    <Page2
+                        price={price}
+                        setPrice={setPrice}
+                        handleSubmit={handleSubmit}
+                        isFormValid={isFormValid}
+                        quantity={quantity}
+                        setQuantity={setQuantity}
+                    />
+                );
+            default:
+                return (
+                    <Page1
+                        priceChoose={priceChoose}
+                        idPrice={idPrice}
+                        setPrice={setPrice}
+                        setIdPrice={setIdPrice}
+                        handleNextPage={handleNextPage}
+                        handleSubmit={handleSubmit}
+                        isFormValid={isFormValid}
+                        quantity={quantity}
+                        setQuantity={setQuantity}
+                    />
+                );
+        }
+    };
 
     return (
         <BottomSheet
             isOpen={isOpen}
-            onClose={onClose}
-            title="Add custom dish"
-            description="Create a new dish with custom price"
+            onClose={handleClose}
+            title={currentConfig.title}
+            description={currentConfig.description}
+            onBack={currentPage > 1 ? handleBackToPreviousPage : undefined}
         >
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <input
-                        id="dishName"
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Dish name"
-                        className="w-full px-3 py-2 h-[48px] text-[16px] border border-[#E5E7EB] rounded-lg bg-white font-medium text-[var(--color-black-tertiary)] focus:outline-none focus:border-[#D1D5DC] placeholder:text-[#E5E7EB]"
-                        autoFocus
-                        maxLength={50}
-                    />
-                </div>
-
-                <div>
-                    <input
-                        id="dishPrice"
-                        type="number"
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
-                        placeholder="Price (บาท)"
-                        min="1"
-                        step="1"
-                        className="w-full px-3 py-2 h-[48px] text-[16px] border border-[#E5E7EB] rounded-lg bg-white font-medium text-[var(--color-black-tertiary)] focus:outline-none focus:border-[#D1D5DC] placeholder:text-[#E5E7EB]"
-                    />
-                </div>
-
-                <div className="h-px bg-gray-200 mx-4 my-2" />
-
-                <div className="flex gap-3 pt-2">
-                    <Button
-                        type="primary"
-                        size="md"
-                        label="Add"
-                        onClick={handleSubmit}
-                        disabled={!isFormValid}
-                        className="flex-1"
-                    />
-                </div>
-            </form>
+            {renderCurrentPage()}
         </BottomSheet>
     );
+}
+
+interface Page1Props {
+    priceChoose: number[];
+    idPrice: number;
+    setPrice: (price: number) => void;
+    setIdPrice: (id: number) => void;
+    handleNextPage: () => void;
+    handleSubmit: (e?: React.FormEvent) => void;
+    isFormValid: boolean;
+    quantity: number;
+    setQuantity: (quantity: number) => void;
+}
+
+const Page1 = ({
+    priceChoose,
+    idPrice,
+    setPrice,
+    setIdPrice,
+    handleNextPage,
+    handleSubmit,
+    isFormValid,
+    quantity,
+    setQuantity
+}: Page1Props) => {
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="flex items-center flex-wrap w-full gap-[7px]">
+                {priceChoose.map((price: number, id: number) => {
+                    return (
+                        <PriceBadge
+                            key={id}
+                            isSelected={id === idPrice}
+                            label={price.toString()}
+                            value={price}
+                            onClick={() => {
+                                setPrice(price);
+                                setIdPrice(id);
+                            }}
+                        />
+                    );
+                })}
+                <Badge
+                    className='bg-[var(--tag-secondary-bg)] cursor-pointer py-1.5 px-2 rounded-xl'
+                    onClick={() => {
+                        handleNextPage();
+                    }}
+                    variant='outline'
+                >
+                    <span className="text-sm">
+                        Other
+                    </span>
+                </Badge>
+            </div>
+
+            <Divider />
+
+            <div className="flex gap-3 pt-2">
+                <CounterButton
+                    initialQuantity={quantity}
+                    iconSize='auto'
+                    onQuantityChange={setQuantity}
+                />
+                <Button
+                    type="primary"
+                    customSize="md"
+                    label="Add"
+                    onClick={handleSubmit}
+                    disabled={!isFormValid}
+                    className="flex-1"
+                />
+            </div>
+        </form>
+    )
+}
+
+interface Page2Props {
+    price: number;
+    setPrice: (price: number) => void;
+    handleSubmit: (e?: React.FormEvent) => void;
+    isFormValid: boolean;
+    quantity: number;
+    setQuantity: (quantity: number) => void;
+}
+
+const Page2 = ({ price, setPrice, handleSubmit, isFormValid, quantity, setQuantity }: Page2Props) => {
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const validator = new ValidatorHelper(0, 9999);
+        const numValue = validator.processStringInput(e.target.value);
+
+        setPrice(numValue);
+    };
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4">
+            <Input
+                id="customPrice"
+                type="text"
+                inputMode="numeric"
+                value={price}
+                onChange={(e) => handleOnChange(e)}
+                placeholder="e.g. 20, 60, 80, 100"
+                autoFocus
+                maxLength={50}
+            />
+
+            <Divider />
+
+            <div className="flex gap-3 pt-2">
+                <CounterButton
+                    initialQuantity={quantity}
+                    iconSize='auto'
+                    onQuantityChange={setQuantity}
+                />
+                <Button
+                    type="primary"
+                    customSize="md"
+                    label="Add"
+                    onClick={handleSubmit}
+                    disabled={!isFormValid}
+                    className="flex-1"
+                />
+            </div>
+        </form>
+    )
 }

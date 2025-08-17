@@ -1,4 +1,4 @@
-export class QuantityValidator {
+export class ValidatorHelper {
   private minValue: number;
   private maxValue: number;
 
@@ -25,8 +25,8 @@ export class QuantityValidator {
    * @returns The cleaned numeric string
    */
   cleanStringInput(input: string): string {
-    const numericValue = input.replace(/[^0-9]/g, '');
-    return numericValue.replace(/^0+/, '') || '0';
+    const numericValue = input.replace(/[^0-9]/g, "");
+    return numericValue.replace(/^0+/, "") || "0";
   }
 
   /**
@@ -52,5 +52,18 @@ export class QuantityValidator {
    */
   getMaxValue(): number {
     return this.maxValue;
+  }
+
+  public static validateIdCard(idCard: string): boolean {
+    if (!/^\d{13}$/.test(idCard)) return false;
+    const digits = idCard.split("").map(Number);
+
+    let sum = 0;
+    for (let i = 0; i < 12; i++) {
+      sum += digits[i] * (13 - i);
+    }
+
+    const checkDigit = (11 - (sum % 11)) % 10;
+    return checkDigit === digits[12];
   }
 }
