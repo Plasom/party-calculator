@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Prompt } from "next/font/google";
 import "./globals.css";
 import { AppProviders } from "@/components/templates/app-provider";
+import ClarityAnalytics from "@/components/analytics/clarity";
 
 const promptFont = Prompt({
   subsets: ["thai", "latin"],
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s | Party Calculator"
   },
   description: "Smart restaurant bill splitting app for groups. Calculate individual portions, split bills fairly, and generate QR codes for easy payment. Perfect for dining out with friends!",
-  keywords: ["bill splitting", "restaurant", "group dining", "payment calculator", "QR code", "PromptPay", "dining", "friends"],
+  keywords: ["bill splitting", "restaurant", "group dining", "payment calculator", "QR code", "PromptPay", "dining", "friends", "food calculator"],
   authors: [{ name: "Party Calculator Team" }],
   creator: "Party Calculator",
   publisher: "Party Calculator",
@@ -69,6 +70,7 @@ export default function RootLayout({
         className={`${promptFont.className} scrollbar-hide select-none antialiased`}
       >
         <AppProviders>
+          <ClarityAnalytics />
           {children}
         </AppProviders>
       </body>

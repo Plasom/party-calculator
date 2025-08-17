@@ -9,16 +9,17 @@ export function CardStore({
     alt = 'Placeholder Image',
     href = '#',
     label,
+    disabled = false,
 } : {
     url: string;
     alt?: string;
     href?: Url;
     label: string;
+    disabled?: boolean;
 }) {
     return (
-        <Link href={href} className="flex flex-col items-center px-5 py-4 w-fit h-fit gap-2 hover:bg-[var(--button-ghost-state-hovered)] rounded-2 select-none">
+        <Link href={href} className={`flex flex-col items-center px-5 py-4 w-fit h-fit gap-2 hover:bg-[var(--button-ghost-state-hovered)] rounded-2 select-none ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
             <Image
-                fetchPriority="high"
                 src={url}
                 alt={alt}
                 width={122}

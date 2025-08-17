@@ -79,7 +79,7 @@ export default function PaymentPage() {
                     {qrCodeDataUrl && !isLoading && (
                         <div className="text-center">
                             <Image
-                                fetchPriority="high"
+                                
                                 src={qrCodeDataUrl}
                                 alt="PromptPay QR Code"
                                 width={250}
@@ -128,7 +128,6 @@ export default function PaymentPage() {
                 <div className="text-center text-[var(--color-black-primary)]">
                     <div className="flex justify-center mb-6">
                         <Image
-                            fetchPriority="high"
                             src="/images/icons/check.svg"
                             alt="Payment Complete"
                             width={80}

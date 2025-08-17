@@ -88,7 +88,6 @@ export function CardDish({
                 {...longPressHandlers}
             >
                 <Image
-                    fetchPriority="high"
                     src={url}
                     alt={alt}
                     fill
