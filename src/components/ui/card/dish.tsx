@@ -90,9 +90,9 @@ export function CardDish({
                 <Image
                     src={url}
                     alt={alt}
-                    loading="lazy"
                     fill
                     className="object-cover rounded-lg pointer-events-none"
+                    priority={true}
                     draggable={false}
                 />
                 <p className={`flex items-center justify-center absolute text-lg font-semibold text-${textColor}`}>

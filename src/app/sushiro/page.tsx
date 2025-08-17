@@ -21,7 +21,7 @@ import { CheckoutBottomSheet } from "@/components/ui/bottom-sheet/checkout-botto
 export default function SushiroPage() {
     // Hooks
     const { members, selectedMember, addMember, changeMemberName, selectMember, removeMember } = useMember();
-    const { memberOrders, updateMemberOrder, getMemberOrderPrice, clearMemberOrders, getOrderTotalSummary } = useOrder();
+    const { memberOrders, updateMemberOrder, getMemberOrderPrice, clearMemberOrders, getOrderTotalSummary, removeAllMemberOrderByOrderId } = useOrder();
     const { dishes, removeDish } = useDishes();
 
     // State
@@ -43,18 +43,19 @@ export default function SushiroPage() {
     // Custom hooks
     const orderTotal = getOrderTotalSummary(dishes).totalDishes;
     const isCheckoutOpen = !isBottomSheetOpen && !isAddDishBottomSheetOpen && !isMenuBottomSheetOpen && (orderTotal > 0);
+    const isModalOpen = isBottomSheetOpen || isAddDishBottomSheetOpen || isMenuBottomSheetOpen || isCheckoutOpen;
 
     // Object Arrays
     const menuItems: MenuItem[] = [
         {
             label: "Split plate",
             onClick: () => console.log('Split plate clicked'),
-            isShow: true
+            isShow: false
         },
         {
             label: "Delete plate",
             onClick: () => handleDeleteDish(),
-            textColor: 'text-[var(--components-button-ghost-desctructive-text)]',
+            textColor: 'text-[var(--button-ghost-desctructive-text)]',
             isShow: !!selectedDishId && dishes.some(dish => dish.id === selectedDishId && !dish.isDefault)
         }
     ]
@@ -72,6 +73,7 @@ export default function SushiroPage() {
         const dishToDelete = dishes.find(dish => dish.id === selectedDishId);
 
         if (dishToDelete && !dishToDelete.isDefault) {
+            removeAllMemberOrderByOrderId(selectedDishId);
             removeDish(selectedDishId);
         }
 
@@ -138,7 +140,7 @@ export default function SushiroPage() {
     }, [selectedMember, members]);
 
     return (
-        <PageWithNav style={{ marginBottom: isCheckoutOpen ? 100 : 0 }}>
+        <PageWithNav style={{ marginBottom: isModalOpen ? 100 : 0 }}>
             <Section
                 header="Who's eating?"
                 description="Add members to track their dishes."
@@ -155,7 +157,6 @@ export default function SushiroPage() {
                             value={selectedMemberNameTemp || ""}
                             customSize="xl"
                             onChange={(e) => handleChangeMemberName(e)}
-                            autoFocus
                             maxLength={50}
                             className="truncate"
                             onBlur={handleLeaveInput}

@@ -3,7 +3,6 @@
 import React, { createContext, useContext, useState, ReactNode, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { DishData, sushiroDishes, tenoiDishes } from '@/data/dishes';
-import { useOrder } from './order-context';
 import { SortHelper } from '@/lib/sort-helper';
 
 interface DishesContextType {
@@ -11,7 +10,6 @@ interface DishesContextType {
     addDish: (dish: DishData) => void;
     removeDish: (dishId: string) => void;
     updateDish: (dishId: string, updatedDish: Partial<DishData>) => void;
-    setDishes: (dishes: DishData[]) => void;
     resetToDefault: () => void;
 }
 
@@ -29,9 +27,6 @@ export function DishesProvider({ children }: DishesProviderProps) {
     const pathname = usePathname();
     const [pathDishes, setPathDishes] = useState<IPathDishes>({});
 
-    // Hooks
-    const { removeAllMemberOrderByOrderId } = useOrder();
-
     const getBasePath = (path: string) => {
         if (path.startsWith('/sushiro')) return '/sushiro';
         if (path.startsWith('/teenoi')) return '/teenoi';
@@ -44,18 +39,25 @@ export function DishesProvider({ children }: DishesProviderProps) {
         return [];
     };
 
-    const currentPath = getBasePath(pathname || '/');
-    const currentDishes = useMemo(() => pathDishes[currentPath] || getDefaultDishes(currentPath), [pathDishes, currentPath]);
+    const currentPath = useMemo(() => {
+        return getBasePath(pathname || '/');
+    }, [pathname]);
+
+    const currentDishes = useMemo(() => {
+        return SortHelper.multiLevelSort((pathDishes[currentPath] || getDefaultDishes(currentPath)), [
+            { key: 'isDefault', order: 'desc' },
+            { key: 'price', order: 'asc' }
+        ]);
+    }, [pathDishes, currentPath]);
 
     const addDish = (dish: DishData) => {
         setPathDishes(prev => ({
             ...prev,
-            [currentPath]: [...currentDishes.slice(0, currentDishes.length-1), { ...dish, isDefault: false }, currentDishes[currentDishes.length-1]]
+            [currentPath]: [...currentDishes.slice(0, currentDishes.length - 1), { ...dish, isDefault: false }, currentDishes[currentDishes.length - 1]]
         }));
     };
 
     const removeDish = (dishId: string) => {
-        removeAllMemberOrderByOrderId(dishId);
         setPathDishes(prev => {
             const dishToRemove = currentDishes.find(dish => dish.id === dishId);
             if (dishToRemove?.isDefault) {
@@ -72,18 +74,11 @@ export function DishesProvider({ children }: DishesProviderProps) {
     const updateDish = (dishId: string, updatedDish: Partial<DishData>) => {
         setPathDishes(prev => ({
             ...prev,
-            [currentPath]: currentDishes.map(dish => 
-                dish.id === dishId 
+            [currentPath]: currentDishes.map(dish =>
+                dish.id === dishId
                     ? { ...dish, ...updatedDish }
                     : dish
             )
-        }));
-    };
-
-    const setDishes = (newDishes: DishData[]) => {
-        setPathDishes(prev => ({
-            ...prev,
-            [currentPath]: newDishes
         }));
     };
 
@@ -95,14 +90,10 @@ export function DishesProvider({ children }: DishesProviderProps) {
     };
 
     const value: DishesContextType = {
-        dishes: SortHelper.multiLevelSort(currentDishes, [
-            { key: 'isDefault', order: 'desc' },
-            { key: 'price', order: 'asc' }
-        ]),
+        dishes: currentDishes,
         addDish,
         removeDish,
         updateDish,
-        setDishes,
         resetToDefault
     };
 

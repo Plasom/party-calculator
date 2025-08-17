@@ -1,0 +1,33 @@
+{
+  "name": "Party Calculator - Smart Restaurant Bill Splitting",
+  "short_name": "Party Calculator",
+  "description": "Smart restaurant bill splitting app for groups. Calculate individual portions, split bills fairly, and generate QR codes for easy payment.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "categories": ["productivity", "finance", "social"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/restaurant/sushiro.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}

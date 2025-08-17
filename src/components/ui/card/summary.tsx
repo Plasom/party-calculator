@@ -3,7 +3,7 @@ import { ShowMemberBadge } from "../show-member-badge";
 
 export function CardSummary(){
     return (
-        <div className="flex bg-[var(--components-card-primary-bg)] border-[var(--components-card-primary-border)] rounded-[var(--components-card-shared-border)] border-1 p-4 w-full ">
+        <div className="flex bg-[var(--card-primary-bg)] border-[var(--card-primary-border)] rounded-[var(--card-shared-border)] border-1 p-4 w-full ">
             <div className="flex flex-col justify-between gap-4 ">
                 <div className=" gap-1">
                 <div className="flex flex-row justify-between">

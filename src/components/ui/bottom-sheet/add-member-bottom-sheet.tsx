@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '../button';
 import { BottomSheet } from './bottom-sheet';
 import { Input } from '../input';
@@ -18,6 +18,7 @@ export function AddMemberBottomSheet({
     onAddMember
 }: AddMemberBottomSheetProps) {
     const [name, setName] = useState('');
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (!isOpen) {
@@ -41,7 +42,8 @@ export function AddMemberBottomSheet({
             description="Use a comma for multiple names"
         >
             <form onSubmit={handleSubmit} className="space-y-2">
-                <Input 
+                <Input
+                    ref={inputRef}
                     id="memberName"
                     type="text"
                     value={name}

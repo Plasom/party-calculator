@@ -16,7 +16,7 @@ export function ShowMemberBadge({
   return (
     <span
     className={
-        `inline-flex items-center justify-center rounded-xl border px-1.5 py-2 text-sm font-normal w-fit gap-1 bg-[var(--components-tag-tertiary-bg)] border-[var(--components-tag-tertiary-border)] text-[var(--components-tag-tertiary-first-text)] overflow-hidden${className ? ` ${className}` : ''}`
+        `inline-flex items-center justify-center rounded-xl border px-1.5 py-2 text-sm font-normal w-fit gap-1 bg-[var(--tag-tertiary-bg)] border-[var(--tag-tertiary-border)] text-[var(--tag-tertiary-first-text)] overflow-hidden${className ? ` ${className}` : ''}`
       }
     >
       {leftIcon && (

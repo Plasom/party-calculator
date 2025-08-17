@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 
 export interface IMember {
@@ -16,16 +16,14 @@ interface IPathMembers {
 }
 
 interface IMemberContext {
-    members: IMember[];
-    selectedMember: IMember | null;
-    addMember: (name: string) => void;
-    changeMemberName: (name: string) => void;
-    selectMember: (memberId: string) => void;
-    clearMembers: () => void;
-    removeMember: (memberId: string) => void;
-    clearAllMembers: () => void;
-    setPromptPay: (value: string) => void;
-    promptPay: string;
+    members: IMember[]; // members in current path
+    selectedMember: IMember | null; // selected member in current path
+    addMember: (name: string) => void; // add member to current path
+    changeMemberName: (name: string) => void; // change name of member that is currently selected
+    selectMember: (memberId: string) => void; // select member in current path
+    clearMembers: () => void; // clear all members in current path
+    removeMember: (memberId: string) => void; // remove member from current path
+    clearAllMembers: () => void; // clear all member (all path)
 }
 
 const MemberContext = createContext<IMemberContext | undefined>(undefined);
@@ -37,7 +35,6 @@ interface MemberProviderProps {
 export function MemberProvider({ children }: MemberProviderProps) {
     const pathname = usePathname();
     const [pathMembers, setPathMembers] = useState<IPathMembers>({});
-    const [promptPay, setPromptPay] = useState<string>('null');
 
     const getBasePath = (path: string) => {
         if (path.startsWith('/sushiro')) return '/sushiro';
@@ -46,7 +43,7 @@ export function MemberProvider({ children }: MemberProviderProps) {
     };
 
     const currentPath = getBasePath(pathname || '/');
-    const currentData = pathMembers[currentPath] || { members: [], selectedMember: null };
+    const currentData = useMemo(() => pathMembers[currentPath] || { members: [], selectedMember: null }, [pathMembers, currentPath]);
 
     const addMember = (name: string) => {
         const names = name.split(',').map(n => n.trim()).filter(n => n.length > 0);
@@ -153,8 +150,6 @@ export function MemberProvider({ children }: MemberProviderProps) {
             clearMembers,
             removeMember,
             clearAllMembers,
-            setPromptPay,
-            promptPay
         }}>
             {children}
         </MemberContext.Provider>

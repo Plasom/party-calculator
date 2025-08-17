@@ -57,7 +57,7 @@ export default function CheckoutPage() {
                             <p className="font-medium">{getOrderTotalSummary(dishes).totalDishes}</p>
                         </div>
                         <div className="flex flex-row justify-between">
-                            <p>Service Charge (10.00%)</p>
+                            <p>Service charge (10.00%)</p>
                             <p className="font-medium">{NumberHelper.toFixed(getOrderTotalSummary(dishes).serviceCharge, 2)}฿</p>
                         </div>
                         <div className="flex flex-row justify-between">
@@ -191,7 +191,7 @@ export default function CheckoutPage() {
                                                                 <p className="font-medium">{memberWithOrder.total}</p>
                                                             </div>
                                                             <div className="flex flex-row justify-between">
-                                                                <p>Service Charge (10.00%)</p>
+                                                                <p>Service charge (10.00%)</p>
                                                                 <p className="font-medium">{NumberHelper.toFixed(memberOrder.serviceCharge, 2)}฿</p>
                                                             </div>
                                                             <div className="flex flex-row justify-between">

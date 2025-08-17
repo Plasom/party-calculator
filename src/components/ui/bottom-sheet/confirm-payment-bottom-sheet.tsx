@@ -8,7 +8,7 @@ import { Input } from '../input';
 import { NumberHelper } from '@/lib/number-helper';
 import { ValidatorHelper } from '@/lib/validator-helper';
 import { useRouter } from 'next/navigation';
-import { useMember } from '@/contexts/member-context';
+import { usePayment } from '@/contexts/payment-context';
 
 interface ConfirmPaymentBottomSheetProps extends React.RefAttributes<HTMLDivElement> {
     isOpen?: boolean;
@@ -19,7 +19,7 @@ export function ConfirmPaymentBottomSheet({
 }: ConfirmPaymentBottomSheetProps) {
     const router = useRouter();
 
-    const { setPromptPay } = useMember();
+    const { setPromptPay } = usePayment();
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [paymentMethod, setPaymentMethod] = useState<string>('');
