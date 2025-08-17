@@ -120,7 +120,7 @@ export default function PaymentPage() {
                 hidden={!isPaymentComplete}
                 className="fixed inset-0 flex items-center justify-center bg-white z-10"
             >
-                <div className="text-center">
+                <div className="text-center text-[var(--color-black-primary)]">
                     <div className="flex justify-center mb-6">
                         <Image
                             src="/images/icons/check.svg"
@@ -130,11 +130,11 @@ export default function PaymentPage() {
                             className="drop-shadow-lg"
                         />
                     </div>
-                    <h2 className="text-2xl font-semibold text-green-600 mb-2">
-                        Payment Complete!
-                    </h2>
-                    <p className="text-gray-600">
-                        การชำระเงินเสร็จสิ้นแล้ว
+                    <p className="font-semibold mb-2">
+                        Payment successful
+                    </p>
+                    <p className="text-sm">
+                        Payment completed successfully.
                     </p>
                 </div>
             </Section>
