@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sushiro - Order & Split Bill",
+  title: "Sushiro",
   description: "Order sushiro dishes for your group and split the bill easily. Add members, select dishes, and calculate individual portions automatically.",
   keywords: ["Sushiro", "sushi", "Japanese restaurant", "bill splitting", "group order", "menu", "food calculator"],
   openGraph: {
-    title: "Sushiro - Order & Split Bill",
+    title: "Sushiro",
     description: "Order sushiro dishes for your group and split the bill easily. Add members, select dishes, and calculate individual portions automatically.",
     images: [
       {

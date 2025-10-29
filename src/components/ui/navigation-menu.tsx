@@ -12,9 +12,9 @@ export function NavigationMenu() {
   const [open, setOpen] = useState(false);
 
   const navItems = [
-    { label: "Home", href: "/", icon: "home" },
-    { label: "About", href: "/about", icon: "info" },
-    { label: "Contact", href: "/contact", icon: "contact_mail" },
+    { label: "Home", href: "/" },
+    { label: "About", href: "https://github.com/Plasom" },
+    { label: "Contact", href: "https://github.com/Plasom" },
   ]
 
   return (

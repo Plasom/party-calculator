@@ -12,7 +12,7 @@ const promptFont = Prompt({
 
 export const metadata: Metadata = {
   title: {
-    default: "Party Calculator - Smart Restaurant Bill Splitting",
+    default: "Party Calculator",
     template: "%s | Party Calculator"
   },
   description: "Smart restaurant bill splitting app for groups. Calculate individual portions, split bills fairly, and generate QR codes for easy payment. Perfect for dining out with friends!",
