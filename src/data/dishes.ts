@@ -14,6 +14,16 @@ export interface DishData {
 export const sushiroDishes: DishData[] = [
   {
     id: "1",
+    url: "/images/sushiro_asset/dishes/white/default.svg",
+    label: "30.-",
+    textColor: "black",
+    isButton: true,
+    price: 30,
+    name: "White Plate",
+    isDefault: true,
+  },
+  {
+    id: "2",
     url: "/images/sushiro_asset/dishes/red/default.svg",
     label: "40.-",
     textColor: "white",
@@ -23,7 +33,7 @@ export const sushiroDishes: DishData[] = [
     isDefault: true,
   },
   {
-    id: "2",
+    id: "3",
     url: "/images/sushiro_asset/dishes/white/default.svg",
     label: "60.-",
     textColor: "black",
@@ -33,7 +43,7 @@ export const sushiroDishes: DishData[] = [
     isDefault: true,
   },
   {
-    id: "3",
+    id: "4",
     url: "/images/sushiro_asset/dishes/yellow/default.svg",
     label: "80.-",
     textColor: "black",
@@ -43,12 +53,12 @@ export const sushiroDishes: DishData[] = [
     isDefault: true,
   },
   {
-    id: "4",
+    id: "5",
     url: "/images/sushiro_asset/dishes/black/default.svg",
-    label: "120.-",
+    label: "100.-",
     textColor: "white",
     isButton: true,
-    price: 120,
+    price: 100,
     name: "Black Plate",
     isDefault: true,
   },

@@ -5,6 +5,7 @@ import { Button } from '../button';
 import { BottomSheet } from './bottom-sheet';
 import { Input } from '../input';
 import { Divider } from '../divider';
+import { useTranslations } from '@/i18n';
 
 interface AddMemberBottomSheetProps {
     isOpen: boolean;
@@ -17,6 +18,7 @@ export function AddMemberBottomSheet({
     onClose,
     onAddMember
 }: AddMemberBottomSheetProps) {
+    const t = useTranslations();
     const [name, setName] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -38,8 +40,8 @@ export function AddMemberBottomSheet({
         <BottomSheet
             isOpen={isOpen}
             onClose={onClose}
-            title="Add members"
-            description="Use a comma for multiple names"
+            title={t.modal.addMember.header}
+            description={t.modal.addMember.description}
         >
             <form onSubmit={handleSubmit} className="space-y-2">
                 <Input
@@ -48,7 +50,7 @@ export function AddMemberBottomSheet({
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. John, Bob, Alice"
+                    placeholder={t.modal.addMember.input.placeHolder1}
                     autoFocus
                     maxLength={50}
                 />
@@ -59,7 +61,7 @@ export function AddMemberBottomSheet({
                     <Button
                         type="primary"
                         customSize="md"
-                        label="Add"
+                        label={t.modal.button.add}
                         onClick={handleSubmit}
                         disabled={!name.trim()}
                         className="flex-1"

@@ -28,14 +28,20 @@ export function DishesProvider({ children }: DishesProviderProps) {
     const [pathDishes, setPathDishes] = useState<IPathDishes>({});
 
     const getBasePath = (path: string) => {
-        if (path.startsWith('/sushiro')) return '/sushiro';
-        if (path.startsWith('/teenoi')) return '/teenoi';
-        return path;
+        // Remove locale prefix (e.g., /en or /th) if present
+        const pathWithoutLocale = path.replace(/^\/(en|th)/, '');
+        
+        if (pathWithoutLocale.startsWith('/sushiro')) return '/sushiro';
+        if (pathWithoutLocale.startsWith('/teenoi')) return '/teenoi';
+        return pathWithoutLocale || path;
     };
 
     const getDefaultDishes = (path: string): DishData[] => {
-        if (path.startsWith('/sushiro')) return sushiroDishes;
-        if (path.startsWith('/teenoi')) return tenoiDishes;
+        // Remove locale prefix for matching
+        const pathWithoutLocale = path.replace(/^\/(en|th)/, '');
+        
+        if (pathWithoutLocale.startsWith('/sushiro')) return sushiroDishes;
+        if (pathWithoutLocale.startsWith('/teenoi')) return tenoiDishes;
         return [];
     };
 
