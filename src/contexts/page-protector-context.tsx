@@ -40,12 +40,19 @@ export function PageProtectorProvider({
 
     useEffect(() => {
         if (!byPassPageProtection && isOrderRequired && !hasOrders) {
-            if (pathname?.startsWith('/sushiro')) {
-                router.replace('/sushiro');
-            } else if (pathname?.startsWith('/teenoi')) {
-                router.replace('/teenoi');
+            // Remove locale prefix for path matching
+            const pathWithoutLocale = pathname?.replace(/^\/(en|th)/, '') || '';
+            
+            if (pathWithoutLocale.startsWith('/sushiro')) {
+                // Extract locale from current pathname
+                const locale = pathname?.match(/^\/(en|th)/)?.[1] || 'en';
+                router.replace(`/${locale}/sushiro`);
+            } else if (pathWithoutLocale.startsWith('/teenoi')) {
+                const locale = pathname?.match(/^\/(en|th)/)?.[1] || 'en';
+                router.replace(`/${locale}/teenoi`);
             } else {
-                router.replace('/');
+                const locale = pathname?.match(/^\/(en|th)/)?.[1] || 'en';
+                router.replace(`/${locale}`);
             }
         }
 

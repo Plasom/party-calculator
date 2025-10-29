@@ -1,0 +1,31 @@
+export const commonTH = {
+  buttons: {
+    save: "บันทึก",
+    cancel: "ยกเลิก",
+    delete: "ลบ",
+    edit: "แก้ไข",
+    add: "เพิ่ม",
+    close: "ปิด",
+    confirm: "ยืนยัน",
+    next: "ถัดไป",
+    back: "กลับ",
+    goHome: "กลับหน้าหลัก",
+  },
+  labels: {
+    name: "ชื่อ",
+    price: "ราคา",
+    quantity: "จำนวน",
+    total: "รวมทั้งหมด",
+    subtotal: "รวมย่อย",
+    member: "สมาชิก",
+    members: "สมาชิก",
+    dish: "จาน",
+    dishes: "จาน",
+  },
+  messages: {
+    loading: "กำลังโหลด...",
+    success: "สำเร็จ!",
+    error: "เกิดข้อผิดพลาด",
+    noData: "ไม่มีข้อมูล",
+  },
+};
