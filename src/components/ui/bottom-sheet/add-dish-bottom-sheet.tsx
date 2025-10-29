@@ -179,7 +179,7 @@ interface Page1Props {
     isFormValid: boolean;
     quantity: number;
     setQuantity: (quantity: number) => void;
-    t: any;
+    t: ReturnType<typeof import('@/i18n').useTranslations>;
 }
 
 const Page1 = ({
@@ -252,7 +252,7 @@ interface Page2Props {
     isFormValid: boolean;
     quantity: number;
     setQuantity: (quantity: number) => void;
-    t: any;
+    t: ReturnType<typeof import('@/i18n').useTranslations>;
 }
 
 const Page2 = ({ price, setPrice, handleSubmit, isFormValid, quantity, setQuantity, t }: Page2Props) => {
