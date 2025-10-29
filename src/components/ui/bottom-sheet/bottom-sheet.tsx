@@ -3,6 +3,7 @@
 import { Button } from '../button';
 import { Blanket } from '@/components/templates/blanket';
 import { IconButton } from '../icon-button';
+import { useTranslations } from '@/i18n';
 
 interface BottomSheetProps extends React.HTMLAttributes<HTMLDivElement> {
     isOpen: boolean;
@@ -32,13 +33,14 @@ export function BottomSheet({
     disableBackground = false,
     ...props
 }: BottomSheetProps) {
+    const t = useTranslations();
 
     const buttonGroup = {
         cancel: (
             <Button
                 type="secondary"
                 customSize="sm"
-                label="Cancel"
+                label={t.modal.button.cancel}
                 onClick={onClose}
             />
         ),

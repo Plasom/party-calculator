@@ -17,8 +17,11 @@ import { Button } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
 import { AlertModal, DeleteModal } from "@/components/ui/modal/alert-modal";
 import { CheckoutBottomSheet } from "@/components/ui/bottom-sheet/checkout-bottom-sheet";
+import { useTranslations } from "@/i18n";
 
 export default function SushiroPage() {
+    const t = useTranslations();
+    
     // Hooks
     const { members, selectedMember, addMember, changeMemberName, selectMember, removeMember } = useMember();
     const { memberOrders, updateMemberOrder, getMemberOrderPrice, clearMemberOrders, getOrderTotalSummary, removeAllMemberOrderByOrderId } = useOrder();
@@ -142,8 +145,8 @@ export default function SushiroPage() {
     return (
         <PageWithNav style={{ marginBottom: isModalOpen ? 100 : 0 }}>
             <Section
-                header="Who's eating?"
-                description="Add members to track their dishes."
+                header={t.sushiro.sections.headerMembers}
+                description={t.sushiro.sections.descriptionMembers}
                 className="pt-4"
                 showHeader={members.length === 0}
                 showDescription={members.length === 0}
@@ -195,7 +198,7 @@ export default function SushiroPage() {
                         variant="outline"
                         leftIcon="add"
                         className="text-sm"
-                        label="Member"
+                        label={t.sushiro.buttons.addMember}
                         onClick={() => setIsBottomSheetOpen(true)}
                     />
                     {members && members.map((member: IMember) => {
@@ -218,7 +221,7 @@ export default function SushiroPage() {
             </Section>
 
             <Section
-                header="Add a plate"
+                header={t.sushiro.sections.headerDishes}
                 className="pt-4"
                 disable={!selectedMember}
             >

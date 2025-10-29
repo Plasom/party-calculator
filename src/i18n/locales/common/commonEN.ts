@@ -1,0 +1,31 @@
+export const commonEN = {
+  buttons: {
+    save: "Save",
+    cancel: "Cancel",
+    delete: "Delete",
+    edit: "Edit",
+    add: "Add",
+    close: "Close",
+    confirm: "Confirm",
+    next: "Next",
+    back: "Back",
+    goHome: "Go Back Home",
+  },
+  labels: {
+    name: "Name",
+    price: "Price",
+    quantity: "Quantity",
+    total: "Total",
+    subtotal: "Subtotal",
+    member: "Member",
+    members: "Members",
+    dish: "Dish",
+    dishes: "Dishes",
+  },
+  messages: {
+    loading: "Loading...",
+    success: "Success!",
+    error: "An error occurred",
+    noData: "No data available",
+  },
+};

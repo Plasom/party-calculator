@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { SectionElement } from "./section";
 import Link from "next/link";
 import packageJson from "../../../package.json"
+import { useTranslations } from "@/i18n/hooks";
 
 interface PageWithNavProps extends React.HTMLAttributes<HTMLDivElement> {
     children: SectionElement | SectionElement[];
@@ -17,6 +18,8 @@ export function PageWithNav({
     disableBack,
     ...props
 }: PageWithNavProps) {
+    const t = useTranslations();
+    
     const pathname = usePathname();
     const router = useRouter();
     const sections = Array.isArray(children) ? children : [children];
@@ -40,7 +43,7 @@ export function PageWithNav({
                         type="ghost"
                         customSize="sm"
                         leftIcon="arrow_back"
-                        label="back"
+                        label={t.common.buttons.back}
                         onClick={handleBackClick}
                     />
                 )}
