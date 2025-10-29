@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/example/', '/api/'],
+      disallow: ['/api/', '*/checkout', '*/payment'],
     },
     sitemap: 'https://party-calculator.vercel.app/sitemap.xml',
   }

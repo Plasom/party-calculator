@@ -55,9 +55,12 @@ export function OrderProvider({ children }: OrderProviderProps) {
     const [selectedOrders, setSelectedOrders] = useState<OrderItem[]>([]);
 
     const getBasePath = (path: string) => {
-        if (path.startsWith('/sushiro')) return '/sushiro';
-        if (path.startsWith('/teenoi')) return '/teenoi';
-        return path;
+        // Remove locale prefix (e.g., /en or /th) if present
+        const pathWithoutLocale = path.replace(/^\/(en|th)/, '');
+        
+        if (pathWithoutLocale.startsWith('/sushiro')) return '/sushiro';
+        if (pathWithoutLocale.startsWith('/teenoi')) return '/teenoi';
+        return pathWithoutLocale || path;
     };
 
     const currentPath = getBasePath(pathname || '/');
