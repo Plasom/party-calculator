@@ -2,14 +2,11 @@ export const paymentEN = {
   header: "Payment Status",
   labels: {
     scanQR: "สแกน QR เพื่อโอนเข้าบัญชี",
-    promptPayNumber: "PromptPay Number",
-    amount: "Amount to Pay",
     account: "บัญชี:",
     name: "Name",
     totalInclFee: "Total incl. fee",
   },
   buttons: {
-    downloadQR: "Download QR Code",
     complete: "Complete",
     backToMainPage: "Back to main page",
   },

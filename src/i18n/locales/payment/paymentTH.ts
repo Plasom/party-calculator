@@ -2,14 +2,11 @@ export const paymentTH = {
   header: "สถานะการชำระเงิน",
   labels: {
     scanQR: "สแกน QR เพื่อโอนเข้าบัญชี",
-    promptPayNumber: "เบอร์พร้อมเพย์",
-    amount: "ยอดที่ต้องจ่าย",
     account: "บัญชี:",
     name: "ชื่อ",
     totalInclFee: "รวมทั้งหมด",
   },
   buttons: {
-    downloadQR: "ดาวน์โหลด QR",
     complete: "เสร็จสิ้น",
     backToMainPage: "กลับหน้าหลัก",
   },

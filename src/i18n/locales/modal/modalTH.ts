@@ -3,7 +3,7 @@ export const modalTH = {
     header: "เพิ่มคน",
     description: "ใส่หลายชื่อพร้อมกันได้ คั่นด้วยจุลภาค (,)",
     input: {
-      placeHolder1: "เช่น มิว, ตุ้ย, แจ๊ค",
+      placeHolder1: "เช่น ภูมิ, หมิง",
     },
   },
   addDish: {

@@ -1,5 +1,4 @@
 export const checkoutEN = {
-  header: "Checkout",
   sections: {
     groupBillSummary: "Group bill summary",
     totalSummary: "Total summary",
@@ -9,8 +8,6 @@ export const checkoutEN = {
     totalDishes: "Total dishes",
     serviceCharge: "Service charge (10.00%)",
     totalInclFee: "Total (incl. service fee)",
-    totalPrice: "Total Price",
-    memberName: "Name",
     name: "Name",
     qty: "Qty",
     pricePerUnit: "Price/Unit",
@@ -22,7 +19,6 @@ export const checkoutEN = {
     totalInclServiceFee: "Total incl. fee",
   },
   buttons: {
-    proceedToPayment: "Proceed to Payment",
     checkout: "Checkout",
   },
 };

@@ -1,5 +1,4 @@
 export const checkoutTH = {
-  header: "สรุปบิล",
   sections: {
     groupBillSummary: "สรุปบิลกลุ่ม",
     totalSummary: "ยอดรวมทั้งหมด",
@@ -9,8 +8,6 @@ export const checkoutTH = {
     totalDishes: "จำนวนจาน",
     serviceCharge: "ค่าบริการ (10.00%)",
     totalInclFee: "ยอดรวม (รวมค่าบริการ)",
-    totalPrice: "ยอดรวม",
-    memberName: "ชื่อ",
     name: "ชื่อ",
     qty: "จำนวน",
     pricePerUnit: "ราคา/จาน",
@@ -22,7 +19,6 @@ export const checkoutTH = {
     totalInclServiceFee: "รวมทั้งหมด",
   },
   buttons: {
-    proceedToPayment: "ไปชำระเงิน",
     checkout: "สรุปบิล",
   },
 };

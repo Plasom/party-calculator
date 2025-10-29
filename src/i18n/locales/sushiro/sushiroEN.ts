@@ -6,15 +6,9 @@ export const sushiroEN = {
   },
   buttons: {
     addMember: "Member",
-    checkout: "Checkout",
     splitPlate: "Split plate",
     deletePlate: "Delete plate",
     cancel: "cancel",
-  },
-  placeholders: {
-    memberName: "Enter member name",
-    dishName: "Enter dish name",
-    dishPrice: "Enter price",
   },
   modals: {
     unsavedChanges: {
@@ -25,10 +19,6 @@ export const sushiroEN = {
     deleteMember: {
       title: "Delete member?",
       message: "This will permanently remove the member and their plates. Delete?",
-    },
-    deleteDish: {
-      title: "Delete Dish",
-      message: "Are you sure you want to delete this dish?",
     },
   },
 };
