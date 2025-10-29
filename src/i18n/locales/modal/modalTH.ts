@@ -1,30 +1,30 @@
 export const modalTH = {
   addMember: {
-    header: "Add members",
-    description: "Use a comma(,) for multiple names",
+    header: "เพิ่มคน",
+    description: "ใส่หลายชื่อพร้อมกันได้ คั่นด้วยจุลภาค (,)",
     input: {
-      placeHolder1: "e.g., Alice, Bob, Charlie",
+      placeHolder1: "เช่น มิว, ตุ้ย, แจ๊ค",
     },
   },
   addDish: {
     selectPrice: {
-      title: "Select a Price",
-      description: "Select a price, or tap 'other'.",
+      title: "เลือกราคา",
+      description: "เลือกราคาที่ต้องการ หรือกด 'อื่นๆ'",
     },
     enterPrice: {
-      title: "Enter the item's price.",
+      title: "ใส่ราคาเอง",
       description: "",
     },
-    other: "Other",
-    placeholder: "e.g. 20, 60, 80, 100",
+    other: "อื่นๆ",
+    placeholder: "เช่น 20, 60, 80, 100",
   },
   button: {
-    add: "Add",
-    cancel: "Cancel",
+    add: "เพิ่ม",
+    cancel: "ยกเลิก",
   },
   alert: {
-    cancel: "Cancel",
-    confirm: "Confirm",
-    delete: "Delete",
+    cancel: "ยกเลิก",
+    confirm: "ยืนยัน",
+    delete: "ลบ",
   },
 };

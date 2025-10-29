@@ -1,34 +1,34 @@
 export const sushiroTH = {
   sections: {
-    headerMembers: "Who's eating?",
-    descriptionMembers: "Add members to track their dishes.",
-    headerDishes: "Add a plate",
+    headerMembers: "มีใครกินบ้าง?",
+    descriptionMembers: "เพิ่มชื่อเพื่อนเพื่อจดจานที่สั่ง",
+    headerDishes: "เพิ่มจาน",
   },
   buttons: {
-    addMember: "Member",
-    checkout: "Checkout",
-    splitPlate: "Split plate",
-    deletePlate: "Delete plate",
-    cancel: "cancel",
+    addMember: "เพิ่มคน",
+    checkout: "สรุปบิล",
+    splitPlate: "แบ่งจาน",
+    deletePlate: "ลบจาน",
+    cancel: "ยกเลิก",
   },
   placeholders: {
-    memberName: "Enter member name",
-    dishName: "Enter dish name",
-    dishPrice: "Enter price",
+    memberName: "ใส่ชื่อ",
+    dishName: "ใส่ชื่อจาน",
+    dishPrice: "ใส่ราคา",
   },
   modals: {
     unsavedChanges: {
-      title: "Unsaved changes",
-      message: "Changes you made may not be saved. Are you sure you want to leave?",
-      actionText: "Leave",
+      title: "ยังไม่ได้บันทึก",
+      message: "การเปลี่ยนแปลงอาจไม่ถูกบันทึก แน่ใจนะว่าจะออก?",
+      actionText: "ออกเลย",
     },
     deleteMember: {
-      title: "Delete member?",
-      message: "This will permanently remove the member and their plates. Delete?",
+      title: "ลบคนนี้?",
+      message: "จะลบคนนี้และจานที่สั่งไปทั้งหมดเลยนะ ลบเลยไหม?",
     },
     deleteDish: {
-      title: "Delete Dish",
-      message: "Are you sure you want to delete this dish?",
+      title: "ลบจาน",
+      message: "แน่ใจนะว่าจะลบจานนี้?",
     },
   },
 };
