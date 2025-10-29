@@ -1,4 +1,5 @@
 import { Blanket } from "@/components/templates/blanket";
+import { useTranslations } from "@/i18n";
 
 export interface IAlertModal {
     id: string;
@@ -21,6 +22,7 @@ export interface IDeleteModal {
 }
 
 export function AlertModal({ id, isOpen, onAction, onCancel, title, message, colorTheme='default', actionText }: IAlertModal) {
+    const t = useTranslations();
     if (!isOpen) return null;
 
     const colorThemeClass = {
@@ -49,13 +51,13 @@ export function AlertModal({ id, isOpen, onAction, onCancel, title, message, col
                         className="w-full font-semibold py-3 border-r-[0.5px] flex items-center justify-center text-[var(--button-quartiary-text)] cursor-pointer"
                         onClick={onCancel}
                     >
-                        Cancel
+                        {t.modal.alert.cancel}
                     </div>
                     <div
                         className={`w-full font-semibold py-3 border-l-[0.5px] flex items-center justify-center ${colorThemeClass.textColor} cursor-pointer`}
                         onClick={onAction}
                     >
-                        {actionText || 'Confirm'}
+                        {actionText || t.modal.alert.confirm}
                     </div>
                 </div>
             </div>
@@ -67,6 +69,7 @@ export function AlertModal({ id, isOpen, onAction, onCancel, title, message, col
 
 // delete-modal
 export function DeleteModal({ isOpen, onDelete, onCancel, title, message }: IDeleteModal) {
+    const t = useTranslations();
     return (
         <AlertModal
             id="delete-confirmation"
@@ -76,7 +79,7 @@ export function DeleteModal({ isOpen, onDelete, onCancel, title, message }: IDel
             title={title}
             message={message}
             colorTheme='delete'
-            actionText="Delete"
+            actionText={t.modal.alert.delete}
         />
     );
 }

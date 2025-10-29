@@ -2,6 +2,7 @@
 
 import { Button } from "../button";
 import { BottomSheet } from "./bottom-sheet";
+import { useTranslations } from "@/i18n";
 
 
 export interface MenuItem {
@@ -40,6 +41,7 @@ export function MenuBottomSheet({
     onClose,
     menuItems,
 }: MenuBottomSheetProps) {
+    const t = useTranslations();
 
     return (
         <BottomSheet
@@ -74,7 +76,7 @@ export function MenuBottomSheet({
                     type="quartiary"
                     customSize="md"
                     customFontSize="sm"
-                    label="Cancel"
+                    label={t.modal.button.cancel}
                     onClick={() => {
                         onClose();
                     }}

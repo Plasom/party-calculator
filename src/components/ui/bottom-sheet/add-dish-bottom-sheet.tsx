@@ -13,6 +13,7 @@ import { DishData } from '@/data/dishes';
 import { useMember } from '@/contexts/member-context';
 import { useOrder } from '@/contexts/order-context';
 import { ValidatorHelper } from '@/lib/validator-helper';
+import { useTranslations } from '@/i18n';
 
 interface AddDishBottomSheetProps {
     isOpen: boolean;
@@ -25,6 +26,7 @@ export function AddDishBottomSheet({
     onClose,
 
 }: AddDishBottomSheetProps) {
+    const t = useTranslations();
     const { addDish, dishes } = useDishes();
     const { selectedMember } = useMember();
     const { updateMemberOrder, memberOrders } = useOrder();
@@ -96,12 +98,12 @@ export function AddDishBottomSheet({
 
     const pageConfigs = {
         1: {
-            title: "Select a Price",
-            description: "Select a price, or tap 'other'."
+            title: t.modal.addDish.selectPrice.title,
+            description: t.modal.addDish.selectPrice.description
         },
         2: {
-            title: "Enter the item's price.",
-            description: ''
+            title: t.modal.addDish.enterPrice.title,
+            description: t.modal.addDish.enterPrice.description
         },
     };
 
@@ -121,6 +123,7 @@ export function AddDishBottomSheet({
                         isFormValid={isFormValid}
                         quantity={quantity}
                         setQuantity={setQuantity}
+                        t={t}
                     />
                 );
             case 2:
@@ -132,6 +135,7 @@ export function AddDishBottomSheet({
                         isFormValid={isFormValid}
                         quantity={quantity}
                         setQuantity={setQuantity}
+                        t={t}
                     />
                 );
             default:
@@ -146,6 +150,7 @@ export function AddDishBottomSheet({
                         isFormValid={isFormValid}
                         quantity={quantity}
                         setQuantity={setQuantity}
+                        t={t}
                     />
                 );
         }
@@ -174,6 +179,7 @@ interface Page1Props {
     isFormValid: boolean;
     quantity: number;
     setQuantity: (quantity: number) => void;
+    t: any;
 }
 
 const Page1 = ({
@@ -185,7 +191,8 @@ const Page1 = ({
     handleSubmit,
     isFormValid,
     quantity,
-    setQuantity
+    setQuantity,
+    t
 }: Page1Props) => {
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -212,7 +219,7 @@ const Page1 = ({
                     variant='outline'
                 >
                     <span className="text-sm">
-                        Other
+                        {t.modal.addDish.other}
                     </span>
                 </Badge>
             </div>
@@ -228,7 +235,7 @@ const Page1 = ({
                 <Button
                     type="primary"
                     customSize="md"
-                    label="Add"
+                    label={t.modal.button.add}
                     onClick={handleSubmit}
                     disabled={!isFormValid}
                     className="flex-1"
@@ -245,9 +252,10 @@ interface Page2Props {
     isFormValid: boolean;
     quantity: number;
     setQuantity: (quantity: number) => void;
+    t: any;
 }
 
-const Page2 = ({ price, setPrice, handleSubmit, isFormValid, quantity, setQuantity }: Page2Props) => {
+const Page2 = ({ price, setPrice, handleSubmit, isFormValid, quantity, setQuantity, t }: Page2Props) => {
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const validator = new ValidatorHelper(0, 9999);
         const numValue = validator.processStringInput(e.target.value);
@@ -262,7 +270,7 @@ const Page2 = ({ price, setPrice, handleSubmit, isFormValid, quantity, setQuanti
                 inputMode="numeric"
                 value={price}
                 onChange={(e) => handleOnChange(e)}
-                placeholder="e.g. 20, 60, 80, 100"
+                placeholder={t.modal.addDish.placeholder}
                 autoFocus
                 maxLength={50}
             />
@@ -278,7 +286,7 @@ const Page2 = ({ price, setPrice, handleSubmit, isFormValid, quantity, setQuanti
                 <Button
                     type="primary"
                     customSize="md"
-                    label="Add"
+                    label={t.modal.button.add}
                     onClick={handleSubmit}
                     disabled={!isFormValid}
                     className="flex-1"
