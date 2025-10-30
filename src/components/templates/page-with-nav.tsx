@@ -28,7 +28,10 @@ export function PageWithNav({
         section?.props?.header !== undefined
     ).length;
     const hasMultipleSections = sectionCount > 1;
-    const isHomePage = pathname === '/' || pathname === '/example';
+    
+    const isHomePage = pathname === '/' || 
+                       pathname === '/en' || 
+                       pathname === '/th';
 
     const handleBackClick = () => {
         router.back();
