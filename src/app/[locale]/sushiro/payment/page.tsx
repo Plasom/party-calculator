@@ -16,8 +16,10 @@ import { useRouter } from "next/navigation";
 import { usePageProtector } from "@/contexts/page-protector-context";
 import { usePayment } from "@/contexts/payment-context";
 import Link from "next/link";
+import { useTranslations } from "@/i18n";
 
 export default function PaymentPage() {
+    const t = useTranslations();
     const { isAllowed } = usePageProtector();
     const { getAllMembersWithOrders, getOrderMemberSummary, clearAllOrders } = useOrder();
     const { members, clearMembers } = useMember();
@@ -67,14 +69,14 @@ export default function PaymentPage() {
     return (
         <PageWithNav style={{ paddingBottom: 120 }} disableBack={isPaymentComplete}>
             <Section
-                header="Payment Status"
+                header={t.payment.header}
                 hidden={isPaymentComplete}
             >
                 <div className="w-full my-2 h-auto flex items-center justify-center">
                     {isLoading && (
                         <div className="text-center">
                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-2"></div>
-                            <p>กำลังสร้าง QR code...</p>
+                            <p>{t.payment.messages.generatingQR}</p>
                         </div>
                     )}
                     {qrCodeDataUrl && !isLoading && (
@@ -89,16 +91,16 @@ export default function PaymentPage() {
                                 priority={true}
                                 draggable={false}
                             />
-                            <p className="text-sm text-[#45C2B2]">สแกน QR เพื่อโอนเข้าบัญชี</p>
-                            <p className="text-sm text-gray-600">บัญชี: {'x'.repeat(promptPay!.length - 4)}{promptPay?.slice(-4)}</p>
+                            <p className="text-sm text-[#45C2B2]">{t.payment.labels.scanQR}</p>
+                            <p className="text-sm text-gray-600">{t.payment.labels.account} {'x'.repeat(promptPay!.length - 4)}{promptPay?.slice(-4)}</p>
                         </div>
                     )}
                 </div>
                 <table className="w-full table-fixed border-collapse text-xs pt-2">
                     <thead>
                         <tr className="border-b-[0.5px] text-[var(--color-black-primary)]">
-                            <th className="text-left font-normal py-2 px-1">Name</th>
-                            <th className="text-right font-normal py-2 px-1">Total incl. fee</th>
+                            <th className="text-left font-normal py-2 px-1">{t.payment.labels.name}</th>
+                            <th className="text-right font-normal py-2 px-1">{t.payment.labels.totalInclFee}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -139,13 +141,13 @@ export default function PaymentPage() {
                         />
                     </div>
                     <p className="font-semibold mb-2">
-                        Payment successful
+                        {t.payment.messages.paymentSuccessful}
                     </p>
                     <p className="text-sm">
-                        Payment completed successfully.
+                        {t.payment.messages.paymentCompletedSuccessfully}
                     </p>
                     <Link className="text-sm underline text-blue-500" href="https://forms.gle/evoepisLFdMSfpTN8">
-                        Feedback: Party Calculator
+                        {t.payment.messages.feedbackLink}
                     </Link>
                 </div>
             </Section>
@@ -157,7 +159,7 @@ export default function PaymentPage() {
             >
                 <div className="flex flex-1">
                     <Button
-                        label={isPaymentComplete ? "Back to main page" : "Complete"}
+                        label={isPaymentComplete ? t.payment.buttons.backToMainPage : t.payment.buttons.complete}
                         customSize="md"
                         onClick={handleBottomSheetButtonClick} className="flex-1" />
                 </div>
@@ -168,9 +170,9 @@ export default function PaymentPage() {
                 isOpen={isUnsavedModalOpen}
                 onAction={handleCompletePayment}
                 onCancel={() => setIsUnsavedModalOpen(false)}
-                title="Complete payment?"
-                message="Complete the payment? This will clear all saved payment records."
-                actionText="Confirm"
+                title={t.payment.modals.completePayment.title}
+                message={t.payment.modals.completePayment.message}
+                actionText={t.payment.modals.completePayment.actionText}
             />
         </PageWithNav>
     );

@@ -6,27 +6,19 @@ export const sushiroEN = {
   },
   buttons: {
     addMember: "Member",
-    checkout: "Checkout",
     splitPlate: "Split plate",
     deletePlate: "Delete plate",
-  },
-  placeholders: {
-    memberName: "Enter member name",
-    dishName: "Enter dish name",
-    dishPrice: "Enter price",
+    cancel: "cancel",
   },
   modals: {
     unsavedChanges: {
-      title: "Unsaved Changes",
-      message: "You have unsaved changes. Do you want to discard them?",
+      title: "Unsaved changes",
+      message: "Changes you made may not be saved. Are you sure you want to leave?",
+      actionText: "Leave",
     },
     deleteMember: {
-      title: "Delete Member",
-      message: "Are you sure you want to delete this member? All their orders will be removed.",
-    },
-    deleteDish: {
-      title: "Delete Dish",
-      message: "Are you sure you want to delete this dish?",
+      title: "Delete member?",
+      message: "This will permanently remove the member and their plates. Delete?",
     },
   },
 };

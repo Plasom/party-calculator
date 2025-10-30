@@ -1,17 +1,31 @@
 export const paymentEN = {
-  header: "Payment",
+  header: "Payment Status",
   labels: {
-    scanQR: "Scan QR Code to Pay",
-    promptPayNumber: "PromptPay Number",
-    amount: "Amount to Pay",
+    scanQR: "สแกน QR เพื่อโอนเข้าบัญชี",
+    account: "บัญชี:",
+    name: "Name",
+    totalInclFee: "Total incl. fee",
   },
   buttons: {
-    downloadQR: "Download QR Code",
-    completePayment: "Complete Payment",
-    backToHome: "Back to Home",
+    complete: "Complete",
+    backToMainPage: "Back to main page",
   },
   messages: {
-    generatingQR: "Generating QR Code...",
-    paymentComplete: "Payment completed successfully!",
+    generatingQR: "กำลังสร้าง QR code...",
+    paymentSuccessful: "Payment successful",
+    paymentCompletedSuccessfully: "Payment completed successfully.",
+    feedbackLink: "Feedback: Party Calculator",
+  },
+  modals: {
+    completePayment: {
+      title: "Complete payment?",
+      message: "Complete the payment? This will clear all saved payment records.",
+      actionText: "Confirm",
+    },
+  },
+  promptpay: {
+    enterPromptPay: "Enter PromptPay",
+    placeholder: "e.g. 08x-xxx-xxxx",
+    error: "PromptPay ID not found. please try again.",
   },
 };
