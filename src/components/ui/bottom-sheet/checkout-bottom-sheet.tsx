@@ -8,6 +8,7 @@ import { useWindowScroll } from '@/hooks/useWindowScroll';
 import { useEffect, useState } from 'react';
 import { useDishes } from '@/contexts/dishes-context';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from '@/i18n';
 
 interface CheckoutBottomSheetProps extends React.RefAttributes<HTMLDivElement> {
     isOpen?: boolean;
@@ -20,6 +21,7 @@ export function CheckoutBottomSheet({
     warningModal,
     ...props
 }: CheckoutBottomSheetProps) {
+    const t = useTranslations();
     const { getOrderTotalSummary } = useOrder();
     const { dishes } = useDishes();
 
@@ -49,11 +51,11 @@ export function CheckoutBottomSheet({
                         }`}
                 >
                     <div className="flex flex-row justify-between">
-                        <span className="text-left">Total Dishes</span>
+                        <span className="text-left">{t.checkout.labels.totalDishes}</span>
                         <span className="text-right font-medium">{getOrderTotalSummary(dishes).totalDishes}</span>
                     </div>
                     <div className="flex flex-row justify-between">
-                        <span>SubTotal</span>
+                        <span>{t.checkout.labels.subtotal}</span>
                         <span>{getOrderTotalSummary(dishes).subTotalPrice} ฿</span>
                     </div>
                 </div>
@@ -67,7 +69,7 @@ export function CheckoutBottomSheet({
                 <Button
                     type="primary"
                     customSize="md"
-                    label="Checkout"
+                    label={t.checkout.buttons.checkout}
                     onClick={() => !warningModal ? router.push('/sushiro/checkout') : undefined}
                 />
             </div>

@@ -1,17 +1,31 @@
 export const paymentTH = {
-  header: "ชำระเงิน",
+  header: "สถานะการชำระเงิน",
   labels: {
-    scanQR: "สแกน QR Code เพื่อชำระเงิน",
-    promptPayNumber: "เลขพร้อมเพย์",
-    amount: "ยอดที่ต้องชำระ",
+    scanQR: "สแกน QR เพื่อโอนเข้าบัญชี",
+    account: "บัญชี:",
+    name: "ชื่อ",
+    totalInclFee: "รวมทั้งหมด",
   },
   buttons: {
-    downloadQR: "ดาวน์โหลด QR Code",
-    completePayment: "ชำระเงินเสร็จสิ้น",
-    backToHome: "กลับหน้าหลัก",
+    complete: "เสร็จสิ้น",
+    backToMainPage: "กลับหน้าหลัก",
   },
   messages: {
-    generatingQR: "กำลังสร้าง QR Code...",
-    paymentComplete: "ชำระเงินเสร็จสิ้นเรียบร้อย!",
+    generatingQR: "กำลังสร้าง QR code...",
+    paymentSuccessful: "โอนเงินสำเร็จ",
+    paymentCompletedSuccessfully: "ชำระเงินเรียบร้อยแล้ว",
+    feedbackLink: "แสดงความคิดเห็น: Party Calculator",
+  },
+  modals: {
+    completePayment: {
+      title: "จบการชำระเงิน?",
+      message: "จะจบการชำระเงินเลยไหม? ข้อมูลทั้งหมดจะถูกล้างออก",
+      actionText: "ยืนยัน",
+    },
+  },
+  promptpay: {
+    enterPromptPay: "ใส่เบอร์พร้อมเพย์",
+    placeholder: "เช่น 08x-xxx-xxxx",
+    error: "ไม่พบเบอร์พร้อมเพย์ ลองใหม่อีกครั้ง",
   },
 };
