@@ -1,16 +1,24 @@
 export const checkoutTH = {
-  header: "สรุปรายการ",
   sections: {
-    total: "ยอดรวม",
-    eachBill: "แต่ละคน",
+    groupBillSummary: "สรุปบิลกลุ่ม",
+    totalSummary: "ยอดรวมทั้งหมด",
+    eachBill: "บิลแต่ละคน",
   },
   labels: {
     totalDishes: "จำนวนจาน",
-    totalPrice: "ยอดรวมทั้งหมด",
-    memberName: "สมาชิก",
-    orderDetails: "รายละเอียดออเดอร์",
+    serviceCharge: "ค่าบริการ (10.00%)",
+    totalInclFee: "ยอดรวม (รวมค่าบริการ)",
+    name: "ชื่อ",
+    qty: "จำนวน",
+    pricePerUnit: "ราคา/จาน",
+    subtotal: "รวมย่อย",
+    type: "ประเภท",
+    custom: "กำหนดเอง",
+    normal: "ปกติ",
+    total: "รวม",
+    totalInclServiceFee: "รวมทั้งหมด",
   },
   buttons: {
-    proceedToPayment: "ไปหน้าชำระเงิน",
+    checkout: "สรุปบิล",
   },
 };

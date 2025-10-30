@@ -51,12 +51,12 @@ export default function SushiroPage() {
     // Object Arrays
     const menuItems: MenuItem[] = [
         {
-            label: "Split plate",
+            label: t.sushiro.buttons.splitPlate,
             onClick: () => console.log('Split plate clicked'),
             isShow: false
         },
         {
-            label: "Delete plate",
+            label: t.sushiro.buttons.deletePlate,
             onClick: () => handleDeleteDish(),
             textColor: 'text-[var(--button-ghost-desctructive-text)]',
             isShow: !!selectedDishId && dishes.some(dish => dish.id === selectedDishId && !dish.isDefault)
@@ -178,7 +178,7 @@ export default function SushiroPage() {
                                     <Button
                                         type="ghost"
                                         customSize="xs"
-                                        label="cancel"
+                                        label={t.sushiro.buttons.cancel}
                                         onClick={handleCancelChangeMemberName}
                                     />
                                 </>
@@ -295,9 +295,9 @@ export default function SushiroPage() {
                 isOpen={isUnsavedModalOpen}
                 onAction={unsavedChangeActionModal}
                 onCancel={unsavedChangeCancelModal}
-                title="Unsaved changes"
-                message="Changes you made may not be saved. Are you sure you want to leave?"
-                actionText="Leave"
+                title={t.sushiro.modals.unsavedChanges.title}
+                message={t.sushiro.modals.unsavedChanges.message}
+                actionText={t.sushiro.modals.unsavedChanges.actionText}
             />
 
             <DeleteModal
@@ -305,8 +305,8 @@ export default function SushiroPage() {
                 isOpen={isDeleteMemberModalOpen}
                 onDelete={handleRemoveMember}
                 onCancel={() => setIsDeleteMemberModalOpen(false)}
-                title="Delete member?"
-                message="This will permanently remove the member and their plates. Delete?"
+                title={t.sushiro.modals.deleteMember.title}
+                message={t.sushiro.modals.deleteMember.message}
             />
         </PageWithNav>
     )

@@ -10,8 +10,10 @@ import { SortHelper } from "@/lib/sort-helper";
 import { NumberHelper } from "@/lib/number-helper";
 import { Fragment, useState } from "react";
 import { ConfirmPaymentBottomSheet } from "@/components/ui/bottom-sheet/confirm-payment-bottom-sheet";
+import { useTranslations } from "@/i18n";
 
 export default function CheckoutPage() {
+    const t = useTranslations();
     const [isOpenTotal, setIsOpenTotal] = useState<boolean>(false);
     const [isOpenEachBill, setIsOpenEachBill] = useState<boolean>(true);
     const [expandedMembers, setExpandedMembers] = useState<Set<string>>(new Set());
@@ -35,11 +37,11 @@ export default function CheckoutPage() {
     return (
         <PageWithNav style={{ paddingBottom: 120 }}>
             <Section
-                header="Group bill summary"
+                header={t.checkout.sections.groupBillSummary}
                 className="pt-4"
             >
                 <div className="flex flex-row justify-between text-[var(--color-black-tertiary)] font-medium hover:cursor-pointer" onClick={() => setIsOpenTotal(!isOpenTotal)}>
-                    <p className="text-xl">Total summary</p>
+                    <p className="text-xl">{t.checkout.sections.totalSummary}</p>
                     <div className="flex flex-row items-center">
                         {!isOpenTotal && <p className="text-base">{NumberHelper.toFixed(getOrderTotalSummary(dishes).totalPrice, 2)}฿</p>}
                         <IconButton
@@ -53,15 +55,15 @@ export default function CheckoutPage() {
                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpenTotal ? 'max-h-auto opacity-100 pt-2' : 'max-h-0 opacity-0 py-0'}`}>
                     <div className="text-[var(--color-grey-tertiary)]">
                         <div className="flex flex-row justify-between">
-                            <p>Total dishes</p>
+                            <p>{t.checkout.labels.totalDishes}</p>
                             <p className="font-medium">{getOrderTotalSummary(dishes).totalDishes}</p>
                         </div>
                         <div className="flex flex-row justify-between">
-                            <p>Service charge (10.00%)</p>
+                            <p>{t.checkout.labels.serviceCharge}</p>
                             <p className="font-medium">{NumberHelper.toFixed(getOrderTotalSummary(dishes).serviceCharge, 2)}฿</p>
                         </div>
                         <div className="flex flex-row justify-between">
-                            <p>Total (incl. service fee)</p>
+                            <p>{t.checkout.labels.totalInclFee}</p>
                             <p className="font-medium">{NumberHelper.toFixed(getOrderTotalSummary(dishes).totalPrice, 2)}฿</p>
                         </div>
                     </div>
@@ -70,16 +72,16 @@ export default function CheckoutPage() {
                         <table className="w-full table-fixed border-collapse text-xs">
                             <thead>
                                 <tr className="border-b-[0.5px] text-[var(--color-black-primary)]">
-                                    <th className="text-left font-normal py-2 px-1">Type</th>
-                                    <th className="text-center font-normal py-2 px-1">Qty</th>
-                                    <th className="text-right font-normal py-2 px-1">Price/Unit</th>
-                                    <th className="text-right font-normal py-2 px-1">Subtotal</th>
+                                    <th className="text-left font-normal py-2 px-1">{t.checkout.labels.type}</th>
+                                    <th className="text-center font-normal py-2 px-1">{t.checkout.labels.qty}</th>
+                                    <th className="text-right font-normal py-2 px-1">{t.checkout.labels.pricePerUnit}</th>
+                                    <th className="text-right font-normal py-2 px-1">{t.checkout.labels.subtotal}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {getOrderTotalSummary(dishes).dishes.map(dish => (
                                     <tr key={dish.id} className="border-b-[0.5px] text-[var(--color-black-tertiary)]">
-                                        <td className="text-left font- py-2 px-1">{dish.id.includes('custom') ? 'Custom' : 'Normal'}</td>
+                                        <td className="text-left font- py-2 px-1">{dish.id.includes('custom') ? t.checkout.labels.custom : t.checkout.labels.normal}</td>
                                         <td className="text-center py-2 px-1">x{dish.amount}</td>
                                         <td className="text-right py-2 px-1">{dish.price}฿</td>
                                         <td className="text-right py-2 px-1">{dish.price! * dish.amount!}฿</td>
@@ -88,7 +90,7 @@ export default function CheckoutPage() {
                             </tbody>
                             <tfoot>
                                 <tr className="font-medium">
-                                    <td className="text-left py-2 px-1">Total</td>
+                                    <td className="text-left py-2 px-1">{t.checkout.labels.total}</td>
                                     <td className="text-center py-2 px-1">x{getOrderTotalSummary(dishes).totalDishes}</td>
                                     <td className="text-right py-2 px-1">--</td>
                                     <td className="text-right py-2 px-1">{getOrderTotalSummary(dishes).subTotalPrice}฿</td>
@@ -104,7 +106,7 @@ export default function CheckoutPage() {
                 showHeader={false}
             >
                 <div className="flex flex-row justify-between text-[var(--color-black-tertiary)] font-medium hover:cursor-pointer" onClick={() => setIsOpenEachBill(!isOpenEachBill)}>
-                    <p className="text-xl">Each bill</p>
+                    <p className="text-xl">{t.checkout.sections.eachBill}</p>
                     <div className="flex flex-row items-center">
                         <IconButton
                             icon={isOpenEachBill ? "keyboard_arrow_up" : "keyboard_arrow_down"}
@@ -118,9 +120,9 @@ export default function CheckoutPage() {
                     <table className="w-full table-fixed border-collapse text-xs">
                         <thead>
                             <tr className="border-b-[0.5px] text-[var(--color-black-primary)]">
-                                <th className="text-left font-normal py-2 px-1">Name</th>
-                                <th className="text-center font-normal py-2 px-1">Qty</th>
-                                <th className="text-right font-normal py-2 px-1">Total incl. fee</th>
+                                <th className="text-left font-normal py-2 px-1">{t.checkout.labels.name}</th>
+                                <th className="text-center font-normal py-2 px-1">{t.checkout.labels.qty}</th>
+                                <th className="text-right font-normal py-2 px-1">{t.checkout.labels.totalInclServiceFee}</th>
                                 <th className="py-2 px-1 w-8"></th>
                             </tr>
                         </thead>
@@ -150,10 +152,10 @@ export default function CheckoutPage() {
                                                         <table className="w-full table-fixed border-collapse text-xs bg-gray-200 px-8">
                                                             <thead>
                                                                 <tr className="border-b-[0.5px] text-[var(--color-black-primary)] px-2 bg-gray-200">
-                                                                    <th className="text-left font-normal py-2 px-2">Type</th>
-                                                                    <th className="text-center font-normal py-2 px-2">Qty</th>
-                                                                    <th className="text-right font-normal py-2 px-2">Price/Unit</th>
-                                                                    <th className="text-right font-normal py-2 px-2">Subtotal</th>
+                                                                    <th className="text-left font-normal py-2 px-2">{t.checkout.labels.type}</th>
+                                                                    <th className="text-center font-normal py-2 px-2">{t.checkout.labels.qty}</th>
+                                                                    <th className="text-right font-normal py-2 px-2">{t.checkout.labels.pricePerUnit}</th>
+                                                                    <th className="text-right font-normal py-2 px-2">{t.checkout.labels.subtotal}</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody className="bg-gray-100">
@@ -164,7 +166,7 @@ export default function CheckoutPage() {
                                                                     const dish = dishes.find(d => d.id === orderItem.id);
                                                                     return (
                                                                         <tr key={orderItem.id} className="border-b-[0.5px]-[0.5px] text-[var(--color-black-tertiary)]">
-                                                                            <td className="text-left py-2 px-2">{orderItem.id.includes('custom') ? 'Custom' : 'Normal'}</td>
+                                                                            <td className="text-left py-2 px-2">{orderItem.id.includes('custom') ? t.checkout.labels.custom : t.checkout.labels.normal}</td>
                                                                             <td className="text-center py-2 px-2">x{orderItem.amount}</td>
                                                                             <td className="text-right py-2 px-2">{dish?.price || 0}฿</td>
                                                                             <td className="text-right py-2 px-2">{(dish?.price || 0) * orderItem.amount!}฿</td>
@@ -174,7 +176,7 @@ export default function CheckoutPage() {
                                                             </tbody>
                                                             <tfoot className="bg-gray-100">
                                                                 <tr className="font-medium">
-                                                                    <td className="text-left py-2 px-2">Total</td>
+                                                                    <td className="text-left py-2 px-2">{t.checkout.labels.total}</td>
                                                                     <td className="text-center py-2 px-2">x{memberWithOrder.total}</td>
                                                                     <td className="text-right py-2 px-2">--</td>
                                                                     <td className="text-right py-2 px-2">{memberOrder.subTotalPrice}฿</td>
@@ -187,15 +189,15 @@ export default function CheckoutPage() {
                                                     <td colSpan={4}>
                                                         <div className="text-[var(--color-grey-tertiary)] py-2">
                                                             <div className="flex flex-row justify-between">
-                                                                <p>Total dishes</p>
+                                                                <p>{t.checkout.labels.totalDishes}</p>
                                                                 <p className="font-medium">{memberWithOrder.total}</p>
                                                             </div>
                                                             <div className="flex flex-row justify-between">
-                                                                <p>Service charge (10.00%)</p>
+                                                                <p>{t.checkout.labels.serviceCharge}</p>
                                                                 <p className="font-medium">{NumberHelper.toFixed(memberOrder.serviceCharge, 2)}฿</p>
                                                             </div>
                                                             <div className="flex flex-row justify-between">
-                                                                <p>Total (incl. service fee)</p>
+                                                                <p>{t.checkout.labels.totalInclFee}</p>
                                                                 <p className="font-medium">{NumberHelper.toFixed(memberOrder.totalPrice, 2)}฿</p>
                                                             </div>
                                                         </div>

@@ -9,6 +9,7 @@ import { NumberHelper } from '@/lib/number-helper';
 import { ValidatorHelper } from '@/lib/validator-helper';
 import { useRouter } from 'next/navigation';
 import { usePayment } from '@/contexts/payment-context';
+import { useTranslations } from '@/i18n';
 
 interface ConfirmPaymentBottomSheetProps extends React.RefAttributes<HTMLDivElement> {
     isOpen?: boolean;
@@ -17,6 +18,7 @@ interface ConfirmPaymentBottomSheetProps extends React.RefAttributes<HTMLDivElem
 export function ConfirmPaymentBottomSheet({
     isOpen = true,
 }: ConfirmPaymentBottomSheetProps) {
+    const t = useTranslations();
     const router = useRouter();
 
     const { setPromptPay } = usePayment();
@@ -66,7 +68,7 @@ export function ConfirmPaymentBottomSheet({
         <BottomSheet
             isOpen={isOpen}
             button={isExpanded ? 'cancel' : 'hidden'}
-            title={isExpanded ? 'Enter PromptPay' : ''}
+            title={isExpanded ? t.payment.promptpay.enterPromptPay : ''}
             onClose={() => handleExpand()}
             disableBackground={!isExpanded}
         >
@@ -78,13 +80,13 @@ export function ConfirmPaymentBottomSheet({
                     <Input
                         type="text"
                         inputMode="numeric"
-                        placeholder="e.g. 08x-xxx-xxxx"
+                        placeholder={t.payment.promptpay.placeholder}
                         value={paymentMethod}
                         autoFocus
                         onChange={handleInputChange}
                     />
 
-                    {<span className={`text-rose-700 text-sm ${isError ? 'opacity-100' : 'opacity-0'}`}>PromptPay ID not found. please try again.</span>}
+                    {<span className={`text-rose-700 text-sm ${isError ? 'opacity-100' : 'opacity-0'}`}>{t.payment.promptpay.error}</span>}
 
                     <Divider className="my-4" />
                 </div>
@@ -93,7 +95,7 @@ export function ConfirmPaymentBottomSheet({
                     <Button
                         type="primary"
                         customSize="md"
-                        label="Checkout"
+                        label={t.checkout.buttons.checkout}
                         onClick={isExpanded ? () => handleSubmit() : () => setIsExpanded(true)}
                         disabled={isExpanded && isButtonDisabled}
                         className='flex-1'
