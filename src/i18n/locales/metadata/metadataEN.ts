@@ -1,23 +1,22 @@
 export const metadataEN = {
-  title: "Party Calculator",
-  titleTemplate: "%s | Party Calculator",
+  title: "Sushiro Calculator",
+  titleTemplate: "%s | Sushiro Calculator",
   description:
-    "Smart restaurant bill splitting app for groups. Calculate individual portions, split bills fairly, and generate QR codes for easy payment. Perfect for dining out with friends!",
+    "Smart Sushiro plate and bill splitting calculator for your group. Easily count plates by color, split the bill fairly, and generate a PromptPay QR code.",
   keywords: [
+    "sushiro",
+    "sushiro calculator",
     "bill splitting",
-    "restaurant",
-    "group dining",
-    "payment calculator",
+    "sushiro price",
+    "conveyor belt sushi",
+    "sushi calculator",
     "QR code",
     "PromptPay",
-    "dining",
-    "friends",
-    "food calculator",
   ],
   og: {
-    title: "Party Calculator - Smart Restaurant Bill Splitting",
+    title: "Sushiro Calculator - Bill Splitting Made Easy",
     description:
-      "Smart restaurant bill splitting app for groups. Calculate individual portions, split bills fairly, and generate QR codes for easy payment.",
+      "Smart Sushiro plate and bill splitting calculator for your group. Easily count plates by color, split the bill fairly, and generate a PromptPay QR code.",
   },
   notFound: {
     title: "Page Not Found",

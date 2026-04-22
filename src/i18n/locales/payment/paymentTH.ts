@@ -14,7 +14,7 @@ export const paymentTH = {
     generatingQR: "กำลังสร้าง QR code...",
     paymentSuccessful: "โอนเงินสำเร็จ",
     paymentCompletedSuccessfully: "ชำระเงินเรียบร้อยแล้ว",
-    feedbackLink: "แสดงความคิดเห็น: Party Calculator",
+    feedbackLink: "แสดงความคิดเห็น: Sushiro Calculator",
   },
   modals: {
     completePayment: {

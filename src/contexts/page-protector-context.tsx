@@ -47,9 +47,6 @@ export function PageProtectorProvider({
                 // Extract locale from current pathname
                 const locale = pathname?.match(/^\/(en|th)/)?.[1] || 'en';
                 router.replace(`/${locale}/sushiro`);
-            } else if (pathWithoutLocale.startsWith('/teenoi')) {
-                const locale = pathname?.match(/^\/(en|th)/)?.[1] || 'en';
-                router.replace(`/${locale}/teenoi`);
             } else {
                 const locale = pathname?.match(/^\/(en|th)/)?.[1] || 'en';
                 router.replace(`/${locale}`);

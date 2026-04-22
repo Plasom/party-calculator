@@ -1,6 +1,5 @@
 'use client';
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react"
 import 'material-symbols';
@@ -21,16 +20,12 @@ export function NavigationMenu() {
     <div className="fixed flex justify-center w-full left-0 top-0 z-99">
       <div className="flex flex-col backdrop-saturate-[180%] backdrop-blur-[20px] bg-[var(--nav-bg)] sm:w-[390px] w-full">
         <div className="flex items-center justify-between px-[20px] h-[63px]">
-          <Image
-            src="/logo.svg"
-            alt="Logo"
-            width={72}
-            height={43}
-            className="cursor-pointer"
-            priority={true}
-            draggable={false}
-            onClick={() => router.push('/')}
-          />
+          <div 
+            className="cursor-pointer font-bold text-xl text-[var(--button-secondary-icon)]"
+            onClick={() => router.push('/sushiro')}
+          >
+            Sushiro Calculator
+          </div>
           <IconButton
             icon="lunch_dining"
             type="ghost"
