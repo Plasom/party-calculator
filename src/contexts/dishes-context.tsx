@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
-import { DishData, sushiroDishes, tenoiDishes } from '@/data/dishes';
+import { DishData, sushiroDishes } from '@/data/dishes';
 import { SortHelper } from '@/lib/sort-helper';
 
 interface DishesContextType {
@@ -32,7 +32,6 @@ export function DishesProvider({ children }: DishesProviderProps) {
         const pathWithoutLocale = path.replace(/^\/(en|th)/, '');
         
         if (pathWithoutLocale.startsWith('/sushiro')) return '/sushiro';
-        if (pathWithoutLocale.startsWith('/teenoi')) return '/teenoi';
         return pathWithoutLocale || path;
     };
 
@@ -41,7 +40,6 @@ export function DishesProvider({ children }: DishesProviderProps) {
         const pathWithoutLocale = path.replace(/^\/(en|th)/, '');
         
         if (pathWithoutLocale.startsWith('/sushiro')) return sushiroDishes;
-        if (pathWithoutLocale.startsWith('/teenoi')) return tenoiDishes;
         return [];
     };
 

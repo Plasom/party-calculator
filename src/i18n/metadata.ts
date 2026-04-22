@@ -4,7 +4,7 @@ import { getTranslation } from "./translations";
 
 export function generateMetadata(locale: Locale): Metadata {
   const t = getTranslation(locale);
-  const baseUrl = "https://party-calculator.vercel.app";
+  const baseUrl = "https://sushiro-calculator.vercel.app";
   const localeCode = locale === "th" ? "th_TH" : "en_US";
 
   return {
@@ -14,9 +14,9 @@ export function generateMetadata(locale: Locale): Metadata {
     },
     description: t.metadata.description,
     keywords: [...t.metadata.keywords],
-    authors: [{ name: "Party Calculator Team" }],
-    creator: "Party Calculator",
-    publisher: "Party Calculator",
+    authors: [{ name: "Sushiro Calculator Team" }],
+    creator: "Sushiro Calculator",
+    publisher: "Sushiro Calculator",
     robots: {
       index: true,
       follow: true,
@@ -26,15 +26,15 @@ export function generateMetadata(locale: Locale): Metadata {
       locale: localeCode,
       alternateLocale: locale === "th" ? "en_US" : "th_TH",
       url: `${baseUrl}/${locale}`,
-      siteName: "Party Calculator",
+      siteName: "Sushiro Calculator",
       title: t.metadata.og.title,
       description: t.metadata.og.description,
       images: [
         {
-          url: "/logo.svg",
+          url: "/images/sushiro_asset/dishes/red/default.svg",
           width: 1200,
           height: 630,
-          alt: "Party Calculator Logo",
+          alt: "Sushiro Calculator Logo",
         },
       ],
     },
@@ -46,9 +46,9 @@ export function generateMetadata(locale: Locale): Metadata {
       },
     },
     icons: {
-      icon: "/favicon.ico",
-      shortcut: "/favicon.ico",
-      apple: "/logo.svg",
+      icon: "/images/sushiro_asset/dishes/red/default.svg",
+      shortcut: "/images/sushiro_asset/dishes/red/default.svg",
+      apple: "/images/sushiro_asset/dishes/red/default.svg",
     },
     manifest: "/manifest.json",
   };
@@ -56,7 +56,7 @@ export function generateMetadata(locale: Locale): Metadata {
 
 export function generateSushiroMetadata(locale: Locale): Metadata {
   const t = getTranslation(locale);
-  const baseUrl = "https://party-calculator.vercel.app";
+  const baseUrl = "https://sushiro-calculator.vercel.app";
 
   return {
     title: t.metadata.sushiro.title,
@@ -86,7 +86,7 @@ export function generateSushiroMetadata(locale: Locale): Metadata {
 
 export function generateCheckoutMetadata(locale: Locale): Metadata {
   const t = getTranslation(locale);
-  const baseUrl = "https://party-calculator.vercel.app";
+  const baseUrl = "https://sushiro-calculator.vercel.app";
 
   return {
     title: t.metadata.checkout.title,
@@ -107,7 +107,7 @@ export function generateCheckoutMetadata(locale: Locale): Metadata {
 
 export function generatePaymentMetadata(locale: Locale): Metadata {
   const t = getTranslation(locale);
-  const baseUrl = "https://party-calculator.vercel.app";
+  const baseUrl = "https://sushiro-calculator.vercel.app";
 
   return {
     title: t.metadata.payment.title,

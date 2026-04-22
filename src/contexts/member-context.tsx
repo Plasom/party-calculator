@@ -41,7 +41,6 @@ export function MemberProvider({ children }: MemberProviderProps) {
         const pathWithoutLocale = path.replace(/^\/(en|th)/, '');
         
         if (pathWithoutLocale.startsWith('/sushiro')) return '/sushiro';
-        if (pathWithoutLocale.startsWith('/teenoi')) return '/teenoi';
         return pathWithoutLocale || path;
     };
 
