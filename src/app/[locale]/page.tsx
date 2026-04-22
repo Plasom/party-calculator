@@ -1,23 +1,18 @@
 'use client';
 
-import { PageWithNav } from "@/components/templates/page-with-nav";
-import { Section } from "@/components/templates/section";
-import { CardList } from "@/components/ui/card/card-list";
-import { CardStore } from "@/components/ui/card/store";
-import { useTranslations } from "@/i18n";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
-  const t = useTranslations();
+  const router = useRouter();
+  const pathname = usePathname() || '';
 
-  return (
-    <>
-      <PageWithNav>
-        <Section header={t.home.header}>
-          <CardList>
-            <CardStore href="sushiro" url="/images/restaurant/sushiro.png" label="Sushiro" />
-          </CardList>
-        </Section>
-      </PageWithNav>
-    </>
-  );
+  useEffect(() => {
+    // Extract locale (e.g. /th or /en) and redirect to sushiro route
+    const localeMatch = pathname.match(/^\/(en|th)/);
+    const locale = localeMatch ? localeMatch[1] : 'en';
+    router.replace(`/${locale}/sushiro`);
+  }, [pathname, router]);
+
+  return null;
 }

@@ -31,7 +31,9 @@ export function PageWithNav({
     
     const isHomePage = pathname === '/' || 
                        pathname === '/en' || 
-                       pathname === '/th';
+                       pathname === '/th' ||
+                       pathname === '/th/sushiro' || 
+                       pathname === '/en/sushiro';
 
     const handleBackClick = () => {
         router.back();

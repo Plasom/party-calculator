@@ -1,7 +1,7 @@
 # i18n Implementation Summary
 
 ## Overview
-Implemented internationalization (i18n) support for Party Calculator with English (en) and Thai (th) languages.
+Implemented internationalization (i18n) support for Sushiro Calculator with English (en) and Thai (th) languages.
 
 ## Features Implemented
 

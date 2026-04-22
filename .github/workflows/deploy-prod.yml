@@ -7,7 +7,7 @@ on:
   workflow_dispatch: # Allow manual trigger
 
 env:
-  APP_NAME: "party-calculator"
+  APP_NAME: "sushiro-calculator"
   DOCKER_USERNAME: "homiez09"
   REGISTRY: "docker.io"
 

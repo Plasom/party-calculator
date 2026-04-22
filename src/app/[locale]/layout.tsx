@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Prompt } from "next/font/google";
 import { AppProviders } from "@/components/templates/app-provider";
 import ClarityAnalytics from "@/components/analytics/clarity";
+import PwaInstallBottomSheet from "@/components/ui/bottom-sheet/pwa-install-bottom-sheet";
 import { locales, Locale } from "@/i18n/config";
 import { generateMetadata as genMetadata } from "@/i18n/metadata";
 import "../globals.css";
@@ -37,14 +38,14 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <head>
-        <meta name="application-name" content="Party Calculator" />
+        <meta name="application-name" content="Sushiro Calculator" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Sushiro Calculator" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#000000" />
-        <link rel="apple-touch-icon" href="/logo.svg" />
+        <link rel="apple-touch-icon" href="/images/sushiro_asset/dishes/red/default.svg" />
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body
@@ -53,6 +54,7 @@ export default async function LocaleLayout({
         <AppProviders>
           <ClarityAnalytics />
           {children}
+          <PwaInstallBottomSheet />
         </AppProviders>
       </body>
     </html>
