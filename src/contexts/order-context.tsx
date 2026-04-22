@@ -59,7 +59,6 @@ export function OrderProvider({ children }: OrderProviderProps) {
         const pathWithoutLocale = path.replace(/^\/(en|th)/, '');
         
         if (pathWithoutLocale.startsWith('/sushiro')) return '/sushiro';
-        if (pathWithoutLocale.startsWith('/teenoi')) return '/teenoi';
         return pathWithoutLocale || path;
     };
 

@@ -1,7 +1,7 @@
 {
-  "name": "Party Calculator - Smart Restaurant Bill Splitting",
-  "short_name": "Party Calculator",
-  "description": "Smart restaurant bill splitting app for groups. Calculate individual portions, split bills fairly, and generate QR codes for easy payment.",
+  "name": "Sushiro Calculator - Bill Splitting Made Easy",
+  "short_name": "Sushiro Calculator",
+  "description": "Smart Sushiro plate and bill splitting calculator for your group. Easily count plates by color, split the bill fairly, and generate a PromptPay QR code.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -11,7 +11,7 @@
   "lang": "en",
   "icons": [
     {
-      "src": "/logo.svg",
+      "src": "/images/sushiro_asset/dishes/red/default.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

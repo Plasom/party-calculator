@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { locales } from '@/i18n/config'
  
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://party-calculator.vercel.app'
+  const baseUrl = 'https://sushiro-calculator.vercel.app'
   
   const routes = [
     {

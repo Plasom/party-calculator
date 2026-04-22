@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '*/checkout', '*/payment'],
     },
-    sitemap: 'https://party-calculator.vercel.app/sitemap.xml',
+    sitemap: 'https://sushiro-calculator.vercel.app/sitemap.xml',
   }
 }
