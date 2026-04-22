@@ -40,7 +40,7 @@ export default async function LocaleLayout({
         <meta name="application-name" content="Party Calculator" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Party Calculator" />
+        <meta name="apple-mobile-web-app-title" content="Sushiro Calculator" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#000000" />

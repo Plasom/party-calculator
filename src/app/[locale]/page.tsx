@@ -15,7 +15,6 @@ export default function Home() {
         <Section header={t.home.header}>
           <CardList>
             <CardStore href="sushiro" url="/images/restaurant/sushiro.png" label="Sushiro" />
-            <CardStore url="/images/restaurant/teenoi.png" label="Teenoi" disabled />
           </CardList>
         </Section>
       </PageWithNav>

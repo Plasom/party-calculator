@@ -74,7 +74,3 @@ export const sushiroDishes: DishData[] = [
     isDefault: false,
   },
 ];
-
-export const tenoiDishes: DishData[] = [
-  // สามารถเพิ่มข้อมูลสำหรับ teenoi ได้ในอนาคต
-];
